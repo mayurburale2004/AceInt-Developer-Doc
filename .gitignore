@@ -1,0 +1,6 @@
+node_modules
+.next
+out
+public/search-index.json
+*.log
+.DS_Store
