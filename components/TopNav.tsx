@@ -18,7 +18,7 @@ export function TopNav() {
      <div className="relative flex h-16 items-center gap-3 px-4 sm:px-6">
         <button
           className="-ml-1 rounded-md p-2 text-ink-700 hover:bg-ink-100 lg:hidden"
-          aria-label="Open menu"
+          aria-label="Open menu"  
           onClick={() => setSidebarOpen(true)}
         >
           <Menu size={20} />
