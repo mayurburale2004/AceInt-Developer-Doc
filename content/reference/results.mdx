@@ -1,0 +1,86 @@
+---
+title: "Results API — Query, Filter & Export Hiring Results"
+description: "Query paginated results across interviews and assessments by role or date, and export bulk data as a CSV via a pre-signed URL via the AceIntAPI."
+---
+
+The Results API provides a unified view across all interview and assessment outcomes in your organisation. Use it to build dashboards, feed data into your ATS, or trigger downstream workflows. When you need a bulk extract — for example, to load historical data into a data warehouse — use the export endpoint to generate a pre-signed download URL.
+
+All Results endpoints require an API key with the `read` scope. The export endpoint additionally requires the `admin` scope.
+
+## List Results
+
+`GET /results`
+
+Returns a paginated list of result records across interviews and assessments. Use filters to narrow results by role, type, or date range.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `role_id` | string | Return only results for candidates evaluated against this role. |
+| `type` | string | Filter by result type. Accepted values: `interview`, `assessment`. |
+| `from` | string | ISO 8601 date-time. Return only results with a `completed_at` on or after this timestamp. |
+| `to` | string | ISO 8601 date-time. Return only results with a `completed_at` on or before this timestamp. |
+| `page` | integer | Page number. Starts at `1`. Default `1`. |
+| `per_page` | integer | Number of results per page. Maximum `100`. Default `20`. |
+
+Each result summary includes a `recommendation` field: for interview results, one of `strong_yes`, `yes`, `neutral`, `no`, or `strong_no`; for assessment results, `passed` or `failed`.
+
+```bash
+curl "https://api.aceint.dev/v1/results?type=interview&from=2024-01-01T00:00:00Z&to=2024-06-30T23:59:59Z" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Retrieve a Result
+
+`GET /results/{id}`
+
+Returns the full detail for a single result by its ID. The response shape mirrors the detailed results returned by `GET /interviews/{id}/results` and `GET /assessments/{id}/results` respectively, unified under a single endpoint. The response also includes a `detail_url` — a convenience link to the full result detail on the type-specific endpoint.
+
+```bash
+curl https://api.aceint.dev/v1/results/res_07jkl \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Export Results
+
+`GET /results/export`
+
+Generates and returns a pre-signed URL to a bulk export file containing all results that match the supplied filters. The export file is in CSV format and includes all result fields. The download URL expires after **60 minutes** — fetch the file before it expires.
+
+<Callout title="Note">
+This endpoint requires the `admin` scope in addition to `read`.
+</Callout>
+
+<Callout title="Warning">
+Download and store the file immediately after receiving the URL. Once the URL expires, you must call this endpoint again to generate a fresh one.
+</Callout>
+
+**Query parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `role_id` | string | Export results for this role only. |
+| `type` | string | Export results of this type only. Accepted values: `interview`, `assessment`. |
+| `from` | string | ISO 8601 date-time. Include results completed on or after this timestamp. |
+| `to` | string | ISO 8601 date-time. Include results completed on or before this timestamp. |
+
+```bash
+curl "https://api.aceint.dev/v1/results/export?type=interview&from=2024-01-01T00:00:00Z" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Example response**
+
+```json
+{
+  "data": {
+    "download_url": "https://exports.aceint.dev/results_export_2024.csv?token=abc123&expires=1718125200",
+    "expires_at": "2024-06-11T15:00:00Z",
+    "record_count": 842,
+    "generated_at": "2024-06-11T14:00:00Z"
+  }
+}
+```
+
+<Callout title="Tip">
+If you are exporting large date ranges, narrow the window using `from` and `to` and paginate your exports in monthly or quarterly batches to keep file sizes manageable.
+</Callout>

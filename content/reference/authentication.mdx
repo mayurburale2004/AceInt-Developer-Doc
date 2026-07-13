@@ -1,0 +1,111 @@
+---
+title: "AceIntAPI Authentication, Scopes & Key Management"
+description: "Learn how to generate a AceIntAPI key, choose the right permission scopes, and follow security best practices for safe API key management."
+---
+
+Every request to the AceIntAPI must include a valid API key. Keys are long-lived secrets that you generate from the dashboard and pass as a Bearer token on each HTTP request. There are no session cookies, no OAuth redirects, and no token expiry by default — security comes from keeping your key secret and scoping it to only the permissions it needs.
+
+## Generating an API Key
+
+1. **Open API Keys settings** — log in to the AceIntdashboard, click your organisation avatar in the top-right corner, then navigate to **Settings → API Keys**.
+2. **Create a new key** — click **New API Key**. Give the key a descriptive name that identifies the integration it belongs to (for example, `ats-integration-prod` or `reporting-service`).
+3. **Select permission scopes** — choose one or more scopes for the key. Start with the least privilege your integration requires — you can always create a second key with broader scopes later. See the scopes table below.
+4. **Copy and store the key** — the key is shown **once** immediately after creation. Copy it into your password manager or secrets store right away. AceIntnever displays the full key again after you close this screen.
+
+## Permission Scopes
+
+Each API key is issued with one or more scopes that determine which operations it may perform. Requests that require a scope the key does not hold return `403 Forbidden`.
+
+| Scope | Access Level | Covered Endpoints |
+| --- | --- | --- |
+| `read` | Read-only | `GET` on all resource collections and individual resources — candidates, interviews, assessments, and results |
+| `write` | Create & modify | `POST` and `PATCH` on candidates, interviews, and assessments; sending interview invitations |
+| `admin` | Full control | All `DELETE` operations; all webhook management (`GET`, `POST`, `PATCH`, `DELETE`); exporting results; managing API keys via the API |
+
+<Callout title="Note">
+A key can hold multiple scopes. For example, a key with both `read` and `write` can list, create, and update resources but cannot delete them or export results.
+</Callout>
+
+## Authenticating a Request
+
+Pass your API key in the `Authorization` header using the `Bearer` scheme:
+
+```bash
+curl https://api.aceint.dev/v1/candidates \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Accept: application/json"
+```
+
+Replace `YOUR_API_KEY` with the actual key value. Do not include the word `Bearer` twice or wrap the key in quotes inside the header string.
+
+## Understanding 401 and 403 Errors
+
+Both `401` and `403` indicate an authentication or authorisation problem, but they mean different things:
+
+**401 Unauthorized** — the API key is missing, malformed, or does not correspond to any active key in AceInt. Check that:
+
+- The `Authorization` header is present on the request.
+- The header value starts with `Bearer ` (note the trailing space).
+- The key has not been deleted or deactivated in the dashboard.
+
+```json
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "No valid API key provided.",
+    "field": null
+  }
+}
+```
+
+**403 Forbidden** — the key is valid and recognised, but it does not have the scope required for the requested operation. Check that the key includes the necessary scope (see the table above).
+
+```json
+{
+  "error": {
+    "code": "forbidden",
+    "message": "This API key does not have the 'admin' scope required to delete resources.",
+    "field": null
+  }
+}
+```
+
+## Security Best Practices
+
+<Callout title="Tip">
+Follow these practices from day one. Retrofitting key hygiene after a leak is far more disruptive than getting it right upfront.
+</Callout>
+
+**Store keys in environment variables**
+
+Never hard-code an API key in source code or commit it to version control. Load it at runtime from an environment variable:
+
+```bash
+# Set once in your environment
+export ACEINT_API_KEY="your_key_here"
+```
+
+```python
+import os
+api_key = os.environ["ACEINT_API_KEY"]
+```
+
+**Issue one key per integration**
+
+Create a separate key for each service or environment (for example, `ci-pipeline`, `ats-production`, `data-warehouse`). This limits blast radius if a key is compromised — you revoke only that key without affecting other integrations.
+
+**Apply the principle of least privilege**
+
+Grant only the scopes the integration actually needs. A reporting service that only reads results should have the `read` scope only, not `write` or `admin`.
+
+**Rotate keys regularly**
+
+Schedule key rotation at least every 90 days, and immediately whenever a key may have been exposed. Rotation procedure:
+
+1. **Create a replacement key** — generate a new key with the same scopes as the one you are replacing.
+2. **Deploy the new key** — update the environment variable or secret in your deployment environment and redeploy or restart the service.
+3. **Verify and delete the old key** — confirm traffic is flowing correctly with the new key, then delete the old key from **Settings → API Keys**.
+
+**Audit key usage**
+
+Review the **API Keys** page periodically to check last-used timestamps. Remove any keys that are no longer active.

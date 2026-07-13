@@ -11,10 +11,10 @@ function NavLinks({ tab, onNavigate }: { tab: Tab; onNavigate?: () => void }) {
   const pathname = usePathname();
 
   return (
-    <nav className="space-y-6">
+    <nav className="space-y-7">
       {tab.groups.map((group) => (
         <div key={group.title}>
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-ink-500">
+          <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-ink-500">
             {group.title}
           </p>
           <ul className="space-y-0.5">
@@ -23,7 +23,7 @@ function NavLinks({ tab, onNavigate }: { tab: Tab; onNavigate?: () => void }) {
               const isActive = pathname === href;
               return (
                 <li key={item.slug}>
-                  <Link
+                <Link
                     href={href}
                     onClick={onNavigate}
                     className={clsx(
@@ -51,24 +51,35 @@ export function Sidebar({ tab }: { tab: Tab }) {
   return (
     <>
       {/* Desktop: fixed column */}
-      <aside className="hidden shrink-0 lg:block lg:w-[272px]">
-        <div className="sticky top-[113px] max-h-[calc(100vh-113px)] overflow-y-auto py-8 pr-6">
-          <NavLinks tab={tab} />
-        </div>
-      </aside>
+{/* <aside className="hidden lg:block lg:w-[272px] lg:border-r lg:border-ink-200">
+  <div className="sticky top-[113px] h-[calc(100vh-113px)] overflow-y-auto bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide">
+    <NavLinks tab={tab} />
+  </div>
 
+</aside> */}
+
+{/* <aside className="hidden lg:block">
+  <div className="fixed top-[113px] left-0 h-[calc(100vh-113px)] w-[272px] overflow-y-auto border-r border-ink-200 bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide">
+    <NavLinks tab={tab} />
+  </div>
+</aside> */}
+<aside className="hidden lg:block lg:w-[272px] shrink-0">
+  <div className="fixed top-[113px] h-[calc(100vh-113px)] w-[272px] overflow-y-auto border-r border-ink-200 bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide">
+    <NavLinks tab={tab} />
+  </div>
+</aside>
       {/* Mobile: overlay + slide-in drawer */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         >
-          <div
-            className="h-full w-[85vw] max-w-[320px] overflow-y-auto bg-white p-5 shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+         <div
+  className="no-scrollbar h-full w-[85vw] max-w-[320px] overflow-y-auto bg-white p-5 shadow-xl"
+  onClick={(e) => e.stopPropagation()}
+>
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-lg font-bold text-ink-900">Ribbon Docs</span>
+              <span className="text-lg font-bold text-ink-900">AceInt Docs</span>
               <button
                 onClick={() => setSidebarOpen(false)}
                 className="rounded-md p-2 text-ink-700 hover:bg-ink-100"

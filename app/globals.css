@@ -1,3 +1,15 @@
+/* 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: theme("colors.ink.900");
+  background-color: #ffffff;
+} */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -64,15 +76,78 @@ body {
   border-radius: 0.3rem;
 }
 .docs-prose pre {
-  background: theme("colors.ink.900");
-  color: #f4f4f5;
-  padding: 1rem 1.25rem;
+  position: relative;
+  background: #ffffff;
+  border: 1px solid theme("colors.ink.200");
+  padding: 1rem 2.75rem 1rem 1.25rem;
   border-radius: 0.5rem;
   overflow-x: auto;
   margin-bottom: 1.25rem;
+  font-size: 13.5px;
+  line-height: 1.7;
 }
 .docs-prose pre code {
   background: transparent;
   padding: 0;
-  color: inherit;
+  display: grid;
+}
+.docs-prose code:not(pre code) {
+  font-family: theme("fontFamily.mono");
+  font-size: 0.875em;
+  background: theme("colors.ink.100");
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.3rem;
+  color: theme("colors.ink.900");
+}
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+/* Remove underline from all links */
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+/* Hide scrollbar but keep scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.docs-prose ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+  color: theme("colors.ink.700");
+}
+.docs-prose ol > li {
+  margin-bottom: 1.5rem;
+  padding-left: 0.25rem;
+  line-height: 1.7;
+}
+.docs-prose ol > li::marker {
+  font-weight: 600;
+  color: theme("colors.ink.900");
+}
+.docs-prose ol > li strong {
+  color: theme("colors.ink.900");
 }
