@@ -1,0 +1,168 @@
+---
+title: "AceIntAPI Rate Limits, Headers & Backoff Strategies"
+description: "Understand AceInt's default request rate limits, read rate-limit response headers, and implement exponential backoff to handle 429 errors gracefully."
+---
+
+AceIntenforces rate limits on all API requests to maintain platform reliability and fair access across organisations. Understanding how limits work — and how to handle them gracefully — prevents disruptions in your integration when traffic spikes.
+
+## Default Limits
+
+| Limit Type | Value |
+| --- | --- |
+| Sustained rate | **100 requests per minute** |
+| Burst allowance | **200 requests** |
+| Scope | Per API key |
+
+The burst allowance lets you send up to 200 requests in a very short window before the sustained limit applies. After the burst is consumed, requests are metered at 100 per minute. Limits are applied per API key — separate keys have independent buckets.
+
+## Rate Limit Headers
+
+AceIntincludes three headers on every API response so your code can monitor its position relative to the current window without waiting for a `429` error.
+
+| Header | Type | Description |
+| --- | --- | --- |
+| `X-RateLimit-Limit` | integer | The maximum number of requests allowed in the current window (reflects the sustained limit). |
+| `X-RateLimit-Remaining` | integer | The number of requests you can still make in the current window. |
+| `X-RateLimit-Reset` | Unix timestamp | The UTC time at which the current window resets and `X-RateLimit-Remaining` returns to the limit. |
+
+Read these headers proactively to slow down before you hit the cap:
+
+```bash
+curl -i https://api.aceint.dev/v1/candidates \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Response headers (excerpt)
+# X-RateLimit-Limit: 100
+# X-RateLimit-Remaining: 73
+# X-RateLimit-Reset: 1718123460
+```
+
+## Handling 429 Too Many Requests
+
+When you exceed the rate limit, the API returns `429 Too Many Requests`. The response body follows the standard error envelope and the `X-RateLimit-Reset` header tells you exactly when the window resets:
+
+```json
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "You have exceeded the rate limit of 100 requests per minute.",
+    "field": null
+  }
+}
+```
+
+<Callout title="Warning">
+Do not retry a `429` response immediately. Retrying without a delay will continue to fail until the window resets and may trigger additional protective measures.
+</Callout>
+
+### Exponential Backoff with Jitter
+
+The recommended strategy is **exponential backoff with jitter**: wait for an exponentially increasing delay between retries and add a small random offset (jitter) to avoid thundering-herd problems when multiple clients retry simultaneously.
+
+<CodeTabs>
+  <CodeTab label="Python">
+
+```python
+import time
+import random
+import requests
+
+ACEINT_API_KEY = "YOUR_API_KEY"
+BASE_URL = "https://api.aceint.dev/v1"
+
+def request_with_backoff(method, path, max_retries=5, **kwargs):
+    url = f"{BASE_URL}{path}"
+    headers = {
+        "Authorization": f"Bearer {ACEINT_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    for attempt in range(max_retries):
+        response = requests.request(method, url, headers=headers, **kwargs)
+
+        if response.status_code != 429:
+            response.raise_for_status()
+            return response.json()
+
+        # Respect the reset header if present, otherwise use exponential backoff
+        reset_at = response.headers.get("X-RateLimit-Reset")
+        if reset_at:
+            wait = max(0, int(reset_at) - int(time.time()))
+        else:
+            wait = (2 ** attempt) + random.uniform(0, 1)
+
+        print(f"Rate limited. Retrying in {wait:.2f}s (attempt {attempt + 1}/{max_retries})")
+        time.sleep(wait)
+
+    raise RuntimeError("Max retries exceeded after rate limiting.")
+
+# Usage
+candidates = request_with_backoff("GET", "/candidates")
+print(candidates)
+```
+
+  </CodeTab>
+  <CodeTab label="Node.js">
+
+```javascript
+const ACEINT_API_KEY = process.env.aceint_API_KEY;
+const BASE_URL = "https://api.aceint.dev/v1";
+
+async function requestWithBackoff(method, path, body = null, maxRetries = 5) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const response = await fetch(`${BASE_URL}${path}`, {
+      method,
+      headers: {
+        Authorization: `Bearer ${ACEINT_API_KEY}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    if (response.status !== 429) {
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error.message);
+      }
+      return response.json();
+    }
+
+    // Use X-RateLimit-Reset if available, else exponential backoff
+    const resetAt = response.headers.get("X-RateLimit-Reset");
+    let waitMs;
+    if (resetAt) {
+      waitMs = Math.max(0, parseInt(resetAt, 10) * 1000 - Date.now());
+    } else {
+      waitMs = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
+    }
+
+    console.log(`Rate limited. Retrying in ${(waitMs / 1000).toFixed(2)}s (attempt ${attempt + 1}/${maxRetries})`);
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+
+  throw new Error("Max retries exceeded after rate limiting.");
+}
+
+// Usage
+requestWithBackoff("GET", "/candidates")
+  .then((data) => console.log(data))
+  .catch(console.error);
+```
+
+  </CodeTab>
+</CodeTabs>
+
+<Callout title="Tip">
+When `X-RateLimit-Reset` is present in the `429` response, wait until that exact timestamp rather than calculating a backoff — this is the most precise way to resume requests without unnecessary delay.
+</Callout>
+
+## Requesting Higher Limits
+
+If your integration consistently approaches the 100 req/min threshold, contact [support@aceint.ai](mailto:support@aceint.ai) to request a limit increase. Include:
+
+- Your organisation name and API key identifier (not the key secret).
+- The expected sustained and peak request rates.
+- A brief description of your use case.
+
+Limit increases are reviewed per organisation and granted based on usage patterns and plan tier.

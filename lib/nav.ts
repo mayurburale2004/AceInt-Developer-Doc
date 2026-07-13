@@ -39,7 +39,7 @@ export const tabs: Tab[] = [
       },
     ],
   },
-  {
+{
     title: "Build Agents",
     slug: "build-agents",
     groups: [
@@ -47,17 +47,30 @@ export const tabs: Tab[] = [
         title: "Get started",
         items: [
           { title: "Introduction", slug: "introduction" },
-          { title: "Voice AI quickstart", slug: "quickstart" },
-          { title: "Agent builder", slug: "agent-builder" },
+          { title: "Voice AI quickstart", slug: "voice-ai-quickstart" },
+          { title: "Agent Builder", slug: "agent-builder" },
+          { title: "Agent Console", slug: "agent-console" },
+          { title: "Agent Embed Widget", slug: "agent-embed-widget" },
           { title: "Prompting guide", slug: "prompting-guide" },
+        ],
+      },
+      {
+        title: "Multimodality",
+        items: [
+          { title: "Overview", slug: "multimodality-overview" },
+          { title: "Speech & audio", slug: "speech-audio" },
+          { title: "Text & transcriptions", slug: "text-transcriptions" },
+          { title: "Modality-aware instructions", slug: "modality-aware-instructions" },
+          { title: "Images & video", slug: "images-video" },
         ],
       },
       {
         title: "Logic & structure",
         items: [
-          { title: "Overview", slug: "overview" },
+          { title: "Overview", slug: "logic-overview" },
           { title: "Agent sessions", slug: "agent-sessions" },
           { title: "Chat context", slug: "chat-context" },
+          { title: "Tasks & task groups", slug: "tasks-task-groups" },
           { title: "Workflows", slug: "workflows" },
         ],
       },
@@ -158,16 +171,16 @@ export const tabs: Tab[] = [
         title: "Developer tools",
         items: [
           { title: "Overview", slug: "overview" },
-          { title: "CLI reference", slug: "cli-reference" },
+          { title: "Authentication", slug: "authentication" },
+           { title: "Rate limits", slug: "rate-limits" },
+            { title: "Candidates", slug: "candidates" },
+             { title: "Interviews", slug: "interviews" },
+              { title: "Assessments", slug: "assessments" },
+               { title: "Results", slug: "results" },
+                { title: "Webhooks", slug: "webhooks" },
         ],
       },
-      {
-        title: "SDKs",
-        items: [
-          { title: "JavaScript", slug: "javascript" },
-          { title: "Python", slug: "python" },
-        ],
-      },
+      
     ],
   },
 ];
@@ -188,4 +201,13 @@ export function findPage(tabSlug: string, pageSlug: string) {
 
 export function firstPageSlug(tab: Tab) {
   return tab.groups[0]?.items[0]?.slug ?? "overview";
+}
+export function getNextPage(tabSlug: string, pageSlug: string) {
+  const tab = findTab(tabSlug);
+  if (!tab) return undefined;
+  const flat = tab.groups.flatMap((g) => g.items);
+  const idx = flat.findIndex((i) => i.slug === pageSlug);
+  if (idx === -1 || idx === flat.length - 1) return undefined;
+  const next = flat[idx + 1];
+  return { title: next.title, href: `/${tab.slug}/${next.slug}` };
 }

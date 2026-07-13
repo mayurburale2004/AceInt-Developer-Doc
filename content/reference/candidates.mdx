@@ -1,0 +1,133 @@
+---
+title: "Candidates API — Create & Manage Candidate Profiles"
+description: "Create, retrieve, update, and delete candidate profiles via the AceIntCandidates API. Track status and attach custom metadata across your hiring pipeline."
+---
+
+The Candidates API is the foundation of the AceIntplatform. A candidate record stores identity information, links the candidate to a role, and tracks their status as they progress through interviews and assessments. Create a candidate first, then use their `id` to schedule interviews or assign assessments.
+
+All candidate endpoints require an API key with at least the `read` scope for retrieval operations and the `write` scope for creating or updating records. Deleting a candidate requires the `admin` scope.
+
+## List Candidates
+
+`GET /candidates`
+
+Returns a paginated list of all candidates in your organisation. Filter by role or status to narrow results.
+
+**Query parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `role_id` | string | Return only candidates associated with this role ID. Omit to return candidates across all roles. |
+| `status` | string | Filter by candidate status. Accepted values: `invited`, `in_progress`, `completed`, `rejected`, `hired`. |
+| `page` | integer | Page number for paginated results. Starts at `1`. Default `1`. |
+| `per_page` | integer | Number of results per page. Maximum `100`. Default `20`. |
+
+**Response**
+
+Returns `data` (array of candidate objects) and `meta` (`page`, `per_page`, `total`).
+
+```bash
+curl "https://api.aceint.dev/v1/candidates?status=invited&page=1&per_page=20" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Create a Candidate
+
+`POST /candidates`
+
+Creates a new candidate record. The `name` and `email` fields are required; all others are optional.
+
+**Body parameters**
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | string | Yes | Full name of the candidate. |
+| `email` | string | Yes | Email address of the candidate. Must be unique within the organisation. |
+| `role_id` | string | No | ID of the role the candidate is applying for. Associate this before scheduling an interview or assessment. |
+| `metadata` | object | No | Arbitrary key-value pairs for storing ATS IDs, source information, or any other custom data. Keys and values must be strings. |
+
+**Response**
+
+Returns the newly created candidate object with HTTP `201 Created`.
+
+```bash
+curl -X POST https://api.aceint.dev/v1/candidates \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Jordan Lee",
+    "email": "jordan@example.com",
+    "role_id": "role_09abc",
+    "metadata": {
+      "ats_id": "12345",
+      "source": "linkedin"
+    }
+  }'
+```
+
+## Retrieve a Candidate
+
+`GET /candidates/{id}`
+
+Returns a single candidate by their ID.
+
+| Path parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | The unique ID of the candidate. |
+
+```bash
+curl https://api.aceint.dev/v1/candidates/cand_01hx4z \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Update a Candidate
+
+`PATCH /candidates/{id}`
+
+Updates one or more fields on an existing candidate. Only the fields you include in the request body are modified; omitted fields remain unchanged.
+
+| Path parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | The unique ID of the candidate to update. |
+
+**Body parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `status` | string | New status for the candidate. Accepted values: `invited`, `in_progress`, `completed`, `rejected`, `hired`. |
+| `metadata` | object | Updated metadata object. This **replaces** the existing metadata entirely — include all keys you want to retain. |
+
+```bash
+curl -X PATCH https://api.aceint.dev/v1/candidates/cand_01hx4z \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "hired",
+    "metadata": {
+      "ats_id": "12345",
+      "source": "linkedin",
+      "offer_sent": "true"
+    }
+  }'
+```
+
+## Delete a Candidate
+
+`DELETE /candidates/{id}`
+
+Permanently deletes a candidate and all associated data, including interview and assessment records. This action is irreversible.
+
+<Callout title="Warning">
+Deleting a candidate removes all linked interviews, assessments, and results. Export any data you need to retain before calling this endpoint.
+</Callout>
+
+| Path parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | The unique ID of the candidate to delete. |
+
+Returns HTTP `200 OK` with an empty `data` object on success.
+
+```bash
+curl -X DELETE https://api.aceint.dev/v1/candidates/cand_01hx4z \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```

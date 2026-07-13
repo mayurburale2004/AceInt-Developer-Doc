@@ -1,0 +1,198 @@
+---
+title: "Voice AI quickstart"
+description: "Build a simple voice assistant with Python or Node.js in less than 10 minutes."
+---
+
+## Overview
+
+This guide gets a working voice agent running end to end: an agent process that listens,
+thinks, and speaks, connected to a Ribbon room you can talk to from your browser.
+
+### Coding agent support
+
+Ribbon is built to work well with coding agents like Claude Code, Cursor, and Codex. These
+agents can scaffold agents and frontends with the Ribbon SDKs and manage resources with the
+Ribbon CLI. Give your coding agent Ribbon expertise using the Ribbon CLI or Docs MCP server.
+
+## Starter projects
+
+The simplest way to get your first agent running is with one of the following starter
+projects. Create a project from a template with the CLI, or clone the repo directly and
+follow its README.
+
+<CardGrid>
+  <Card icon="github" title="Python starter project" description="Ready-to-go Python starter project. Clone a repo with all the code you need to get started." href="#" external />
+  <Card icon="github" title="Node.js starter project" description="Ready-to-go Node.js starter project. Clone a repo with all the code you need to get started." href="#" external />
+</CardGrid>
+
+These projects are built with best practices, a complete working agent, tests, and an
+`AGENTS.md` file optimized to turn coding agents into Ribbon experts.
+
+## Requirements
+
+<CodeTabs>
+  <CodeTab label="Python">
+
+- Ribbon Agents requires Python >= 3.10.
+- This guide uses the `uv` package manager.
+
+  </CodeTab>
+  <CodeTab label="Node.js">
+
+- Ribbon Agents requires Node.js >= 18.
+- This guide uses `pnpm` as the package manager.
+
+  </CodeTab>
+</CodeTabs>
+
+### Ribbon Cloud
+
+This guide assumes you've signed up for a free Ribbon Cloud account. Ribbon Cloud includes
+agent deployment, model inference, and realtime media transport. Create a free project and
+use the API keys in the following steps to get started.
+
+While this guide assumes Ribbon Cloud, the instructions can be adapted for self-hosting the
+open source Ribbon server instead. For self-hosting in production, set up a custom
+deployment environment and swap in plugins for your own AI providers.
+
+### Ribbon CLI
+
+Use the Ribbon CLI to manage API keys and deploy your agent to Ribbon Cloud.
+
+1. Install the Ribbon CLI:
+
+<CodeTabs>
+  <CodeTab label="macOS">
+
+```bash
+brew install ribbon/tap/ribbon-cli
+```
+
+  </CodeTab>
+  <CodeTab label="Linux">
+
+```bash
+curl -sSL https://ribbon.dev/install-cli | bash
+```
+
+  </CodeTab>
+  <CodeTab label="From source">
+
+This repo uses Git LFS for embedded video resources. Please ensure `git-lfs` is installed
+on your machine before proceeding.
+
+```bash
+git clone github.com/ribbon/ribbon-cli
+make install
+```
+
+  </CodeTab>
+</CodeTabs>
+
+2. Link your Ribbon Cloud project to the CLI:
+
+```bash
+rb cloud auth
+```
+
+This opens a browser window to authenticate and link your project to the CLI.
+
+## Quickstart steps
+
+The following sections walk you through the steps to get your first agent running.
+
+### Setup with CLI
+
+The simplest way to get your first agent running is with the Ribbon CLI. Make sure your
+project meets all requirements, then run:
+
+<CodeTabs>
+  <CodeTab label="Python">
+
+```bash
+rb agent init my-agent --template agent-starter-python
+```
+
+  </CodeTab>
+  <CodeTab label="Node.js">
+
+```bash
+rb agent init my-agent --template agent-starter-node
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The CLI clones the template into the `my-agent` directory, creates a `.env.local` file with
+your Ribbon credentials, and prints the next steps to run your agent.
+
+<Callout title="Save the chat link">
+Open the link the CLI prints after the line "To try your new agent in the web console,
+visit:" — you'll use it to speak to your agent in the next step.
+</Callout>
+
+Follow the instructions it prints, which guide you through the following steps:
+
+1. **Select a project to use** — if you don't have a default project set, the CLI prompts
+   you to select one.
+2. **Change into the project directory** — the project directory is named after your agent.
+
+```bash
+   cd my-agent
+```
+
+3. **Install dependencies** — install the agent's runtime and plugin dependencies if they
+   weren't already installed during template setup.
+
+<CodeTabs>
+  <CodeTab label="Python">
+
+```bash
+uv sync
+```
+
+  </CodeTab>
+  <CodeTab label="Node.js">
+
+```bash
+pnpm install
+```
+
+  </CodeTab>
+</CodeTabs>
+
+4. **Run your agent** — run your agent in development mode.
+
+```bash
+rb agent dev
+```
+
+### Speak to your agent
+
+Open the chat link you saved earlier. You should see your agent join the room and respond
+to voice in realtime — try asking it a question out loud.
+
+## Other options
+
+### AI models
+
+This quickstart uses a default set of STT, LLM, and TTS providers. Swap in your own by
+editing the plugin configuration in the agent's entrypoint file — any provider supported by
+Ribbon Inference or a community plugin will work.
+
+### Test and deploy
+
+Once your agent behaves the way you want locally, deploy it to Ribbon Cloud or a custom
+environment. See Deploy → Deployment management for the full walkthrough.
+
+## Agent code
+
+The starter template's entrypoint wires together a session, a set of plugins, and a system
+prompt. Everything else — connecting to the room, handling turns, publishing audio — is
+handled by the framework.
+
+## Next steps
+
+- Read the prompting guide to shape how your agent behaves.
+- Explore recipes for more complete example agents.
+- Follow the deployment guide when you're ready to ship to production.

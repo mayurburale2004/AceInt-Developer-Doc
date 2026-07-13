@@ -1,27 +1,121 @@
 ---
-title: "API Reference overview"
-description: "Overview guidance for api reference in Ribbon."
+title: "AceInt REST API Reference: Endpoints and Quick Start"
+description: "Everything you need to start integrating with the AceInt REST API — base URL, authentication, response structure, error handling, and endpoint index."
 ---
 
-Overview guidance for api reference in Ribbon.
+The AceInt API is a RESTful HTTP API that lets you programmatically manage candidates, run AI-powered interviews and assessments, retrieve results, and configure webhooks. Every response body is JSON, and all write operations accept a JSON request body.
 
-## Overview
+## Base URL
 
-This page covers **api reference overview** as part of the API Reference section. Replace this
-placeholder copy with real product documentation — the surrounding shell (header, sidebar,
-table of contents, and page toolbar) will keep working exactly the same.
-
-## Key concepts
-
-- Understand how overview fits into api reference.
-- Every heading on this page automatically shows up in the **On this page** panel on the right.
-- Sidebar entries, active states, and scroll-spy all key off the heading IDs generated at build time.
-
-## Getting started
+All API requests target a single versioned base URL:
 
 ```bash
-npm install
-npm run dev
+https://api.aceint.dev/v1
 ```
 
-Open the dev server and navigate to this page from the sidebar to see it live.
+Include this prefix before every path shown in the endpoint pages. There is no trailing slash.
+
+## Authentication
+
+Authenticate each request by passing your secret API key in the `Authorization` header:
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+Generate and manage keys from **Settings → API Keys** in the AceIntdashboard. Each key carries one or more permission scopes that control which endpoints it can reach. See the [Authentication](/reference/authentication) page for the full setup walkthrough, scopes reference, and security best practices.
+
+## Content Type
+
+Set `Content-Type: application/json` on every request that includes a body (`POST`, `PATCH`). Requests that send data without this header return a `400` error.
+
+## Versioning
+
+The current stable version is **v1**, encoded directly in the base URL. When breaking changes are introduced, a new version path is released and the previous version is deprecated with at least 90 days notice. Non-breaking additions — new optional fields, new endpoints — are made to the current version without a version bump.
+
+## Quick Start
+
+The following `curl` command retrieves your first page of candidates and confirms your key is working:
+
+```bash
+curl https://api.aceint.dev/v1/candidates \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Accept: application/json"
+```
+
+A successful response returns HTTP `200` with a JSON body like the one described in the next section.
+
+## Response Envelope
+
+Every successful response wraps its payload in a `data` key. Collection endpoints add a `meta` object with pagination information.
+
+**Single resource**
+
+```json
+{
+  "data": {
+    "id": "cand_01hx4z",
+    "name": "Jordan Lee",
+    "email": "jordan@example.com"
+  }
+}
+```
+
+**Collection**
+
+```json
+{
+  "data": [
+    { "id": "cand_01hx4z", "name": "Jordan Lee" },
+    { "id": "cand_01hx50", "name": "Sam Rivera" }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 20,
+    "total": 150
+  }
+}
+```
+
+Use `meta.page`, `meta.per_page`, and `meta.total` to implement pagination across all list endpoints.
+
+## Error Format
+
+When a request fails, AceIntreturns a descriptive error object instead of a `data` payload:
+
+```json
+{
+  "error": {
+    "code": "validation_error",
+    "message": "The email field must be a valid email address.",
+    "field": "email"
+  }
+}
+```
+
+`code` is a machine-readable string you can switch on in your error-handling logic. `message` is a human-readable explanation. `field` is included when the error is tied to a specific request parameter.
+
+## HTTP Status Codes
+
+| Status | Meaning |
+| --- | --- |
+| `200 OK` | Request succeeded. Response body contains the requested data. |
+| `201 Created` | Resource created successfully. Response body contains the new resource. |
+| `400 Bad Request` | Invalid request syntax, missing required field, or failed validation. |
+| `401 Unauthorized` | Missing or invalid API key. |
+| `403 Forbidden` | API key is valid but lacks the required scope for this operation. |
+| `404 Not Found` | The requested resource does not exist. |
+| `429 Too Many Requests` | Rate limit exceeded. Back off and retry. See [Rate Limits](/reference/rate-limits). |
+| `500 Internal Server Error` | Unexpected server-side error. Retry with exponential backoff. |
+
+## Endpoint Index
+
+<CardGrid cols={2}>
+  <Card icon="user" title="Candidates" description="Create and manage candidate profiles, update statuses, and store custom metadata." href="/reference/candidates" />
+  <Card icon="video" title="Interviews" description="Schedule AI-driven interviews, send invitations, and retrieve transcripts and scores." href="/reference/interviews" />
+  <Card icon="clipboard-check" title="Assessments" description="Deliver coding, MCQ, and mixed assessments and retrieve anti-cheat logs alongside scores." href="/reference/assessments" />
+  <Card icon="chart-bar" title="Results" description="Query and export aggregated results across interviews and assessments." href="/reference/results" />
+  <Card icon="webhook" title="Webhooks" description="Register endpoints to receive real-time event notifications when hiring events occur." href="/reference/webhooks" />
+  <Card icon="key" title="Authentication" description="Generate API keys, understand permission scopes, and follow security best practices." href="/reference/authentication" />
+  <Card icon="gauge" title="Rate Limits" description="Understand request limits, read rate-limit headers, and implement graceful backoff." href="/reference/rate-limits" />
+</CardGrid>

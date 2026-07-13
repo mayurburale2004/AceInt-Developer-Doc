@@ -1,0 +1,120 @@
+---
+title: "Interviews API — Schedule & Retrieve AI Interviews"
+description: "Schedule AI-powered interviews, send candidate invitations, and retrieve transcripts, scores, and recordings via the AceIntInterviews API."
+---
+
+The Interviews API lets you orchestrate the full AI interview lifecycle: create an interview session, invite the candidate, and retrieve a rich results object that includes a transcript, dimension scores, and a recording URL. Interviews are always linked to both a candidate and a role.
+
+Retrieval endpoints require the `read` scope. Creating interviews and sending invitations require `write`. Deleting an interview requires `admin`.
+
+## List Interviews
+
+`GET /interviews`
+
+Returns a paginated list of interview sessions. Filter by candidate, role, or status to narrow results.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `candidate_id` | string | Return only interviews for this candidate. |
+| `role_id` | string | Return only interviews associated with this role. |
+| `status` | string | Filter by interview status. Accepted values: `scheduled`, `invited`, `in_progress`, `completed`, `expired`. |
+| `page` | integer | Page number. Starts at `1`. Default `1`. |
+| `per_page` | integer | Number of results per page. Maximum `100`. Default `20`. |
+
+```bash
+curl "https://api.aceint.dev/v1/interviews?candidate_id=cand_01hx4z&status=completed" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Create an Interview
+
+`POST /interviews`
+
+Creates a new interview session. The session is created in `scheduled` status. Send an invitation separately using the invite endpoint.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `candidate_id` | string | Yes | ID of the candidate who will take this interview. |
+| `role_id` | string | Yes | ID of the role this interview is evaluating the candidate for. |
+| `type` | string | Yes | Interview type. Accepted values: `behavioral`, `technical`, `mixed`. |
+| `question_bank_id` | string | No | ID of a custom question bank to draw questions from. If omitted, AceIntselects questions automatically based on the role. |
+
+```bash
+curl -X POST https://api.aceint.dev/v1/interviews \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "candidate_id": "cand_01hx4z",
+    "role_id": "role_09abc",
+    "type": "behavioral",
+    "question_bank_id": "qb_07xyz"
+  }'
+```
+
+## Retrieve an Interview
+
+`GET /interviews/{id}`
+
+Returns a single interview session by ID.
+
+```bash
+curl https://api.aceint.dev/v1/interviews/intv_05def \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Send an Interview Invitation
+
+`POST /interviews/{id}/invite`
+
+Sends an invitation to the candidate linked to this interview. The interview status transitions from `scheduled` to `invited`.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `method` | string | Yes | Delivery method. `email` sends an invitation email directly to the candidate. `link` returns a one-time invitation URL you can embed in your own communications. |
+
+**Response** includes `invite_url` — the candidate-facing interview URL, present for both `email` and `link` methods.
+
+```bash
+curl -X POST https://api.aceint.dev/v1/interviews/intv_05def/invite \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "method": "email" }'
+```
+
+## Get Interview Results
+
+`GET /interviews/{id}/results`
+
+Returns the full results for a completed interview, including the question-by-question transcript, dimension scores, an overall score, and a link to the session recording.
+
+<Callout title="Note">
+This endpoint returns `404` if the interview has not yet reached `completed` status. Poll the interview status endpoint or use a webhook on the `interview.completed` event to know when results are ready.
+</Callout>
+
+Response fields include:
+
+- **scores** — dimension-level scores.
+- **transcript** — ordered list of question-and-answer pairs from the interview session.
+- **recording_url** — pre-signed URL to the interview video recording. Expires after 24 hours — fetch and store the recording before the URL expires if long-term access is needed.
+
+```bash
+curl https://api.aceint.dev/v1/interviews/intv_05def/results \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Delete an Interview
+
+`DELETE /interviews/{id}`
+
+Permanently deletes an interview session and all associated results and recordings.
+
+<Callout title="Warning">
+This action cannot be undone. Ensure you have exported or stored any results and recordings you need before deleting.
+</Callout>
+
+Returns HTTP `200 OK` with an empty `data` object on success.
+
+```bash
+curl -X DELETE https://api.aceint.dev/v1/interviews/intv_05def \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
