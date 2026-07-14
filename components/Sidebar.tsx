@@ -14,7 +14,7 @@ function NavLinks({ tab, onNavigate }: { tab: Tab; onNavigate?: () => void }) {
     <nav className="space-y-7">
       {tab.groups.map((group) => (
         <div key={group.title}>
-          <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-ink-500">
+          <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-ink-500 dark:text-gray-400">
             {group.title}
           </p>
           <ul className="space-y-0.5">
@@ -23,14 +23,14 @@ function NavLinks({ tab, onNavigate }: { tab: Tab; onNavigate?: () => void }) {
               const isActive = pathname === href;
               return (
                 <li key={item.slug}>
-                <Link
+                  <Link
                     href={href}
                     onClick={onNavigate}
                     className={clsx(
                       "block border-l-2 py-1.5 pl-3 text-[14px] transition-colors",
                       isActive
-                        ? "border-accent font-medium text-accent"
-                        : "border-transparent text-ink-700 hover:border-ink-300 hover:text-ink-900"
+                        ? "border-accent font-medium text-accent dark:border-indigo-400 dark:text-indigo-400"
+                        : "border-transparent text-ink-700 hover:border-ink-300 hover:text-ink-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-100"
                     )}
                   >
                     {item.title}
@@ -50,39 +50,30 @@ export function Sidebar({ tab }: { tab: Tab }) {
 
   return (
     <>
-      {/* Desktop: fixed column */}
-{/* <aside className="hidden lg:block lg:w-[272px] lg:border-r lg:border-ink-200">
-  <div className="sticky top-[113px] h-[calc(100vh-113px)] overflow-y-auto bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide">
-    <NavLinks tab={tab} />
-  </div>
+      {/* Desktop: sticky column */}
+      <aside className="hidden lg:block lg:w-[272px] shrink-0">
+        <div className="sticky top-[113px] max-h-[calc(100vh-113px)] overflow-y-auto border-r border-ink-200 bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide dark:border-gray-800 dark:bg-gray-950/90">
+          <NavLinks tab={tab} />
+        </div>
+      </aside>
 
-</aside> */}
-
-{/* <aside className="hidden lg:block">
-  <div className="fixed top-[113px] left-0 h-[calc(100vh-113px)] w-[272px] overflow-y-auto border-r border-ink-200 bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide">
-    <NavLinks tab={tab} />
-  </div>
-</aside> */}
-<aside className="hidden lg:block lg:w-[272px] shrink-0">
-  <div className="fixed top-[113px] h-[calc(100vh-113px)] w-[272px] overflow-y-auto border-r border-ink-200 bg-white/90 backdrop-blur-md px-6 py-8 scrollbar-hide">
-    <NavLinks tab={tab} />
-  </div>
-</aside>
       {/* Mobile: overlay + slide-in drawer */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         >
-         <div
-  className="no-scrollbar h-full w-[85vw] max-w-[320px] overflow-y-auto bg-white p-5 shadow-xl"
-  onClick={(e) => e.stopPropagation()}
->
+          <div
+            className="no-scrollbar h-full w-[85vw] max-w-[320px] overflow-y-auto bg-white p-5 shadow-xl dark:bg-gray-950"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-lg font-bold text-ink-900">AceInt Docs</span>
+              <span className="text-lg font-bold text-ink-900 dark:text-gray-100">
+                AceInt Docs
+              </span>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="rounded-md p-2 text-ink-700 hover:bg-ink-100"
+                className="rounded-md p-2 text-ink-700 hover:bg-ink-100 dark:text-gray-300 dark:hover:bg-gray-800"
                 aria-label="Close menu"
               >
                 <X size={20} />
@@ -94,11 +85,11 @@ export function Sidebar({ tab }: { tab: Tab }) {
                 setSidebarOpen(false);
                 setSearchOpen(true);
               }}
-              className="mb-6 flex w-full items-center gap-2 rounded-lg border border-ink-200 bg-ink-100/60 px-3 py-2 text-sm text-ink-500"
+              className="mb-6 flex w-full items-center gap-2 rounded-lg border border-ink-200 bg-ink-100/60 px-3 py-2 text-sm text-ink-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400"
             >
               <Search size={16} />
               <span className="flex-1 text-left">Search...</span>
-              <kbd className="rounded border border-ink-300 bg-white px-1.5 py-0.5 text-[11px] font-medium text-ink-500">
+              <kbd className="rounded border border-ink-300 bg-white px-1.5 py-0.5 text-[11px] font-medium text-ink-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
                 /
               </kbd>
             </button>

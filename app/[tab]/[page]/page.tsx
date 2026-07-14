@@ -297,11 +297,19 @@ export default async function DocsPage({
 
   return (
     <DocsShell tab={tab} headings={headings}>
+<<<<<<< Updated upstream
       <h1 className="mb-2 text-2xl font-bold tracking-tight text-ink-900 sm:text-2xl">
         {frontmatter.title ?? found.item.title}
       </h1>
       {frontmatter.description && (
         <p className="mb-6 text-base text-ink-500">{frontmatter.description}</p>
+=======
+      <h1 className="mb-2 text-4xl font-bold tracking-tight text-ink-900 dark:text-gray-100">
+        {frontmatter.title ?? found.item.title}
+      </h1>
+      {frontmatter.description && (
+        <p className="mb-6 text-lg text-ink-500 dark:text-gray-400">{frontmatter.description}</p>
+>>>>>>> Stashed changes
       )}
 
       <PageToolbar raw={raw} />
