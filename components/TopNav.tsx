@@ -15,12 +15,14 @@ export function TopNav() {
     pathname.startsWith(`/${t.slug}`)
   );
 
+  // Always resolve the logo link dynamically instead of hardcoding a slug
+  // that may not exist in lib/nav.ts (this was causing the 404 flash)
+  const logoHref = `/${tabs[0].slug}/${firstPageSlug(tabs[0])}`;
+
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur dark:border-gray-800 dark:bg-gray-950/95">
       {/* Row 1: Logo, Search, Actions */}
-      {/* <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-3 px-4 sm:px-6"> */}
       <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-3 pl-8 pr-4 sm:pl-10 sm:pr-6 lg:pl-12">
-        {/* <div className="flex items-center gap-3"> */}
         <div className="flex items-center gap-3 pl-4 sm:pl-6 lg:pl-8">
           <button
             className="-ml-1 rounded-md p-2 text-ink-700 hover:bg-ink-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
@@ -30,7 +32,7 @@ export function TopNav() {
             <Menu size={20} />
           </button>
 
-          <Link href="/introduction/overview" className="flex items-center gap-2 shrink-0">
+          <Link href={logoHref} className="flex items-center gap-2 shrink-0">
             <img src="/assets/AceInt.ico" alt="AceInt" width={24} height={24} />
             <span className="text-xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
               AceInt
@@ -89,11 +91,7 @@ export function TopNav() {
       </div>
 
       {/* Row 2: Navigation Tabs */}
-<<<<<<< Updated upstream
-      <nav className="no-scrollbar flex gap-6 overflow-x-auto border-t border-ink-100 px-6 sm:px-6">
-=======
       <nav className="no-scrollbar flex gap-6 overflow-x-auto border-t border-ink-100 px-4 sm:px-6 dark:border-gray-800">
->>>>>>> Stashed changes
         {tabs.map((tab) => {
           const isActive = tab.slug === activeTab?.slug;
 
