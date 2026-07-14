@@ -18,8 +18,10 @@ export function TopNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur">
       {/* Row 1: Logo, Search, Actions */}
-      <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-3 px-4 sm:px-6">
-        <div className="flex items-center gap-3">
+      {/* <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-3 px-4 sm:px-6"> */}
+      <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-3 pl-8 pr-4 sm:pl-10 sm:pr-6 lg:pl-12">
+        {/* <div className="flex items-center gap-3"> */}
+        <div className="flex items-center gap-3 pl-4 sm:pl-6 lg:pl-8">
           <button
             className="-ml-1 rounded-md p-2 text-ink-700 hover:bg-ink-100 lg:hidden"
             aria-label="Open menu"
@@ -96,7 +98,7 @@ export function TopNav() {
       </div>
 
       {/* Row 2: Navigation Tabs */}
-      <nav className="no-scrollbar flex gap-6 overflow-x-auto border-t border-ink-100 px-4 sm:px-6">
+      <nav className="no-scrollbar flex gap-6 overflow-x-auto border-t border-ink-100 px-6 sm:px-6">
         {tabs.map((tab) => {
           const isActive = tab.slug === activeTab?.slug;
 

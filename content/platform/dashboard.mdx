@@ -1,0 +1,88 @@
+---
+title: "Navigating the AceInt Dashboard"
+description: "Understand the AceInt dashboard layout — pipeline metrics, active sessions, recent results, team notifications, and quick-action shortcuts."
+---
+
+The AceInt dashboard is your central command center for the hiring pipeline. Every time you log in, the dashboard gives you an at-a-glance view of where candidates stand, which interviews are currently live, and which results are waiting for review. From here you can also kick off the most common tasks without navigating away.
+
+## Top-level metrics
+
+The four metric cards across the top of the dashboard show a real-time snapshot of your hiring activity.
+
+| Metric | What it shows |
+| --- | --- |
+| **Active Jobs** | Number of job roles currently in the open state |
+| **Total Candidates** | All candidates across every role, regardless of status |
+| **Interviews This Week** | Sessions that started or completed in the current calendar week |
+| **Pass Rate** | Percentage of completed sessions where the candidate scored at or above your configured passing threshold |
+
+<Callout title="Tip">
+Click any metric card to open a filtered view of the underlying records. For example, clicking **Interviews This Week** opens the Sessions list pre-filtered to the current week.
+</Callout>
+
+## Pipeline overview panel
+
+Below the metric cards, the pipeline overview panel shows a status-lane breakdown of all your candidates. Each lane corresponds to a pipeline status — **Invited**, **In Progress**, **Completed**, **Reviewed**, **Hired**, and **Rejected** — and displays a count and a scrollable list of the most recent candidates in that state.
+
+Click a candidate's name in any lane to open their full profile. Drag a candidate card between lanes to manually update their status, or use the status dropdown on the candidate profile for bulk moves.
+
+## Active sessions feed
+
+The active sessions feed sits on the right side of the dashboard and lists every interview session currently in the **Live** state. Each entry shows:
+
+- **Candidate name** and **role title**
+- **Session start time**
+- **Elapsed duration**
+
+Sessions move off this feed automatically when they reach **Completed** or **Failed** status. Click any entry to open the live session monitor, where you can observe session progress in real time.
+
+<Callout title="Note">
+You cannot intervene in or modify a live session. The active sessions feed is read-only and refreshes automatically.
+</Callout>
+
+## Recent results
+
+The recent results panel lists the ten most recently completed sessions and assessments, sorted by completion time. Each row shows the candidate name, role, overall score, and a link to the full report. Use this panel to quickly reach new results without opening the Candidates or Interviews pages.
+
+## Team notifications
+
+The notification bell in the top-right corner of the dashboard shows alerts for events that require your attention, including:
+
+- Sessions that completed and are awaiting review
+- Assessments flagged with anti-cheat violations
+- Candidates whose invite links are about to expire
+- ATS sync errors that need manual resolution
+
+Click the bell to open the notification drawer. Dismiss individual notifications or mark all as read in bulk.
+
+## Quick actions
+
+The Quick Actions panel provides one-click shortcuts to the three most common tasks in AceInt.
+
+<CardGrid cols={3}>
+  <Card icon="plus" title="Create Job Role" description="Open the new job role form with role title, department, and interview type fields pre-focused." href="/platform/job-roles" />
+  <Card icon="user-plus" title="Invite Candidate" description="Jump directly to the invite link generator. Select an existing role to scope the link, then choose single-use or multi-use." href="/platform/candidates" />
+  <Card icon="chart-bar" title="View Reports" description="Open the Reports page to access pipeline overview, role performance, score distribution, and time-to-hire analytics." href="/platform/reports" />
+</CardGrid>
+
+## Navigating the sidebar
+
+The left sidebar provides access to every major section of the platform.
+
+| Sidebar item | Description |
+| --- | --- |
+| **Dashboard** | This page — metrics, pipeline overview, active sessions |
+| **Job Roles** | Create and manage roles, question banks, and rubrics |
+| **Candidates** | Full candidate list with filtering and bulk actions |
+| **Interviews** | All interview sessions with transcript and score access |
+| **Assessments** | Coding and MCQ assessment submissions and grades |
+| **Reports** | Aggregate analytics and exportable reports |
+| **Integrations** | ATS connectors, webhooks, and API key management |
+| **Settings** | Organization settings, team members, and billing |
+
+<CardGrid cols={2}>
+  <Card icon="briefcase" title="Job Roles" description="Learn how to create and configure job roles" href="/platform/job-roles" />
+  <Card icon="users" title="Candidates" description="Manage your candidate pipeline and profiles" href="/platform/candidates" />
+  <Card icon="microphone" title="Interviews" description="Monitor sessions and access transcripts and scores" href="/platform/interviews" />
+  <Card icon="chart-bar" title="Reports" description="Explore hiring analytics and export data" href="/platform/reports" />
+</CardGrid>

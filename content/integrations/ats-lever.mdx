@@ -1,0 +1,55 @@
+---
+title: "Connect Lever to AceInt Using API Key Authentication"
+description: "Integrate AceInt with Lever using an API key to sync candidates automatically and return interview and assessment results as Lever feedback forms."
+---
+
+The Lever integration connects AceInt to your Lever account using a Lever API key. Once connected, AceInt monitors your Lever pipeline for candidates who reach a configured stage, imports them automatically, and pushes structured results back to Lever as feedback forms after each interview or assessment.
+
+## What you need before you start
+
+- A Lever account with **Super Admin** access (required to generate API keys)
+- An AceInt account with ATS integration access enabled
+
+## Connect Lever to AceInt
+
+1. **Generate a Lever API key** — log in to Lever and navigate to **Settings → Integrations & API → API Credentials**. Click **Generate New Key**, give it a descriptive name such as _AceInt Integration_, and set the access level to **Read/Write**. Copy the key — it is only shown once.
+
+   <Callout title="Note">
+   Lever API key generation requires Super Admin access. If you do not have that role, ask your Lever administrator to generate the key on your behalf and share it with you securely.
+   </Callout>
+
+2. **Open Integrations settings in AceInt** — in your AceInt dashboard, go to **Settings → Integrations → Lever**.
+3. **Paste your API key** — paste the Lever API key into the **API Key** field and click **Verify Key**. AceInt confirms the key is valid and that it has the necessary read/write access.
+4. **Configure sync rules** — set up the rules that determine when AceInt should import a candidate:
+
+   - **Trigger stage:** Select the Lever pipeline stage that should cause AceInt to create an interview or assessment for the candidate — for example, _Phone Screen_ or _Take-Home Assignment_.
+   - **Interview template:** Choose the AceInt interview template to assign when a candidate is imported from Lever.
+
+5. **Map pipeline stages** — under **Stage Mapping**, link each relevant Lever pipeline stage to the corresponding AceInt workflow step. This mapping controls both the import trigger and the stage AceInt advances the candidate to in Lever after results are submitted.
+6. **Test the connection** — click **Test Connection**. AceInt performs a read request against the Lever API to validate connectivity and permissions. A green status indicator confirms the integration is ready.
+7. **Enable the integration** — toggle the integration to **Active**. Candidates who enter a configured pipeline stage in Lever are now synced to AceInt automatically.
+
+## How results are returned
+
+When a candidate completes an interview or assessment in AceInt, the results are written back to the corresponding Lever opportunity as a **feedback form**. The form includes the overall score, per-question detail, and any notes generated during the assessment. You can view submitted feedback on the candidate's opportunity profile in Lever under the **Feedback** tab.
+
+<Callout title="Tip">
+Use Lever's **Feedback Templates** feature to pre-define the fields AceInt should populate, ensuring results appear consistently across all candidates.
+</Callout>
+
+## Candidate matching
+
+AceInt matches candidates by **email address**. When Lever sends a candidate to AceInt, the platform checks whether a record with that email already exists. If it does, the existing record is updated. If not, a new candidate is created. Keep email addresses accurate and up to date in Lever to prevent duplicate records.
+
+## Revoking and replacing the API key
+
+If you need to rotate the Lever API key:
+
+1. Generate a new key in **Lever → Settings → Integrations & API → API Credentials**.
+2. In AceInt, go to **Settings → Integrations → Lever** and click **Edit**.
+3. Paste the new key and click **Save**.
+4. Revoke the old key in Lever once the new one is confirmed working.
+
+<Callout title="Warning">
+Revoking the active Lever API key without replacing it in AceInt immediately stops all candidate syncing and result delivery.
+</Callout>

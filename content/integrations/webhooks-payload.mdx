@@ -1,0 +1,124 @@
+---
+title: "AceInt Webhook Payload: Structure and Field Reference"
+description: "Understand the common fields in every AceInt webhook payload and explore full JSON examples for interview.completed and assessment.scored events."
+---
+
+Every webhook AceInt sends is an HTTP POST request with a `Content-Type: application/json` header and a JSON body. The top-level structure is consistent across all events — the `data` object varies depending on the event type.
+
+## Common fields
+
+All webhook payloads share the following top-level fields:
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `event` | string | Yes | The event type that triggered this delivery. One of: `candidate.created`, `candidate.updated`, `interview.started`, `interview.completed`, `assessment.submitted`, `assessment.scored`. |
+| `id` | string | Yes | A unique identifier for this specific delivery. Use this field to deduplicate events — if your endpoint receives the same `id` more than once due to retries, process it only once. |
+| `timestamp` | string | Yes | ISO 8601 timestamp indicating when the event occurred, in UTC. Example: `2024-06-15T14:23:47Z`. |
+| `data` | object | Yes | An object containing event-specific details. The shape of this object differs by event type. See the examples below. |
+
+## `interview.completed` payload
+
+Fired when a candidate submits and closes an interview session.
+
+```json
+{
+  "event": "interview.completed",
+  "id": "evt_7kXp2mNqR4vLsT9wB1cY",
+  "timestamp": "2024-06-15T14:23:47Z",
+  "data": {
+    "interview_id": "int_3fGhJkLmNoPqRsTu",
+    "candidate_id": "cand_9aZxCvBnMqWeLpRt",
+    "candidate_email": "taylor.rivera@example.com",
+    "template_id": "tmpl_backend_eng_v2",
+    "template_name": "Backend Engineer — Technical Screen",
+    "status": "completed",
+    "started_at": "2024-06-15T14:05:12Z",
+    "completed_at": "2024-06-15T14:23:47Z",
+    "duration_seconds": 1115,
+    "overall_score": null,
+    "scoring_status": "pending"
+  }
+}
+```
+
+<Callout title="Note">
+`overall_score` is `null` on `interview.completed` because scoring has not yet finished. Subscribe to `assessment.scored` to receive the final score.
+</Callout>
+
+**`data` fields for `interview.completed`:**
+
+- `data.interview_id` (string) — unique identifier for this interview session.
+- `data.candidate_id` (string) — unique identifier for the candidate in AceInt.
+- `data.candidate_email` (string) — the email address of the candidate. Use this to correlate with records in your ATS.
+- `data.template_id` (string) — the AceInt interview template used for this session.
+- `data.template_name` (string) — human-readable name of the interview template.
+- `data.status` (string) — current status of the interview. Value is `completed` for this event.
+- `data.started_at` (string) — ISO 8601 timestamp for when the candidate started the interview.
+- `data.completed_at` (string) — ISO 8601 timestamp for when the candidate submitted the interview.
+- `data.duration_seconds` (integer) — total time the candidate spent in the interview session, in seconds.
+- `data.overall_score` (number | null) — the final numeric score. `null` if scoring is not yet complete.
+- `data.scoring_status` (string) — scoring pipeline state. One of: `pending`, `in_progress`, `completed`, `failed`.
+
+## `assessment.scored` payload
+
+Fired when AceInt finishes scoring a submitted assessment. This payload includes the final score and a per-section breakdown.
+
+```json
+{
+  "event": "assessment.scored",
+  "id": "evt_2pQrStUvWxYzAbCdEf",
+  "timestamp": "2024-06-15T14:31:02Z",
+  "data": {
+    "assessment_id": "asmt_6hIjKlMnOpQrStUv",
+    "interview_id": "int_3fGhJkLmNoPqRsTu",
+    "candidate_id": "cand_9aZxCvBnMqWeLpRt",
+    "candidate_email": "taylor.rivera@example.com",
+    "overall_score": 82,
+    "max_score": 100,
+    "percentile": 74,
+    "scoring_status": "completed",
+    "scored_at": "2024-06-15T14:31:02Z",
+    "sections": [
+      {
+        "section_id": "sec_AlgorithmsCore",
+        "section_name": "Algorithms & Data Structures",
+        "score": 35,
+        "max_score": 40,
+        "question_count": 5
+      },
+      {
+        "section_id": "sec_SystemDesign",
+        "section_name": "System Design",
+        "score": 28,
+        "max_score": 35,
+        "question_count": 3
+      },
+      {
+        "section_id": "sec_BehavioralFit",
+        "section_name": "Behavioral Fit",
+        "score": 19,
+        "max_score": 25,
+        "question_count": 4
+      }
+    ]
+  }
+}
+```
+
+**`data` fields for `assessment.scored`:**
+
+- `data.assessment_id` (string) — unique identifier for this scored assessment.
+- `data.interview_id` (string) — the interview session this assessment belongs to. Use this to correlate with the earlier `interview.completed` event.
+- `data.candidate_id` (string) — unique identifier for the candidate in AceInt.
+- `data.candidate_email` (string) — the email address of the candidate.
+- `data.overall_score` (number) — the final aggregate score across all sections.
+- `data.max_score` (number) — the maximum possible score for this assessment.
+- `data.percentile` (number) — the candidate's percentile rank compared to all candidates who completed the same template, expressed as an integer from 0 to 100.
+- `data.scoring_status` (string) — value is `completed` for this event.
+- `data.scored_at` (string) — ISO 8601 timestamp for when scoring finished.
+- `data.sections` (array) — array of section score objects, one per section in the assessment template.
+  - `section_id` (string) — unique identifier for this section within the template.
+  - `section_name` (string) — human-readable name of the section.
+  - `score` (number) — points earned by the candidate in this section.
+  - `max_score` (number) — maximum points available in this section.
+  - `question_count` (integer) — number of questions in this section.

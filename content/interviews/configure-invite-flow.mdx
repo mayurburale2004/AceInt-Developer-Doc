@@ -1,0 +1,72 @@
+---
+title: "Customize the Candidate Invite and Join Flow | AceInt"
+description: "Configure single-use or multi-use invite links, customize the pre-interview landing page, set session expiry and post-session redirects for candidates."
+---
+
+The invite flow is the first thing candidates experience when you send an AI interview. Customizing it helps candidates understand what to expect, reinforces your employer brand, and reduces drop-off before the session starts. Every element — from the landing page to what happens after the interview ends — is configurable.
+
+## Link types
+
+AceInt generates two types of invite links:
+
+<CardGrid cols={2}>
+  <Card icon="link" title="Single-Use Link" description="Valid for exactly one candidate session. Once a candidate starts the interview, the link is deactivated. Use this when you want to track a specific named candidate and prevent link sharing." href="#" />
+  <Card icon="link" title="Multi-Use Link" description="Valid for unlimited candidate sessions. Each session is tracked separately with a unique session ID. Use this for job postings, career pages, or high-volume pipelines where you want one link for many applicants." href="#" />
+</CardGrid>
+
+To select the link type, open the **Invite Settings** step of the interview setup wizard and choose **Single-Use** or **Multi-Use** before generating the link.
+
+## Pre-interview landing page
+
+The landing page is what candidates see when they first open the invite link, before the interview starts. Customize it to set context and reduce anxiety.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `logo` | image | Upload your company logo to display at the top of the landing page. Recommended size: 200 × 60 px, PNG or SVG with a transparent background. |
+| `welcome_message` | string | A short message displayed below the logo. Use it to introduce the interview, set expectations about length and format, and encourage the candidate. Supports plain text only — no markdown or HTML. |
+| `interviewer_name` | string | The name shown for the AI interviewer on the landing page and during the session introduction. Default: `AceInt AI`. |
+
+<Callout title="Tip">
+Keep the welcome message under 80 words. Long messages increase time-to-start and can increase drop-off rates before the candidate even begins.
+</Callout>
+
+## Session expiry
+
+Set an expiry date and time after which the invite link no longer works. This prevents candidates from taking a screen long after the role has been filled.
+
+- **No expiry** — The link remains active until you manually deactivate it.
+- **Fixed date** — The link deactivates at a specific date and time in your local timezone.
+- **Relative expiry** — The link deactivates a set number of days after it was generated (for example, 7 days).
+
+<Callout title="Warning">
+If a candidate clicks an expired link, they see a message explaining the session is no longer available. They cannot start the interview. Notify candidates of the expiry window when you send the invite.
+</Callout>
+
+## Post-session redirect
+
+After the candidate completes the interview, direct them to a URL of your choice instead of the default AceInt completion screen.
+
+Use cases:
+
+- A careers page with next-steps information
+- A candidate satisfaction survey
+- Your company's application tracking portal
+
+Enter the redirect URL in **Invite Settings → After Interview**. Leave blank to show the default AceInt completion screen.
+
+## Sending the invite
+
+Once you generate a link, you have two options for getting it to candidates:
+
+<CodeTabs>
+  <CodeTab label="Send from AceInt">
+
+Enter the candidate's name and email address in the **Send Invite** panel, customize the subject line and body, and click **Send**. AceInt delivers the email and logs the send timestamp in the session record.
+
+  </CodeTab>
+  <CodeTab label="Copy the Link">
+
+Click **Copy Link** and paste it into your ATS, email client, LinkedIn message, or any other channel. AceInt does not log outbound delivery for links shared this way — tracking begins when the candidate clicks the link.
+
+  </CodeTab>
+</CodeTabs>

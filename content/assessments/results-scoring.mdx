@@ -1,0 +1,214 @@
+# Understanding Assessment Scoring and Results
+
+Every candidate who completes an AceInt assessment receives an **overall score between 0 and 100**.
+
+The overall score is calculated using the weighted scores of every question in the assessment.
+
+- Coding questions are graded using the AI grading engine.
+- MCQ questions are graded instantly using the configured answer key.
+
+Understanding how scores are calculated helps you create better assessments and interpret candidate performance more accurately.
+
+---
+
+## Overall Score
+
+The overall score appears at the top of every candidate report and on the leaderboard.
+
+The calculation is:
+
+```text
+Overall Score =
+Σ (Question Score × Question Weight)
+-------------------------------------
+      Σ (Question Weights)
+```
+
+Each question has a configurable **Point Value**.
+
+By default:
+
+- Every question is worth **1 point**
+- Every question contributes equally to the final score
+
+Increasing the point value gives that question more influence on the overall score.
+
+---
+
+## Pass / Fail Threshold
+
+Configure a passing score from:
+
+**Assessment Settings → Scoring**
+
+When enabled:
+
+- Candidates scoring at or above the threshold receive a **Pass** badge.
+- Candidates below the threshold receive a **Fail** badge.
+- Pass/Fail status appears on:
+  - Candidate reports
+  - Leaderboard
+  - CSV exports
+
+> **Note**
+>
+> The Pass/Fail threshold is informational only.
+>
+> It does **not** automatically move or reject candidates in your hiring workflow.
+
+---
+
+## Per-Question Breakdown
+
+Open a candidate's report from the **Results** page to view detailed question-level performance.
+
+Each question displays:
+
+- Question title
+- Question type (Coding or MCQ)
+- Score (0–100)
+- Time spent
+- Test cases passed (Coding only)
+
+This breakdown helps determine whether a candidate performed consistently across the assessment or excelled only in specific questions.
+
+---
+
+## AI Grading Dimensions
+
+Coding questions provide a detailed breakdown across four grading dimensions.
+
+### Correctness
+
+Measures the percentage of test cases passed.
+
+The report also distinguishes between:
+
+- Visible test cases
+- Hidden test cases
+
+---
+
+### Code Quality
+
+Evaluates:
+
+- Readability
+- Naming conventions
+- Code organization
+- Maintainability
+- Language best practices
+
+AI annotations can be viewed directly from the candidate report.
+
+---
+
+### Algorithmic Efficiency
+
+Measures:
+
+- Time complexity
+- Space complexity
+
+The report includes:
+
+- Estimated complexity (for example, **O(n²)**)
+- Expected optimal complexity
+
+---
+
+### Completeness
+
+Measures whether the solution satisfies:
+
+- Edge cases
+- Error handling
+- Required output
+- All stated requirements
+
+---
+
+Each dimension contributes to the final question score according to its configured grading weight.
+
+---
+
+## MCQ Scoring
+
+MCQ questions are scored immediately.
+
+Scoring depends on the question type.
+
+### Single Select
+
+- Correct answer → Full points
+- Incorrect answer → Zero points
+
+### Multi-Select
+
+If partial credit is enabled, the configured scoring formula is applied automatically.
+
+Candidate reports display:
+
+- Selected answers
+- Correct answers
+
+for easy comparison.
+
+---
+
+## Anti-Cheat Indicators
+
+Candidates with suspicious activity display an **⚠ Anti-Cheat** indicator.
+
+The badge appears on:
+
+- Candidate report
+- Leaderboard
+
+Selecting the badge opens the Anti-Cheat report.
+
+Anti-cheat warnings **do not affect scoring automatically**.
+
+Recruiters decide whether any action should be taken.
+
+---
+
+## Score Availability
+
+| Assessment Type | Score Availability |
+|-----------------|-------------------|
+| MCQ Only | Immediately after submission |
+| Coding (up to 5 questions) | Usually within 30 seconds |
+| Coding (more than 5 questions) | Usually within 2 minutes |
+| Mixed Assessment | Usually within 2 minutes |
+
+The leaderboard updates automatically as grading completes.
+
+No page refresh is required.
+
+> **Tip**
+>
+> If grading takes longer than expected, check the **Grading Status** column.
+>
+> A **Pending** status means the submission is still being processed.
+>
+> Contact support if grading remains pending for more than ten minutes.
+
+---
+
+## Manual Score Adjustments
+
+After AI grading finishes, recruiters can manually adjust scores.
+
+Manual adjustments are useful when:
+
+- A unique edge case is not handled as expected
+- Your hiring team wants to apply an internal evaluation rubric
+- Additional context should influence the final score
+
+Manual adjustments:
+
+- Are stored separately from the AI score
+- Appear in candidate reports
+- Are included in CSV exports
+- Automatically update the candidate's overall score and leaderboard ranking

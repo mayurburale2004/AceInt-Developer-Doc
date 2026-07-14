@@ -1,0 +1,129 @@
+---
+title: "Assessments Overview"
+sidebarTitle: "Overview"
+description: "Learn how AceInt assessments work, explore coding and MCQ types, understand AI grading, and discover built-in anti-cheat capabilities."
+---
+
+Assessments are the core evaluation tool in AceInt. They help you measure a candidate's technical skills objectively by replacing ad-hoc phone screens and subjective take-home assignments with structured, AI-powered assessments that generate consistent and comparable results.
+
+Every assessment runs entirely in the browser. Candidates do not need to install any software, and results become available immediately after grading is complete.
+
+---
+
+## What You Can Evaluate
+
+AceInt supports two primary question types that can be used independently or combined within a single assessment.
+
+### Coding Challenges
+
+Coding Challenges allow candidates to solve programming problems inside a browser-based code editor.
+
+Each challenge includes:
+
+- A detailed problem statement
+- Input and output specifications
+- Constraints
+- Example test cases
+
+Candidates can run their code against visible test cases before submitting. After submission, the AI grading engine evaluates the solution across multiple grading dimensions.
+
+### Multiple Choice Questions (MCQ)
+
+MCQ questions present candidates with between **2 and 6 answer choices**.
+
+They are ideal for evaluating:
+
+- Programming concepts
+- Language syntax
+- SQL knowledge
+- System design fundamentals
+- General technical knowledge
+- Any topic that does not require writing code
+
+MCQs can be used alone or combined with coding challenges in a mixed assessment.
+
+---
+
+## How AI Grading Works
+
+After a candidate submits a coding challenge, AceInt evaluates the solution across four independent grading dimensions.
+
+| Dimension | Description |
+|-----------|-------------|
+| **Correctness** | Percentage of visible and hidden test cases passed. |
+| **Code Quality** | Readability, naming conventions, maintainability, and coding best practices. |
+| **Algorithmic Efficiency** | Time and space complexity compared with the expected optimal solution. |
+| **Completeness** | Edge case handling, error handling, and satisfaction of all stated requirements. |
+
+Each dimension receives a score from **0–100**.
+
+You can customize the weight of every dimension for each coding challenge.
+
+For example:
+
+- Data Structures assessments may emphasize **Algorithmic Efficiency**.
+- Frontend assessments may prioritize **Code Quality** and **Completeness**.
+
+The weighted combination of these scores determines the final question score.
+
+MCQ questions are graded instantly.
+
+- Correct answer → Full score
+- Incorrect answer → Zero score
+- Multi-select questions can optionally use partial credit.
+
+---
+
+## Anti-Cheat Capabilities
+
+AceInt continuously monitors assessment sessions without requiring:
+
+- Camera access
+- Browser extensions
+- Proctoring software
+
+The platform records activity such as:
+
+- Tab switching
+- Clipboard paste events
+- Time spent on each question
+
+Additional security measures include:
+
+- Randomized question order
+- Unique coding test-case variants
+
+Every submission includes a detailed anti-cheat report.
+
+Suspicious behavior is flagged for review, but AceInt never automatically disqualifies candidates.
+
+---
+
+## Where to Go Next
+
+<CardGrid>
+  <Card
+    icon="rocket"
+    title="Quickstart"
+    description="Create and send your first assessment in just a few minutes."
+    href="/assessments/quickstart"
+  />
+  <Card
+    icon="list"
+    title="Assessment Types"
+    description="Learn the differences between coding-only, MCQ-only, and mixed assessments."
+    href="/assessments/types"
+  />
+  <Card
+    icon="hammer"
+    title="Build Questions"
+    description="Create coding challenges, build MCQ questions, configure AI grading, and add test cases."
+    href="/assessments/build-coding-challenges"
+  />
+  <Card
+    icon="chart-bar"
+    title="Review Results"
+    description="Understand candidate scores, leaderboards, AI grading, CSV exports, and assessment analytics."
+    href="/assessments/results-scoring"
+  />
+</CardGrid>

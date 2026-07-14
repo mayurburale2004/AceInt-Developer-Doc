@@ -1,0 +1,81 @@
+---
+title: "Review and Export AI Interview Transcripts | AceInt"
+description: "Find, read, search, and export AI interview transcripts — learn their format, how they feed into scoring, and how long AceInt retains transcript data."
+---
+
+Every completed AI interview session produces a full transcript. The transcript captures every spoken turn in the interview — both the AI's questions and the candidate's answers — labeled by speaker and timestamped to the second. Transcripts are available in your dashboard as soon as processing completes, typically within minutes of the session ending.
+
+## Where to find transcripts
+
+Transcripts are accessed from the session detail view:
+
+1. Navigate to **Interviews** in the left navigation.
+2. Click the completed session you want to review.
+3. Select the **Transcript** tab in the session detail panel.
+
+You can also access the transcript from the score report by clicking **View Full Transcript** next to any per-question score.
+
+## Transcript format
+
+Transcripts use a turn-by-turn format, with each turn labeled by speaker:
+
+```text
+[AI Interviewer] 00:01:14
+Tell me about a time you had to design a system under tight constraints. What were the constraints, and how did you approach the design?
+
+[Candidate] 00:01:22
+Sure. At my last company, we needed to build a data ingestion pipeline that could handle roughly 50,000 events per second, but we had a hard constraint of using only managed services because the ops team was small...
+```
+
+Each turn includes:
+
+- **Speaker label** — `[AI Interviewer]` or `[Candidate]`.
+- **Timestamp** — the time in the recording when the turn began (HH:MM:SS).
+- **Full text** — the transcribed speech, including filler words (optional — fillers can be filtered in display settings).
+
+## Filtering and searching
+
+Use the **Search** bar above the transcript to find specific terms or phrases. Matches are highlighted inline. Use the forward/backward arrows to jump between matches.
+
+Filter the transcript by speaker using the **Speaker** toggle to show only AI turns (questions) or only candidate turns (answers). This is useful when quickly reviewing what the candidate said without the AI's framing.
+
+## Exporting transcripts
+
+Export the transcript in two formats:
+
+<CodeTabs>
+  <CodeTab label="Plain Text (.txt)">
+
+A clean, unformatted text file with all speaker labels and timestamps preserved. Suitable for pasting into notes, ATS comments, or sharing with colleagues.
+
+Click **Export → Plain Text** in the transcript view.
+
+  </CodeTab>
+  <CodeTab label="PDF">
+
+A formatted PDF with your company logo (if configured), session metadata (role, date, interview type), and the full transcript. Suitable for printing or attaching to a candidate file.
+
+Click **Export → PDF** in the transcript view.
+
+  </CodeTab>
+</CodeTabs>
+
+<Callout title="Note">
+Exported files include session metadata (role, interview type, date, candidate name if collected) in the header. They do not include scores — export the score report separately if you need both.
+</Callout>
+
+## How transcripts feed into scoring
+
+The AI scoring engine uses the transcript as its primary input. After the session ends, the LLM reads each candidate turn in the context of the question asked, evaluates it against each applicable rubric dimension, and generates a score and reasoning note. The audio recording is used to verify timing and flag transcription uncertainty (for example, if background noise made a word ambiguous).
+
+High transcription confidence leads to more reliable scores. Sessions with significant background noise, heavy accents, or technical audio issues may have lower-confidence scores, indicated by a confidence indicator in the score report.
+
+## Retention policy
+
+AceInt retains transcripts for **365 days** from the session date by default. After that, transcripts are permanently deleted unless you have configured an extended retention period in your account settings.
+
+<Callout title="Warning">
+Download and archive transcripts before the 365-day window expires if you need to retain them for compliance, audit, or record-keeping purposes. AceInt cannot recover deleted transcripts.
+</Callout>
+
+To configure a custom retention period, navigate to **Account Settings → Data & Privacy → Transcript Retention**.

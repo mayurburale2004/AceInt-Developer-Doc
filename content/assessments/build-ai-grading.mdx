@@ -1,0 +1,202 @@
+# How AI Grading Works
+
+When a candidate submits a coding challenge, AceInt's AI grading engine analyzes the solution and returns a scored, annotated report within seconds.
+
+The engine evaluates the submission against the problem statement, constraints, and test cases you defined, ensuring that the feedback is specific to each question.
+
+MCQ questions bypass AI grading entirely. They are scored instantly against the configured answer key.
+
+---
+
+## The Four Grading Dimensions
+
+Every coding challenge submission is evaluated on four independent dimensions. Each dimension receives a score from **0–100**, and the weighted combination determines the final question score.
+
+### Correctness
+
+Correctness measures how many test cases the submission passes.
+
+Visible and hidden test cases are weighted separately, with hidden test cases generally contributing more because they validate edge cases.
+
+A submission that passes all visible cases but fails hidden ones may receive only a moderate correctness score.
+
+**Score Range:** 0–100
+
+---
+
+### Code Quality
+
+Code Quality measures the readability and maintainability of the submitted solution.
+
+The AI evaluates:
+
+- Variable and function naming
+- Code organization
+- Modular design
+- Documentation and comments
+- Language best practices
+- Avoidance of anti-patterns
+
+A correct but poorly structured solution will score lower than an equally correct, well-organized solution.
+
+---
+
+### Algorithmic Efficiency
+
+Algorithmic Efficiency evaluates the solution's time and space complexity compared with the expected optimal approach.
+
+For example:
+
+- Easy problems may still receive reasonable credit for an O(n²) solution.
+- Hard problems expecting O(n log n) or O(n) algorithms will penalize inefficient implementations.
+
+Candidates are not required to mention complexity in comments—the AI infers it automatically.
+
+---
+
+### Completeness
+
+Completeness checks whether the solution satisfies every stated requirement, including:
+
+- Edge cases
+- Invalid input handling
+- Required output format
+- Secondary constraints
+
+Even if all tests pass, missing documented requirements can reduce the Completeness score.
+
+---
+
+## Configuring Dimension Weights
+
+Each coding question lets you configure custom grading weights.
+
+The four weights must total **100%**.
+
+| Dimension | Default | Recommended |
+|-----------|---------|-------------|
+| Correctness | 40% | 30–60% |
+| Code Quality | 20% | 10–30% |
+| Algorithmic Efficiency | 25% | 10–40% |
+| Completeness | 15% | 10–25% |
+
+Examples:
+
+- **Junior Engineer**
+  - Correctness: 50%
+  - Code Quality: 20%
+  - Efficiency: 15%
+  - Completeness: 15%
+
+- **Senior Engineer**
+  - Correctness: 30%
+  - Code Quality: 20%
+  - Efficiency: 35%
+  - Completeness: 15%
+
+> **Tip**
+>
+> Avoid setting a dimension's weight to **0%** unless you truly want it excluded from scoring. The AI will still analyze the dimension and include it in the report—it simply won't affect the final score.
+
+---
+
+## AI Feedback
+
+### Candidate View
+
+After submission, candidates immediately receive:
+
+- Correctness score
+- Number of passed test cases
+- Brief AI-generated feedback
+- General improvement suggestions
+
+Hidden test cases and detailed grading reports are never revealed.
+
+### Hiring Team View
+
+Hiring teams receive the complete evaluation report, including:
+
+- Scores for all four dimensions
+- Line-by-line AI annotations
+- Complexity analysis
+- Hidden test-case results
+- Overall AI summary
+
+---
+
+## Edge Cases
+
+### Partial Credit
+
+Partial credit is awarded automatically.
+
+Examples include:
+
+- Passing some hidden test cases.
+- Receiving partial efficiency points for a suboptimal algorithm.
+
+### Compile Errors
+
+If the code fails to compile:
+
+- Correctness = 0
+- Remaining dimensions are evaluated using static code analysis whenever possible.
+
+This allows candidates with minor syntax mistakes to receive meaningful feedback.
+
+### Empty Submissions
+
+Submitting only the starter template results in:
+
+- 0 Correctness
+- 0 Code Quality
+- 0 Efficiency
+- 0 Completeness
+
+The report clearly states that no solution was submitted.
+
+### Time Limit Exceeded
+
+Solutions exceeding the execution time limit receive failed test cases and reduced Algorithmic Efficiency scores.
+
+---
+
+## Limitations
+
+The AI grading engine is highly accurate but has several limitations.
+
+### Language Coverage
+
+Detailed quality analysis is strongest for:
+
+- Python
+- Java
+- JavaScript
+- TypeScript
+- Go
+- C++
+
+Other languages still receive Correctness scoring but may have less detailed AI feedback.
+
+### Problem Novelty
+
+Highly specialized or uncommon algorithms may produce less accurate efficiency analysis.
+
+### Coding Style
+
+The AI follows common industry conventions rather than your organization's internal style guide.
+
+> **Note**
+>
+> Hiring teams can manually adjust scores and add private notes after AI grading. Manual adjustments are stored separately and do not overwrite the original AI score.
+
+---
+
+## MCQ Instant Scoring
+
+MCQ questions are graded immediately after submission.
+
+The platform compares submitted answers against the stored answer key.
+
+For multi-select questions, the configured partial-credit formula is applied automatically.

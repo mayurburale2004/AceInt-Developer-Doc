@@ -1,0 +1,57 @@
+---
+title: "Connect Greenhouse to AceInt via OAuth and Harvest API"
+description: "Integrate AceInt with Greenhouse via OAuth and the Harvest API to automate candidate sync and deliver structured interview results as feedback forms."
+---
+
+The Greenhouse integration connects AceInt to your Greenhouse account using OAuth for authentication and the Harvest API for data access. Once connected, AceInt automatically imports candidates when they reach a configured pipeline stage and pushes interview and assessment results back to Greenhouse as structured feedback forms.
+
+## What you need before you start
+
+- A Greenhouse account with **Site Admin** or **Job Admin** permissions
+- Permission to authorize third-party applications in Greenhouse
+- An AceInt account with ATS integration access enabled
+
+## Connect Greenhouse to AceInt
+
+1. **Open Integrations settings** — in your AceInt dashboard, go to **Settings → Integrations → Greenhouse**.
+2. **Start the OAuth flow** — click **Connect with Greenhouse**. You are redirected to the Greenhouse authorization page.
+3. **Authorize AceInt as a Harvest API partner** — in Greenhouse, review the requested permissions and click **Allow**. This authorizes AceInt to act as a Harvest API partner, which enables it to read candidate and job data and write feedback on your behalf.
+
+   <Callout title="Note">
+   The Harvest API partner authorization requires a Greenhouse Site Admin to complete. If you do not have Site Admin access, ask your Greenhouse administrator to approve the authorization request in **Configure → Dev Center → API Credential Management**.
+   </Callout>
+
+4. **Configure sync settings** — after authorization, you are returned to AceInt. Configure the following:
+
+   - **Stages to trigger sync:** Select which Greenhouse pipeline stages should prompt AceInt to create an interview or assessment. For example, select _Phone Screen_ or _Technical Interview_.
+   - **Job role mapping:** Map Greenhouse job roles to AceInt interview templates so each role uses the correct question set.
+
+5. **Test the connection** — click **Test Connection**. AceInt runs a read check against the Greenhouse Harvest API and confirms that the OAuth token is valid and that the required permissions are in place. A green status indicator confirms success.
+6. **Enable the integration** — toggle the integration to **Active**. From this point, candidates who enter a configured pipeline stage in Greenhouse are automatically synced to AceInt.
+
+## How results are returned
+
+When a candidate completes an interview or assessment in AceInt, the results are pushed back to the corresponding Greenhouse candidate profile as a **feedback form**. The form includes the overall score, individual question scores, and any interviewer notes. You can view feedback forms on the candidate's activity feed in Greenhouse.
+
+<Callout title="Tip">
+Create a custom Greenhouse scorecard section named "AceInt Results" to keep automated feedback separate from interviewer-submitted scorecards.
+</Callout>
+
+## Candidate matching
+
+AceInt matches incoming candidates to existing records using the **email address** on the Greenhouse candidate profile. If a candidate with the same email already exists in AceInt, their record is updated rather than duplicated. Ensure every Greenhouse candidate profile has a valid, consistent email address before enabling sync.
+
+## Required Greenhouse permissions
+
+The Harvest API token used by AceInt requires the following Greenhouse permission scopes:
+
+| Permission | Purpose |
+| --- | --- |
+| `candidates` (read) | Import candidate profiles and contact details |
+| `applications` (read) | Read pipeline stage and job application data |
+| `jobs` (read) | Retrieve job titles for role mapping |
+| `activity_feed` (write) | Post interview results as feedback forms |
+
+<Callout title="Warning">
+If you revoke AceInt's Harvest API access in Greenhouse, the integration stops syncing immediately. Re-authorize by returning to **Settings → Integrations → Greenhouse** and repeating the OAuth flow.
+</Callout>

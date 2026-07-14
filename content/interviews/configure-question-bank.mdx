@@ -1,0 +1,74 @@
+---
+title: "Configure Question Banks for AI Interviews | AceInt"
+description: "Build, edit, and organize question banks for your AI interviews — from scratch or a role-based template — and reuse them across multiple roles."
+---
+
+A question bank is the set of questions your AI interviewer draws from during a session. Each question can include follow-up depth settings, a question type tag, and optional section grouping. Question banks are saved at the account level and can be attached to multiple interviews across different roles.
+
+Getting the question bank right is the most important configuration step — the quality and coverage of your questions directly determines the signal you get from each interview.
+
+## Creating a question bank
+
+You can create a question bank from scratch or start from a template.
+
+<CodeTabs>
+  <CodeTab label="From a Template">
+
+1. **Open Question Banks** — navigate to **Interviews → Configure → Question Banks** and click **New Question Bank**.
+2. **Select a Template** — choose a role-based template from the library (for example, _Backend Engineer_, _Product Manager_, _Sales Account Executive_). The template pre-populates a curated set of questions for that role type.
+3. **Customize the Template** — edit, remove, or add questions to match your specific requirements. Templates are a starting point — modify them freely.
+4. **Name and Save** — give the bank a descriptive name (for example, _Senior Backend – Python Focus_) and click **Save**.
+
+  </CodeTab>
+  <CodeTab label="From Scratch">
+
+1. **Open Question Banks** — navigate to **Interviews → Configure → Question Banks** and click **New Question Bank**.
+2. **Choose Blank** — select **Start from Scratch** to open an empty question bank editor.
+3. **Add Questions** — click **Add Question** and fill in the question text, type, and follow-up depth (see below).
+4. **Name and Save** — give the bank a name and click **Save**.
+
+  </CodeTab>
+</CodeTabs>
+
+## Adding and configuring questions
+
+Each question has three configurable properties:
+
+| Property | Type | Required | Description |
+| --- | --- | --- | --- |
+| `text` | string | Yes | The question text the AI reads aloud to the candidate. Write questions in plain, conversational language — avoid jargon or overly complex sentence structures that are hard to parse when spoken. |
+| `type` | string | Yes | The question category. Options are **Technical**, **Behavioral**, or **General**. The type tag determines which rubric dimensions the AI applies when scoring the response. |
+| `follow_up_depth` | string | No (default: `Standard`) | How aggressively the AI follows up on vague or shallow answers. See options below. |
+
+**`follow_up_depth` options:**
+
+- **None** — The AI moves to the next question without follow-up.
+- **Light** — One optional follow-up if the answer is very brief.
+- **Standard** — Up to two follow-ups based on answer quality.
+- **Deep** — Up to four follow-ups, probing for specifics, trade-offs, and reasoning.
+
+<Callout title="Tip">
+Use **Deep** follow-up depth for the two or three most critical questions in your bank, and **Standard** for the rest. Setting every question to Deep significantly increases session length.
+</Callout>
+
+## Organizing questions into sections
+
+Group related questions into named sections to give the interview a logical flow. For example, a Full Interview bank might have a **Fundamentals** section, a **System Design** section, and a **Behavioral** section.
+
+To add a section:
+
+1. Click **Add Section** in the question bank editor.
+2. Enter a section name.
+3. Drag existing questions into the section, or add new questions directly within it.
+
+The AI transitions between sections naturally during the interview, and section headings are visible in the transcript for easy navigation.
+
+## Reusing question banks across roles
+
+A single question bank can be attached to multiple interview configurations. When you create or edit an interview, the **Select Question Bank** dropdown lists all saved banks. Select any bank regardless of which role it was originally created for.
+
+To update a shared question bank, navigate to **Configure → Question Banks**, open the bank, and make your edits. Changes apply to all future interview sessions that use that bank — existing completed sessions are not affected.
+
+<Callout title="Warning">
+Editing a question bank that is currently linked to an active (open) interview changes the questions for any candidate who has not yet started their session. Duplicate the bank before editing if you want to preserve the original for in-progress sessions.
+</Callout>

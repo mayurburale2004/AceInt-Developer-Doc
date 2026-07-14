@@ -196,7 +196,7 @@
 //         rehypePlugins: [rehypeSlug],
 //       },
 //     },
-//     components: { Card, CardGrid, CodeTabs, CodeTab, Callout },
+//     components: { Card, CardGrid, CodeTabs, CodeTab, Callout, Accordion, AccordionGroup },
 //   });
 
 //   const next = getNextPage(params.tab, params.page);
@@ -234,6 +234,10 @@ import { UpNext } from "@/components/UpNext";
 import { CodeTabs, CodeTab } from "@/components/CodeTabs";
 import { Callout } from "@/components/Callout";
 import rehypePrettyCode from "rehype-pretty-code";
+import { Accordion, AccordionGroup } from "@/components/Accordion";
+
+
+
 export function generateStaticParams() {
   const params: { tab: string; page: string }[] = [];
   for (const tab of tabs) {
@@ -286,18 +290,18 @@ export default async function DocsPage({
         ],
       },
     },
-    components: { Card, CardGrid, CodeTabs, CodeTab, Callout },
+    components: { Card, CardGrid, CodeTabs, CodeTab, Callout, Accordion, AccordionGroup },
   });
 
   const next = getNextPage(params.tab, params.page);
 
   return (
     <DocsShell tab={tab} headings={headings}>
-      <h1 className="mb-2 text-4xl font-bold tracking-tight text-ink-900">
+      <h1 className="mb-2 text-2xl font-bold tracking-tight text-ink-900 sm:text-2xl">
         {frontmatter.title ?? found.item.title}
       </h1>
       {frontmatter.description && (
-        <p className="mb-6 text-lg text-ink-500">{frontmatter.description}</p>
+        <p className="mb-6 text-base text-ink-500">{frontmatter.description}</p>
       )}
 
       <PageToolbar raw={raw} />

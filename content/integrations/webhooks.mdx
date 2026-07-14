@@ -1,0 +1,138 @@
+---
+title: "Webhooks API — Real-Time AceInt Event Notifications"
+description: "Register HTTPS endpoints to receive real-time AceInt event notifications, manage webhook configs, and verify signed payloads using your webhook secret."
+---
+
+Webhooks let your backend react to AceInt events the moment they happen, without polling. When an event fires — for example, when a candidate completes an interview — AceInt sends an HTTP `POST` request to your registered endpoint with a signed JSON payload. Register multiple webhooks with different event filters to route notifications to the right services in your infrastructure.
+
+All webhook endpoints require the `admin` scope. Webhook management — listing, creating, updating, and deleting — is restricted to API keys that hold `admin` access.
+
+## Supported Events
+
+Register any combination of the following event types when creating or updating a webhook.
+
+| Event | Fired when |
+| --- | --- |
+| `candidate.created` | A new candidate record is created. |
+| `candidate.updated` | A candidate's status or metadata changes. |
+| `candidate.deleted` | A candidate record is permanently deleted. |
+| `interview.scheduled` | A new interview session is created. |
+| `interview.invited` | An invitation is sent to a candidate. |
+| `interview.completed` | A candidate finishes an interview and results are ready. |
+| `interview.expired` | An interview invitation passes its expiry without being started. |
+| `assessment.created` | A new assessment is assigned to a candidate. |
+| `assessment.completed` | A candidate submits an assessment and results are ready. |
+| `assessment.expired` | An assessment passes its expiry without being submitted. |
+| `result.exported` | A results export file is generated. |
+
+## List Webhooks
+
+`GET /webhooks`
+
+Returns all webhook registrations for your organisation.
+
+```bash
+curl https://api.aceint.ai/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Register a Webhook
+
+`POST /webhooks`
+
+Creates a new webhook registration. AceInt immediately begins delivering matching events to the specified URL.
+
+**Body parameters**
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `url` | string | Yes | The fully-qualified HTTPS URL of your endpoint. HTTP (non-TLS) endpoints are not accepted. AceInt sends a `POST` request to this URL for each matching event. |
+| `events` | array | Yes | Array of event type strings to subscribe to. Use `["*"]` to subscribe to all events. See the supported events table above for accepted values. |
+| `secret` | string | Yes | A secret string of your choice (minimum 16 characters). AceInt uses this to sign each payload with an `X-AceInt-Signature` header so you can verify authenticity on receipt. |
+
+Returns the newly created webhook object with HTTP `201 Created`.
+
+**Example: subscribe to `interview.completed` only**
+
+```bash
+curl -X POST https://api.aceint.ai/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-app.example.com/webhooks/aceint",
+    "events": ["interview.completed"],
+    "secret": "your-webhook-secret-at-least-16-chars"
+  }'
+```
+
+**Example response**
+
+```json
+{
+  "data": {
+    "id": "wh_0apqr",
+    "url": "https://your-app.example.com/webhooks/aceint",
+    "events": ["interview.completed"],
+    "active": true,
+    "created_at": "2024-06-11T10:00:00Z"
+  }
+}
+```
+
+<Callout title="Tip">
+Verify incoming webhook payloads by computing an HMAC-SHA256 of the raw request body using your `secret` and comparing it to the value in the `X-AceInt-Signature` header. Reject any request where the signatures do not match.
+</Callout>
+
+## Retrieve a Webhook
+
+`GET /webhooks/{id}`
+
+Returns a single webhook registration by ID.
+
+```bash
+curl https://api.aceint.ai/v1/webhooks/wh_0apqr \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Update a Webhook
+
+`PATCH /webhooks/{id}`
+
+Updates one or more properties of an existing webhook. Only the fields you include in the request body are modified.
+
+**Body parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `url` | string | New HTTPS endpoint URL. Must start with `https://`. |
+| `events` | array | Replacement list of event type strings. This **replaces** the existing subscribed events entirely — include every event type you want to retain. |
+| `active` | boolean | Set to `false` to pause delivery without deleting the registration. Set to `true` to resume delivery. |
+
+Returns the updated webhook object with HTTP `200 OK`.
+
+```bash
+curl -X PATCH https://api.aceint.ai/v1/webhooks/wh_0apqr \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "events": ["interview.completed", "assessment.completed"],
+    "active": true
+  }'
+```
+
+## Delete a Webhook
+
+`DELETE /webhooks/{id}`
+
+Permanently removes a webhook registration. AceInt immediately stops delivering events to the registered URL.
+
+<Callout title="Warning">
+Deleting a webhook cannot be undone. If you want to temporarily stop event delivery, set `active` to `false` using the update endpoint instead.
+</Callout>
+
+Returns HTTP `200 OK` with an empty `data` object on success.
+
+```bash
+curl -X DELETE https://api.aceint.ai/v1/webhooks/wh_0apqr \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```

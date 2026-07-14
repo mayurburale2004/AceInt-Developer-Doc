@@ -1,0 +1,55 @@
+---
+title: "Technical Screen: AI Interview Candidate Experience"
+description: "Understand how the AI delivers technical questions, how follow-up logic works, how time limits apply, and how to ask for clarification during the screen."
+---
+
+The technical screen is a structured spoken interview in which the AI asks role-specific technical questions and follows up based on the candidate's answers. There is no coding environment or screen share — the evaluation is entirely based on spoken explanation, so candidates should focus on articulating their thinking clearly and in depth.
+
+## How the AI delivers questions
+
+The AI reads each question aloud at the configured speaking pace and waits for the candidate to respond. After the candidate finishes speaking, the AI either:
+
+- **Asks a follow-up question** — if the answer was incomplete, vague, or touched on a topic worth exploring further.
+- **Moves to the next question** — if the answer was sufficiently complete and the configured follow-up depth has been exhausted.
+
+The transition between questions is smooth and conversational. The AI does not announce a score or give feedback during the session — it simply moves forward.
+
+## Follow-up logic
+
+Follow-up questions are generated dynamically based on what the candidate said. Common follow-up patterns include:
+
+- **Clarification** — "You mentioned X — can you tell me more about how that worked?"
+- **Trade-off probing** — "What were the trade-offs of that approach versus an alternative?"
+- **Edge case testing** — "How would your solution handle [specific edge case]?"
+- **Depth probing** — "Why did you choose that approach over [alternative]?"
+
+The number of follow-ups per question is controlled by the **follow-up depth** setting in the question bank (Light, Standard, or Deep). Candidates should not assume the session is nearly over just because follow-ups stop — the AI may ask several primary questions with few follow-ups each, or a small number of questions with many follow-ups.
+
+## Time limits
+
+If the interviewer has configured a maximum session length, a visual timer is displayed in the browser during the interview. The candidate can see how much time remains.
+
+Individual question time limits, if set, are announced by the AI at the start of each question: _"You have up to two minutes to answer this question."_
+
+<Callout title="Tip">
+Candidates should aim for answers that are thorough but focused — typically 90 seconds to 3 minutes per question. Very short answers often trigger follow-ups that extend the session; very long answers with no clear structure can hurt the Communication Clarity dimension score.
+</Callout>
+
+## Asking for clarification
+
+Candidates can ask the AI to clarify a question at any time. To do so, the candidate simply says something like _"Could you repeat the question?"_ or _"Can you clarify what you mean by X?"_ The AI will restate or elaborate on the question.
+
+Asking for reasonable clarification does not negatively affect scores. However, repeated requests to re-explain basic concepts may be interpreted as unfamiliarity with the subject matter during scoring.
+
+## Off-topic handling
+
+If a candidate's answer drifts significantly off-topic, the AI gently redirects them: _"That's helpful context — to bring us back, I'd like to focus on [original question topic]."_ This keeps sessions on track without penalizing candidates for providing relevant background.
+
+Answers that are completely off-topic or unrelated to the question will score low on the Relevance dimension, so candidates should address the question directly before adding context.
+
+## Tips for candidates
+
+- **Speak your reasoning out loud.** The AI cannot see diagrams or code — explain your thought process as if talking to a colleague who cannot see your screen.
+- **Structure longer answers.** Start with a direct answer, then provide supporting detail. This improves Communication Clarity scores.
+- **Don't rush past follow-ups.** If the AI asks a follow-up, treat it as a chance to demonstrate deeper knowledge, not as a sign you answered incorrectly.
+- **Use technical vocabulary naturally.** Precise terminology is recognized and scored positively on Technical Accuracy, but using jargon without explanation can hurt Communication Clarity.

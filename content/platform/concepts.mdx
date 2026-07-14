@@ -1,0 +1,138 @@
+---
+title: "AceInt Core Concepts and Data Model"
+description: "Learn the key building blocks of AceInt — job roles, candidates, interview sessions, assessments, scores, reports, and invite links."
+---
+
+AceInt is organized around a small set of core objects that work together to represent your entire hiring workflow. Understanding how these objects relate to each other makes it easier to navigate the platform, interpret results, and build integrations with the API. This page defines each concept and explains how they connect.
+
+<AccordionGroup>
+  <Accordion title="Job Role">
+    A **Job Role** is the central organizing unit in AceInt. It represents a position you are actively hiring for and holds all the configuration that governs how candidates for that role are evaluated.
+
+    Every job role contains:
+
+    - **Role Title** — the name of the position (e.g., "Senior Backend Engineer").
+    - **Department** — the business unit this role belongs to (e.g., "Engineering", "Sales").
+    - **Interview Type** — whether candidates complete a Voice Interview, Coding Assessment, Behavioral Screen, or a combination.
+    - **Question Bank** — the set of questions the AI interviewer draws from during sessions for this role.
+    - **Scoring Rubric** — the evaluation dimensions and weights used to score candidate responses.
+    - **Invite Links** — all single-use and multi-use invite links generated for this role.
+
+    A single job role can have many candidates, many sessions, and many assessments linked to it. Archiving a role hides it from the active pipeline but preserves all historical data.
+
+    **API resource:** `role`
+  </Accordion>
+  <Accordion title="Candidate">
+    A **Candidate** is a person being evaluated for one or more job roles. Candidates do not need an AceInt account — they access their interviews and assessments entirely through invite links.
+
+    A candidate profile stores:
+
+    - **Name and email address**
+    - **Current pipeline status** (Invited, In Progress, Completed, Reviewed, Hired, or Rejected)
+    - **Source** — whether the candidate was added manually, via ATS sync, or through a multi-use invite link
+    - **Linked sessions and assessments** — all interview sessions and coding assessments associated with this candidate
+    - **Review notes** — free-text annotations added by your hiring team
+
+    A candidate can be linked to multiple job roles if they are being considered for more than one position. Each role link tracks its own status independently.
+
+    **API resource:** `candidate`
+  </Accordion>
+  <Accordion title="Interview Session">
+    An **Interview Session** is a single, time-bounded AI voice interview between AceInt's AI interviewer and one candidate. Sessions are created automatically when a candidate opens a voice interview invite link.
+
+    Each session captures:
+
+    - **Status** — Scheduled, Live, Completed, or Failed
+    - **Transcript** — a timestamped, speaker-attributed log of the full conversation
+    - **Audio Recording** — a playable audio file of the session
+    - **Duration** — total elapsed time of the conversation
+    - **Score** — the AI-generated evaluation produced after the session completes
+
+    Sessions are read-only after completion. If a session fails due to a technical issue, you can re-trigger it from the session detail page without requiring the candidate to use a new invite link.
+
+    **API resource:** `interview`
+  </Accordion>
+  <Accordion title="Assessment">
+    An **Assessment** is a structured evaluation task — either a coding challenge or a multiple-choice questionnaire — assigned to a candidate for a specific job role.
+
+    Coding assessments give candidates access to a browser-based IDE where they write and run code against a set of test cases. MCQ assessments present a series of timed questions with predefined answer choices.
+
+    Each assessment record includes:
+
+    - **Type** — Coding or MCQ
+    - **Status** — Pending, In Progress, Submitted, or Graded
+    - **Submission** — the candidate's code or selected answers
+    - **Test Case Results** — pass/fail output for each automated test (coding only)
+    - **AI Score** — the AI-generated overall grade and per-criterion feedback
+    - **Anti-Cheat Flags** — any detected violations such as tab switching or copy-paste events
+
+    **API resource:** `assessment`
+  </Accordion>
+  <Accordion title="Score">
+    A **Score** is an AI-generated evaluation attached to a completed interview session or a graded assessment. Scores are produced automatically and are not editable, though your team can add manual review notes alongside them.
+
+    A score object contains:
+
+    - **Overall Score** — a normalized value (0–100) representing the candidate's overall performance
+    - **Dimension Scores** — individual scores for each rubric dimension (e.g., Technical Accuracy: 82, Communication Clarity: 74)
+    - **Evidence** — transcript excerpts or code snippets that support each dimension score
+    - **AI Summary** — a short natural-language summary of the candidate's performance
+
+    Scores are linked to either an `interview` or an `assessment` object. You can retrieve scores individually or as part of a full session or assessment response.
+
+    **API resource:** `score`
+  </Accordion>
+  <Accordion title="Report">
+    A **Report** is an aggregated view of results across multiple candidates or sessions for a job role. Reports help you compare candidates, spot trends, and make data-driven hiring decisions.
+
+    AceInt generates four standard report types:
+
+    - **Pipeline Overview** — candidate counts by status across all roles or a filtered subset
+    - **Role Performance** — average scores and pass rates for a specific job role
+    - **Score Distribution** — histogram of overall and per-dimension scores across candidates
+    - **Time-to-Hire** — elapsed time from invite sent to final status for completed candidates
+
+    Reports can be filtered by date range, role, and department, and exported as CSV or PDF.
+
+    **API resource:** `report`
+  </Accordion>
+  <Accordion title="Invite Link">
+    An **Invite Link** is a URL you send to candidates to give them access to their interview or assessment. Candidates click the link to enter their session directly in the browser — no AceInt account or app installation required.
+
+    Invite links come in two varieties:
+
+    - **Single-Use** — valid for exactly one candidate. The link expires after the session is completed or after a configurable expiry window. Use these when you know exactly who you are inviting.
+    - **Multi-Use** — valid for many candidates. Each person who opens a multi-use link is registered as a new candidate and assigned a fresh session. Use these for sourcing campaigns or job board postings.
+
+    Both link types are scoped to a specific job role and carry the role's interview configuration with them. You can revoke a link at any time from the job role detail page.
+
+    **API resource:** `invite_link`
+  </Accordion>
+</AccordionGroup>
+
+## Data model relationships
+
+The table below summarizes how AceInt's core objects relate to each other.
+
+| Object | Belongs to | Has many |
+| --- | --- | --- |
+| Job Role | Organization | Candidates, Sessions, Assessments, Invite Links |
+| Candidate | Organization | Sessions, Assessments, Scores |
+| Interview Session | Job Role, Candidate | Scores, Transcripts, Recordings |
+| Assessment | Job Role, Candidate | Scores, Anti-Cheat Flags |
+| Score | Session or Assessment | Evidence items |
+| Report | Job Role (optional) | — |
+| Invite Link | Job Role | Candidates (multi-use) |
+
+<Callout title="Note">
+A candidate can be linked to more than one job role. Each role link creates an independent pipeline status and a separate set of sessions and assessments.
+</Callout>
+
+## Next steps
+
+<CardGrid cols={2}>
+  <Card icon="display" title="Platform Guide" description="Learn how to navigate the AceInt dashboard and manage your hiring pipeline" href="/platform/dashboard" />
+  <Card icon="terminal" title="REST API Reference" description="Explore every API endpoint and integrate AceInt into your own systems" href="/reference/overview" />
+  <Card icon="microphone" title="AI Interviews" description="Configure voice interview sessions for any job role" href="/interviews/overview" />
+  <Card icon="laptop-code" title="Assessments" description="Build and assign coding and MCQ assessments to candidates" href="/platform/assessments" />
+</CardGrid>

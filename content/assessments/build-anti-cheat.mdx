@@ -1,0 +1,190 @@
+# Anti-Cheat Monitoring Features
+
+AceInt's anti-cheat system monitors candidate sessions continuously without requiring camera access, browser extensions, or special hardware.
+
+Every signal is logged, timestamped, and attached to the candidate's submission so you can review the full picture alongside their score.
+
+The system is designed to surface suspicious behavior for human review—not to make automatic disqualification decisions. You stay in control of how you interpret and act on flagged sessions.
+
+---
+
+## Anti-Cheat Features
+
+### Tab-Switch Detection
+
+AceInt detects whenever a candidate navigates away from the assessment tab, including:
+
+- Switching to another browser tab
+- Switching to another application
+- Minimizing the browser window
+
+Each event is logged with:
+
+- Timestamp
+- Duration of the absence
+
+A small number of brief tab switches is common and not necessarily suspicious. Multiple long absences—especially those followed by unusually fast correct submissions—are stronger indicators that deserve review.
+
+---
+
+### Copy-Paste Monitoring
+
+AceInt records every paste event inside the code editor and MCQ answer fields.
+
+For each paste event, the platform logs:
+
+- Timestamp
+- Length of pasted content
+
+Short pastes such as URLs or variable names are generally harmless.
+
+Large pastes—especially those containing most of the submitted solution—may indicate externally sourced code.
+
+> **Note**
+>
+> AceInt records **paste events only**, not the clipboard contents themselves. This protects candidate privacy while still allowing hiring teams to identify suspicious behavior patterns.
+
+---
+
+### Time Tracking
+
+AceInt records the amount of time spent on every individual question.
+
+The anti-cheat report highlights:
+
+- Unusually fast correct submissions
+- Time anomalies
+- Comparison against the cohort average
+
+This helps identify candidates whose completion time is statistically unusual.
+
+---
+
+### Randomized Question Order
+
+When enabled, every candidate receives the assessment questions in a different order.
+
+Benefits include:
+
+- Reduces answer sharing
+- Prevents candidates from discussing questions by position
+- Works for coding and MCQ assessments
+
+---
+
+### Unique Test Case Variants
+
+For coding assessments, AceInt can generate unique hidden test cases for every candidate.
+
+The platform automatically modifies values such as:
+
+- Input data
+- Numeric constants
+- Variable names inside the problem statement
+
+As a result, leaked solutions created for one candidate are unlikely to pass another candidate's hidden tests.
+
+No manual work is required from the assessment creator.
+
+---
+
+## Enabling Anti-Cheat Settings
+
+Configure anti-cheat before publishing the assessment.
+
+**Assessment Settings → Anti-Cheat**
+
+| Feature | Default | Notes |
+|----------|---------|-------|
+| Tab-switch detection | On | Recommended for all assessments |
+| Copy-paste monitoring | On | Recommended for all assessments |
+| Time tracking | Always On | Cannot be disabled |
+| Randomized question order | Off | Recommended when multiple questions exist |
+| Unique test case variants | Off | Requires coding questions |
+
+> **Warning**
+>
+> Anti-cheat settings become locked after the first candidate starts the assessment.
+>
+> To change them later:
+>
+> 1. Close the assessment.
+> 2. Duplicate it.
+> 3. Update the anti-cheat settings.
+> 4. Invite candidates to the new assessment.
+
+---
+
+## Reviewing the Anti-Cheat Log
+
+### Step 1 — Open the Submission
+
+Navigate to:
+
+**Assessment → Results → Candidate Name**
+
+Open the candidate's submission.
+
+---
+
+### Step 2 — Open the Anti-Cheat Tab
+
+Inside the submission, select the **Anti-Cheat** tab.
+
+The timeline displays:
+
+- Tab switches
+- Duration of each switch
+- Paste events
+- Paste length
+- Time anomalies
+
+---
+
+### Step 3 — Review Flagged Events
+
+Flagged events are highlighted for review.
+
+A flag means:
+
+- The activity exceeded AceInt's review threshold.
+- It **does not** automatically indicate cheating.
+
+Always evaluate the anti-cheat timeline alongside the candidate's code and assessment performance.
+
+---
+
+## Flagging vs. Disqualification
+
+AceInt automatically flags suspicious behavior but **never automatically disqualifies candidates**.
+
+If your hiring team decides to disqualify someone:
+
+1. Open the candidate submission.
+2. Select **Actions → Disqualify**.
+3. Enter an internal reason.
+4. Confirm the action.
+
+The submission is excluded from the leaderboard.
+
+Disqualifications can be reversed at any time.
+
+---
+
+## Privacy Considerations
+
+AceInt's anti-cheat system is designed with candidate privacy in mind.
+
+The platform:
+
+- Does **not** request camera access.
+- Does **not** request microphone access.
+- Does **not** record the candidate's screen.
+- Does **not** store clipboard contents.
+- Records only the occurrence and size of paste events.
+
+Candidates are informed about monitoring before beginning the assessment.
+
+> **Tip**
+>
+> Mention activity monitoring in the candidate invitation email. Clear communication improves transparency, reduces anxiety, and helps candidates understand what is being monitored before they begin.
