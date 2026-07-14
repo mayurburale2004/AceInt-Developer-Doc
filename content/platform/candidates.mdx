@@ -1,0 +1,91 @@
+---
+title: "Manage Candidates in Your Hiring Pipeline"
+description: "Add, track, and manage candidates in AceInt — including manual entry, invite links, pipeline statuses, bulk actions, and filtering."
+---
+
+The Candidates page is where you manage every person in your hiring pipeline. You can view all candidates across every job role in one place, or filter down to candidates for a specific role. Each candidate has a profile that tracks their contact details, current pipeline status, linked sessions and assessments, and any review notes your team has added.
+
+## Candidate profiles
+
+A candidate profile is created automatically whenever a candidate enters AceInt — whether you add them manually, import them from your ATS, or they click a multi-use invite link. Every profile contains:
+
+- **Name and email address**
+- **Source** — Manual, ATS Sync, or Invite Link
+- **Pipeline status** — the candidate's current stage in the hiring process
+- **Linked role** — the job role this candidate is being evaluated for
+- **Sessions and assessments** — all interview sessions and coding assessments assigned to this candidate
+- **Scores** — overall and per-dimension scores from completed sessions or graded assessments
+- **Review notes** — free-text annotations added by any team member with access
+
+## Add a candidate manually
+
+1. **Open the Candidates page** — click **Candidates** in the left sidebar.
+2. **Click Add Candidate** — click **Add Candidate** in the top-right corner of the page.
+3. **Enter candidate details** — fill in the candidate's **Name**, **Email Address**, and select the **Job Role** you are evaluating them for.
+4. **Save** — click **Save**. The candidate profile is created with an **Invited** status. Generate an invite link from the profile page to send to the candidate.
+
+## Add candidates via invite link
+
+Generate a shareable invite link from any job role page and send it to candidates directly. When a candidate opens the link, their profile is created automatically.
+
+- **Single-use links** create one candidate record for the specific person you are inviting.
+- **Multi-use links** create a new candidate record for every person who opens the link. Use these for sourcing campaigns and job board postings.
+
+See [Job Roles](/platform/job-roles) for step-by-step instructions on generating invite links.
+
+## Candidate pipeline statuses
+
+Every candidate moves through a defined set of statuses as they progress through your hiring process.
+
+| Status | Meaning |
+| --- | --- |
+| **Invited** | The invite link has been generated or sent, but the candidate has not yet started their session |
+| **In Progress** | The candidate has opened the invite link and their session or assessment is currently active |
+| **Completed** | The session or assessment has finished and a score is available for review |
+| **Reviewed** | A team member has opened and reviewed the score report |
+| **Hired** | The candidate has been selected for the role |
+| **Rejected** | The candidate has been removed from consideration |
+
+You can manually move a candidate to any status at any time by opening their profile and selecting the new status from the **Status** dropdown.
+
+<Callout title="Note">
+Status changes are logged with a timestamp and the name of the team member who made the change. This audit trail is visible in the candidate profile's activity history.
+</Callout>
+
+## Filter and search candidates
+
+Use the filter bar at the top of the Candidates page to narrow the list by:
+
+- **Job Role** — show only candidates linked to a specific role
+- **Status** — filter by one or more pipeline statuses
+- **Source** — Manual, ATS Sync, or Invite Link
+- **Date Added** — a date range for when the candidate was created
+- **Score Range** — candidates whose overall score falls within a specified range
+
+Use the search box to find candidates by name or email address. Filters and search can be combined freely.
+
+## Bulk actions
+
+Select multiple candidates using the checkboxes on the left side of the list, then choose an action from the **Bulk Actions** menu:
+
+| Action | Description |
+| --- | --- |
+| **Update Status** | Move all selected candidates to a new pipeline status simultaneously |
+| **Send Reminder** | Re-send the invite link email to all selected candidates with **Invited** status |
+| **Export** | Download a CSV of the selected candidates including their scores and statuses |
+| **Reject** | Move all selected candidates to **Rejected** status |
+
+<Callout title="Warning">
+Bulk rejection cannot be undone in one step. Each candidate must be manually moved back to a previous status individually if needed.
+</Callout>
+
+## Add review notes
+
+Open a candidate profile and click the **Notes** tab to add free-text review notes. Notes are visible to all team members with access to the role and are timestamped with the author's name. Use notes to record interview impressions, flag questions for a follow-up round, or summarize a hiring committee discussion.
+
+<CardGrid cols={2}>
+  <Card icon="microphone" title="Interview Sessions" description="Access transcripts, recordings, and score reports for completed sessions" href="/platform/interviews" />
+  <Card icon="laptop-code" title="Assessments" description="Review coding submissions and MCQ results for each candidate" href="/platform/assessments" />
+  <Card icon="briefcase" title="Job Roles" description="Manage roles and generate invite links" href="/platform/job-roles" />
+  <Card icon="chart-bar" title="Reports" description="Compare candidates and analyze pipeline health" href="/platform/reports" />
+</CardGrid>

@@ -1,91 +1,129 @@
-# Ribbon Docs
+# AceInt Developer Docs
 
-A documentation site shell built with **Next.js 14 (App Router)**, **TypeScript**,
-**Tailwind CSS**, and **MDX** — matching the reference layout you shared: two-row sticky
-header (logo + search + tabs), grouped left sidebar, right-hand "On this page" TOC with
-scroll-spy, a page toolbar (Ask / Copy page / View markdown), working `Ctrl+K` search, and
-a full mobile drawer. Fully responsive from phone → tablet → desktop.
+Developer documentation site for **AceInt** — the AI-powered campus placement and interview platform. Built with Next.js App Router, MDX, and Tailwind CSS.
+
+🔗 Repo: [github.com/mayurburale2004/AceInt-Developer-Doc](https://github.com/mayurburale2004/AceInt-Developer-Doc)
+
+---
+
+## Tech stack
+
+- **Next.js 14** (App Router) + **React 18** + **TypeScript**
+- **MDX** via `next-mdx-remote` — content lives as `.mdx` files, compiled at request time
+- **Tailwind CSS** — utility-first styling, with a `.dark` class-based dark mode
+- **remark-gfm** — GitHub-flavored markdown (tables, strikethrough, etc.)
+- **rehype-slug** — auto-generates heading IDs for the "On this page" TOC
+- **rehype-pretty-code** — syntax-highlighted code blocks
+- **lucide-react** / **react-icons** — icon sets used across cards and UI
+
+---
 
 ## Getting started
 
 ```bash
+git clone https://github.com/mayurburale2004/AceInt-Developer-Doc.git
+cd AceInt-Developer-Doc
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000 — it redirects to `/introduction/overview`.
+Open [http://localhost:3000](http://localhost:3000) — it redirects into the docs.
 
-The `predev` / `prebuild` scripts auto-generate two things before every dev/build run:
-
-- Any missing `content/**/*.mdx` files (placeholders) from `lib/nav.ts`
-- `public/search-index.json` — the static search index used by `Ctrl+K`
-
-## Project structure
-
-```
-app/
-  layout.tsx              Root layout: TopNav, UIStateProvider, SearchModal
-  page.tsx                Redirects "/" to the first docs page
-  [tab]/[page]/page.tsx   Dynamic route: compiles the matching .mdx file
-components/
-  TopNav.tsx              Two-row sticky header (logo, search, tabs)
-  Sidebar.tsx             Grouped nav — fixed on desktop, drawer on mobile
-  TOC.tsx                 "On this page" with IntersectionObserver scroll-spy
-  PageToolbar.tsx         Ask / Copy page / View markdown row
-  PageFeedback.tsx        "Is this page helpful?" widget
-  SearchModal.tsx         Ctrl+K / Cmd+K / "/" search, arrow-key navigation
-  UIStateProvider.tsx     Shared state: mobile drawer + search modal
-content/
-  <tab-slug>/<page-slug>.mdx   One file per page, with frontmatter (title, description)
-lib/
-  nav.ts                  Single source of truth for tabs, sidebar groups, and URLs
-  content.ts              Reads .mdx files, extracts headings for the TOC
-scripts/
-  generate-content.ts     Fills in placeholder .mdx files for any nav entry missing one
-  build-search-index.ts   Builds public/search-index.json from content + nav
-```
-
-## Adding a new page
-
-1. Add an entry to the right group in `lib/nav.ts`:
-   ```ts
-   { title: "My New Page", slug: "my-new-page" }
-   ```
-2. Run `npm run gen:content` to scaffold `content/<tab>/my-new-page.mdx`, or write it
-   yourself with frontmatter:
-   ```md
-   ---
-   title: "My New Page"
-   description: "One-line summary."
-   ---
-
-   ## A heading
-
-   Your content...
-   ```
-3. Run `npm run gen:search` (or just `npm run dev`, which does this automatically) so the
-   page shows up in search.
-
-No other wiring is needed — the sidebar, tab bar, and TOC are all generated from `nav.ts`
-and the MDX headings.
-
-## Customizing
-
-- **Brand name / logo** — edit `components/TopNav.tsx` and `components/Sidebar.tsx`
-  (currently a text wordmark; swap in an `<img>` or `<svg>` if you have a logo file).
-- **Accent color** — `tailwind.config.ts` → `theme.extend.colors.accent` (currently
-  `#2563eb`).
-- **Tabs & sidebar taxonomy** — entirely driven by `lib/nav.ts`.
-- **"Ask about this page" / "Ask AI" buttons** — currently decorative in
-  `components/PageToolbar.tsx` and `components/TopNav.tsx`. Wire them to a real backend
-  by replacing the `disabled` buttons with a fetch call to your AI endpoint.
-
-## Production build
+### Production build
 
 ```bash
 npm run build
 npm run start
 ```
 
-This was verified end-to-end: `next build` compiles all routes with no type errors, and
-the search flow (`Ctrl+K` → type → `Enter` → navigate) was tested with Playwright.
+---
+
+## Project structure
+
+├── app/
+│   ├── [tab]/[page]/       # Dynamic route — renders any content/<tab>/<page>.mdx
+│   │   └── page.tsx
+│   ├── layout.tsx          # Root layout — theme provider, fonts, metadata
+│   ├── globals.css         # Tailwind base + CSS color variables (light/dark)
+│   └── not-found.tsx
+│
+├── components/
+│   ├── DocsShell.tsx        # Page layout: sidebar + content + TOC
+│   ├── Sidebar.tsx           # Left nav, driven by lib/nav.ts
+│   ├── TOC.tsx                # Right "On this page" scroll-spy
+│   ├── TopNav.tsx             # Header: logo, search, tabs
+│   ├── SearchModal.tsx        # Ctrl+K search
+│   ├── PageToolbar.tsx        # Copy page / view markdown row
+│   ├── PageFeedback.tsx       # "Is this page helpful?" thumbs
+│   ├── UpNext.tsx              # Prev/next page nav
+│   ├── SiteFooter.tsx
+│   ├── Card.tsx / CardGrid.tsx # Reusable MDX components for "next steps" grids
+│   ├── Accordion.tsx
+│   ├── Callout.tsx
+│   ├── CodeTabs.tsx
+│   ├── ThemeProvider.tsx / ThemeToggle.tsx
+│   └── UIStateProvider.tsx    # Mobile menu + search open state
+│
+├── content/
+│   └── <tab>/
+│       └── <page>.mdx         # Actual doc content, one file per page
+│
+├── lib/
+│   ├── nav.ts                  # Tab/group/page structure — powers sidebar + routing
+│   └── content.ts              # Reads raw MDX, extracts headings for TOC
+│
+├── public/
+│   └── assets/
+│       └── AceInt.ico          # Logo / favicon
+│
+└── tailwind.config.ts
+
+---
+
+## Adding a new doc page
+
+1. Create a new `.mdx` file under `content/<tab>/<page-slug>.mdx`:
+
+```mdx
+   ---
+   title: "Your Page Title"
+   sidebarTitle: "Short Nav Label"
+   description: "One-line summary shown under the title."
+   ---
+
+   Your content here. Standard markdown, plus these components:
+
+   <CardGrid>
+     <Card icon="rocket" title="Related page" description="..." href="/tab/other-page" />
+   </CardGrid>
+```
+
+2. Register the page in **`lib/nav.ts`** — add it to the relevant tab/group so it shows up in the sidebar and in prev/next navigation.
+
+3. That's it — no route file to create. `app/[tab]/[page]/page.tsx` picks it up automatically via `generateStaticParams()`.
+
+### Available MDX components
+
+| Component | Use |
+|---|---|
+| `<Card icon="..." title="..." description="..." href="..." />` | Single nav/link card |
+| `<CardGrid>...</CardGrid>` | Grid wrapper for multiple `<Card>`s |
+| `<Callout>...</Callout>` | Tip/note/warning box |
+| `<Accordion title="...">...</Accordion>` | Collapsible section |
+| `<CodeTabs><CodeTab label="Python">...</CodeTab></CodeTabs>` | Multi-language code block |
+
+See `components/Card.tsx` for the full list of supported `icon` values.
+
+---
+
+## Notes for contributors
+
+- **Two URL segments max.** Routes are `/tab/page` only — `/assessments/build/coding-challenges` will 404. Flatten to `/assessments/build-coding-challenges` instead.
+- **Don't duplicate the H1.** `page.tsx` renders `frontmatter.title` as the page `<h1>` automatically — don't start your MDX body with a `# Heading`.
+- **Dark mode** is class-based (`.dark` on `<html>`). Stick to the existing color tokens (`ink-*`, `gray-*`, `accent-*`, `blue-600`) rather than raw hex values so new content adapts automatically.
+
+---
+
+## License
+
+Internal documentation for the AceInt platform. Not currently open source.

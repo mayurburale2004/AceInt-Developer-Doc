@@ -1,0 +1,203 @@
+# Build Multiple Choice Questions
+
+Multiple Choice Questions (MCQs) are the fastest way to evaluate a candidate's conceptual knowledge.
+
+Since MCQs are graded instantly using the configured answer key, candidates receive their scores immediately after submitting the assessment.
+
+To create an MCQ:
+
+**Assessment (Draft) → Add Question → Multiple Choice**
+
+---
+
+## Question Text
+
+Write questions that are:
+
+- Clear
+- Direct
+- Unambiguous
+
+Avoid:
+
+- Double negatives
+- Vague wording
+- Multiple interpretations
+
+A question should have:
+
+- One correct answer (single-select), or
+- A clearly defined set of correct answers (multi-select).
+
+Keep questions concise.
+
+If you need to include code, insert a syntax-highlighted code block.
+
+Example:
+
+```java
+public int add(int a, int b) {
+    return a + b;
+}
+```
+
+---
+
+## Answer Options
+
+Each question supports **2–6 answer choices**.
+
+For every option:
+
+- Enter the option text.
+- Mark whether it is correct.
+
+### Option Text
+
+The text displayed to candidates.
+
+Best practices:
+
+- Keep all options similar in length.
+- Use consistent wording.
+- Avoid making the correct answer obviously longer than the others.
+
+### Correct Answer
+
+Mark each correct option.
+
+- Single-select → exactly one correct answer.
+- Multi-select → mark every correct option.
+
+> **Note**
+>
+> Three or four options generally produce the highest-quality questions.
+>
+> Two-option questions (True/False) have a 50% guessing probability and should be used sparingly.
+
+---
+
+## Single vs Multi-Select
+
+By default, MCQ questions allow only one correct answer.
+
+Enable **Multi-Select** if multiple answers should be selected.
+
+When enabled:
+
+- Candidates see checkboxes instead of radio buttons.
+- The interface displays **"Select all that apply."**
+- Partial credit can be configured.
+
+Use multi-select only when partial knowledge is meaningful.
+
+Example:
+
+> Which of the following are valid HTTP redirect status codes?
+
+---
+
+## Explanations
+
+Each answer may include an explanation.
+
+Explanations become visible **after the assessment**.
+
+Good explanations:
+
+- Explain why the correct answer is correct.
+- Explain why incorrect options are incorrect.
+- Help candidates learn from mistakes.
+
+Aim for **1–3 sentences** per explanation.
+
+---
+
+## Point Values
+
+Configure the score for each question.
+
+The default value is **1 point**.
+
+Increase the point value for questions covering:
+
+- Critical concepts
+- Advanced topics
+- High-impact skills
+
+---
+
+## Partial Credit
+
+Multi-select questions support multiple scoring modes.
+
+| Mode | Description |
+|------|-------------|
+| All-or-Nothing | Full marks only if every correct option is selected and no incorrect option is chosen. |
+| Per Correct Option | Award points for each correct selection and subtract points for incorrect selections. |
+| No Penalty | Award points for correct selections without deducting marks for incorrect selections. |
+
+> **Tip**
+>
+> Use **All-or-Nothing** when complete understanding is required.
+>
+> Use **Per Correct Option** when partial knowledge should still earn credit.
+
+---
+
+## Randomize Answer Options
+
+Enable **Randomize Option Order** to shuffle answer choices for every candidate.
+
+Benefits include:
+
+- Reduces answer sharing.
+- Prevents candidates from saying "Option B is correct."
+- Makes assessments more secure.
+
+> **Warning**
+>
+> Do not randomize options that have a natural sequence.
+>
+> Examples:
+>
+> - `< 10`
+> - `10–100`
+> - `> 100`
+>
+> Reordering these options can confuse candidates.
+
+---
+
+## Categories
+
+Assign each question to a category.
+
+Examples:
+
+- Python Fundamentals
+- Java
+- SQL
+- React
+- System Design
+- Data Structures
+
+Categories appear in assessment reports, allowing recruiters to identify strengths and weaknesses by topic.
+
+Each question belongs to **one category**.
+
+Maintain consistent naming.
+
+Good examples:
+
+- Python Fundamentals
+- SQL
+- React
+
+Avoid inconsistent naming such as:
+
+- Python
+- python
+- Python 3
+
+Using consistent categories produces clearer reporting and analytics.

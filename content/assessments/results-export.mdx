@@ -1,0 +1,196 @@
+# Export Assessment Results
+
+AceInt's export feature allows you to download candidate performance data for reporting, analysis, ATS integration, or long-term record keeping.
+
+Exports are generated on demand and always reflect the latest assessment data. If scores or manual adjustments change, simply generate a new export.
+
+---
+
+## CSV Format
+
+Exported CSV files use:
+
+- UTF-8 encoding
+- Comma-separated values
+- Header row
+- One row per candidate submission
+
+### Standard Fields
+
+| Field | Description |
+|--------|-------------|
+| `candidate_name` | Candidate's full name |
+| `candidate_email` | Candidate's email address |
+| `overall_score` | Final score (0–100) including manual adjustments |
+| `pass_fail` | Pass, Fail, or None |
+| `time_taken_seconds` | Total assessment duration |
+| `submitted_at` | Submission timestamp (UTC, ISO 8601) |
+| `anti_cheat_flags` | Total anti-cheat flags |
+| `tab_switches` | Number of tab switch events |
+| `paste_events` | Number of paste events |
+
+---
+
+### Question-Level Fields
+
+Each question adds additional columns.
+
+| Field | Description |
+|--------|-------------|
+| `q{n}_score` | Question score |
+| `q{n}_time_seconds` | Time spent on the question |
+| `q{n}_correctness` | Correctness score (Coding only) |
+| `q{n}_quality` | Code Quality score |
+| `q{n}_efficiency` | Algorithmic Efficiency score |
+| `q{n}_completeness` | Completeness score |
+| `q{n}_manual_adjustment` | Manual score adjustment |
+
+> **Note**
+>
+> `{n}` represents the question number in the assessment.
+>
+> The column order remains consistent across future exports.
+
+---
+
+## Export a Single Assessment
+
+To export one assessment:
+
+1. Open the assessment.
+2. Navigate to **Results**.
+3. Click **Export**.
+4. Select **Full Results CSV**.
+
+The download starts immediately.
+
+If filters are currently applied:
+
+- **Full Results CSV** exports only the filtered candidates.
+- **All Submissions CSV** exports every submission.
+
+---
+
+## Export Multiple Assessments
+
+To export results for every assessment associated with a role:
+
+1. Open **Roles**.
+2. Select the desired role.
+3. Click **Export**.
+4. Choose **All Assessment Results**.
+5. Select the assessments to include.
+6. Click **Download CSV**.
+
+Cross-assessment exports include two additional columns:
+
+| Field | Description |
+|--------|-------------|
+| `role_name` | Role associated with the assessment |
+| `assessment_name` | Assessment name |
+
+> **Tip**
+>
+> Cross-assessment exports are useful for comparing candidate performance across multiple interview rounds or assessment versions.
+
+---
+
+## Export Using Webhooks
+
+AceInt can automatically send submission data to your systems.
+
+### Configure a Webhook
+
+1. Go to **Settings → Integrations → Webhooks**.
+2. Click **Add Webhook**.
+3. Enter your endpoint URL.
+4. Select the **submission.graded** event.
+5. Save the webhook.
+
+Whenever grading finishes, AceInt sends a **POST** request containing the submission data.
+
+The webhook payload includes:
+
+- Candidate information
+- Assessment scores
+- AI grading results
+- Anti-cheat data
+- Test case results
+- AI annotations
+
+See the **Webhook Reference** for the complete payload schema.
+
+---
+
+## Export Using the API
+
+Retrieve assessment submissions programmatically.
+
+```http
+GET /v1/assessments/{assessment_id}/submissions
+Authorization: Bearer {api_key}
+```
+
+The API returns a paginated JSON response.
+
+To receive CSV instead:
+
+```text
+GET /v1/assessments/{assessment_id}/submissions?format=csv
+```
+
+To export all submissions for a role:
+
+```http
+GET /v1/roles/{role_id}/submissions
+Authorization: Bearer {api_key}
+```
+
+Refer to the API documentation for pagination, filtering, and authentication details.
+
+---
+
+## Data Retention
+
+AceInt stores:
+
+- Candidate submissions
+- Assessment scores
+- Code submissions
+- AI grading reports
+- Anti-cheat logs
+
+These records remain available while your organization account is active.
+
+If earlier deletion is required:
+
+### Delete a Single Submission
+
+**Candidate Report → Actions → Delete Submission**
+
+### Delete All Submissions
+
+**Assessment Settings → Danger Zone → Delete All Submissions**
+
+### Delete Candidate Data
+
+**Settings → Privacy → Candidate Data Requests**
+
+> **Warning**
+>
+> Deleting submissions is permanent.
+>
+> Export any required data before performing deletion.
+
+---
+
+## Privacy
+
+AceInt does **not** sell or share candidate data with third parties.
+
+All submission data is:
+
+- Encrypted in transit
+- Encrypted at rest
+
+For complete information, refer to the AceInt Privacy Policy.

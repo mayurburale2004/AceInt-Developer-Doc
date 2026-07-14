@@ -1,0 +1,87 @@
+---
+title: "Quickstart Guide — Run Your First AI Interview with AceInt"
+description: "A step-by-step guide to creating a job role, inviting a candidate, running an AI interview, and reviewing scored results — all in under five minutes."
+---
+
+AceInt automates the entire early-stage hiring loop — from posting a role to receiving a scored candidate report — without requiring candidates to create an account. This guide walks you through the full flow end to end so you can run your first AI interview in under five minutes.
+
+1. **Sign up or log in** — Open [app.aceint.ai](https://app.aceint.ai) in your browser. Click **Sign Up** and enter your work email address, then follow the verification link. Existing users click **Log In** to reach the dashboard.
+
+   <Callout title="Note">
+   If your organization uses SSO, ask your admin for the company-specific login URL.
+   </Callout>
+
+2. **Create a job role**
+   1. From the dashboard, click **Create Job Role** in the Quick Actions panel.
+   2. Fill in **Role Title**, **Department**, and **Interview Type** (Voice Interview, Coding Assessment, or Behavioral Screen).
+   3. Click **Save Role**.
+
+3. **Configure the interview**
+
+   - **Question Bank** — select a pre-built bank or create a custom one.
+   - **Scoring Criteria** — choose evaluation dimensions (Technical Accuracy, Communication Clarity, Problem-Solving).
+   - **Interview Duration** — set the maximum session length.
+   - **Anti-Cheat** — enable tab-switch and copy-paste monitoring for coding assessments.
+
+   Click **Save Configuration** when done.
+
+   <Callout title="Tip">
+   Start with a pre-built question bank and the default scoring rubric. You can refine criteria after reviewing your first candidates.
+   </Callout>
+
+4. **Generate and send a candidate invite link**
+   1. Open the role and click **Invite Candidate**.
+   2. Choose **Single-Use** (one candidate) or **Multi-Use** (sourcing campaigns).
+   3. Copy the link and send it via email or any messaging channel.
+
+   The candidate appears as **Invited** in the pipeline immediately.
+
+5. **Candidate completes the interview** — When the candidate opens the invite link, AceInt guides them through the session in the browser — no downloads or account required. Session status moves from **Scheduled → Live → Completed** automatically.
+
+6. **Review the results** — Open the completed session to access:
+
+   - **Transcript** — timestamped, speaker-attributed conversation log
+   - **Audio Recording** — full session playback
+   - **Score Report** — AI-generated per-dimension scores with transcript evidence
+
+   <Callout title="Tip">
+   Use **Share** to send a view-only result link to a hiring manager — no AceInt account required.
+   </Callout>
+
+## Create an interview via API
+
+Automate job creation and invite generation with the AceInt REST API.
+
+```bash
+# Create a candidate
+curl --request POST \
+  --url https://api.aceint.ai/v1/candidates \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{"name": "Alex Johnson", "email": "alex@example.com", "role_id": "role_01hx4k"}'
+```
+
+```bash
+# Create and schedule an interview
+curl --request POST \
+  --url https://api.aceint.ai/v1/interviews \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{"candidate_id": "cnd_01HABC", "role_id": "role_01hx4k", "type": "technical"}'
+```
+
+```json
+{
+  "data": {
+    "id": "int_01HXYZ123",
+    "status": "scheduled",
+    "invite_url": "https://interview.aceint.ai/i/01HXYZ123",
+    "created_at": "2024-06-01T10:01:00Z"
+  }
+}
+```
+
+<CardGrid cols={2}>
+  <Card icon="book-open" title="Core Concepts" description="Understand the AceInt data model — job roles, candidates, sessions, and scores." href="/platform/concepts" />
+  <Card icon="code" title="REST API Reference" description="Explore every endpoint available in the AceInt API." href="/reference/overview" />
+</CardGrid>

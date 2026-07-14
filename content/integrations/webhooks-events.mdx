@@ -1,0 +1,78 @@
+---
+title: "AceInt Webhook Events: Full Reference for All Event Types"
+description: "Full reference for all six AceInt webhook event types — what triggers each event, when to subscribe, and how events are ordered in a typical session."
+---
+
+AceInt emits webhook events at key points in the candidate lifecycle. Each event represents a discrete state change and carries a JSON payload describing what happened. Subscribe only to the events your integration needs to avoid processing unnecessary traffic.
+
+For details on payload structure, see the [Webhook Payload](/integrations/webhooks-payload) reference. For signature verification, see [Webhook Security](/integrations/webhooks-security).
+
+## Event reference
+
+| Event | Triggered when |
+| --- | --- |
+| `candidate.created` | A new candidate record is created in AceInt |
+| `candidate.updated` | A candidate's profile or status is modified |
+| `interview.started` | A candidate opens and begins an interview session |
+| `interview.completed` | A candidate submits and finishes an interview session |
+| `assessment.submitted` | A candidate submits a completed assessment |
+| `assessment.scored` | AceInt finishes scoring a submitted assessment |
+
+### `candidate.created`
+
+Fires when a new candidate record is created in AceInt — either via ATS sync, the REST API, or a manual invite from the dashboard.
+
+**When to subscribe:** Use this event to mirror candidate records in an external system, trigger a welcome email from your own platform, or start an audit trail entry.
+
+### `candidate.updated`
+
+Fires when any field on a candidate record changes — including name, email, status, or assigned interview template.
+
+**When to subscribe:** Use this event to keep a downstream system in sync with changes made to candidates in AceInt, or to detect when a candidate's status moves to `invited`, `in_progress`, or `completed`.
+
+<Callout title="Note">
+`candidate.updated` fires for every field change, including minor metadata updates. If your handler is performing an expensive operation on each event, check the `data.changed_fields` array in the payload to determine whether the change is relevant before acting.
+</Callout>
+
+### `interview.started`
+
+Fires when a candidate clicks their interview link and the session begins. This event is emitted at most once per interview, when the first question is served.
+
+**When to subscribe:** Use this event to update your ATS pipeline stage to reflect that a candidate is actively in an interview, or to notify a hiring manager that a session is underway.
+
+### `interview.completed`
+
+Fires when a candidate submits their interview and the session is closed. This is the primary event for most post-interview workflows.
+
+**When to subscribe:** Use this event to trigger result processing, push initial feedback to your ATS, notify a recruiting coordinator, or advance a candidate to the next pipeline stage. Note that the `interview.completed` event fires before scoring is finalized — use `assessment.scored` if you need the final numerical score.
+
+### `assessment.submitted`
+
+Fires when a candidate submits a standalone assessment (as distinct from an interview). Submission means the candidate has finished entering their responses, but scoring may not yet be complete.
+
+**When to subscribe:** Use this event to record that a candidate has fulfilled the assessment requirement, update a dashboard status, or log a completion timestamp for SLA tracking purposes.
+
+### `assessment.scored`
+
+Fires after AceInt finishes scoring a submitted assessment. This may be a few seconds after `assessment.submitted` for automated scoring, or longer if any portion of the assessment requires manual review.
+
+**When to subscribe:** Use this event whenever you need the final score — for ATS feedback, reporting dashboards, or downstream decision workflows. This is the authoritative completion event for assessments.
+
+## Event ordering
+
+In a typical candidate flow, events fire in the following order:
+
+1. `candidate.created`
+2. `candidate.updated` _(when the candidate is assigned an interview or assessment)_
+3. `interview.started` _(or `assessment.submitted` for standalone assessments)_
+4. `interview.completed`
+5. `assessment.submitted`
+6. `assessment.scored`
+
+<Callout title="Warning">
+Event delivery order is not guaranteed across network hops. Your handler must not assume that `interview.completed` always arrives before `assessment.submitted`. Use the `timestamp` field in each payload to reconstruct chronological order, and design your handler to be idempotent so it can safely process out-of-order or duplicate deliveries.
+</Callout>
+
+## Subscribing to events
+
+Register your endpoint and select events in **Settings → Webhooks → Add Endpoint**. You can update the subscribed events for an existing endpoint at any time from the same page.

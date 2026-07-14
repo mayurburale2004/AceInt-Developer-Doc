@@ -1,0 +1,42 @@
+---
+title: "Connect Your ATS to AceInt — Integrations Overview"
+description: "Sync candidates from your applicant tracking system into AceInt and automatically push interview results back — no manual data entry required."
+---
+
+AceInt's ATS integrations create a bidirectional sync between your applicant tracking system and the AceInt platform. When you connect an ATS, AceInt can automatically import candidates at the right pipeline stage, run interviews and assessments, and push structured results back to your ATS as feedback forms or stage updates.
+
+## How bidirectional sync works
+
+The sync operates in two directions:
+
+**Inbound (ATS → AceInt):** When a candidate reaches a configured pipeline stage in your ATS, AceInt automatically creates a candidate record and schedules the appropriate interview or assessment. No manual invitation is needed.
+
+**Outbound (AceInt → ATS):** Once an interview or assessment is complete, AceInt packages the results and pushes them back to the originating ATS record — typically as a structured feedback form or a stage transition, depending on what the ATS supports.
+
+## Candidate matching
+
+AceInt matches candidates across systems using **email address** as the primary identifier. When a candidate is pushed from your ATS, AceInt looks for an existing record with the same email. If a match is found, AceInt updates that record rather than creating a duplicate.
+
+<Callout title="Note">
+Make sure candidate email addresses are accurate and consistent in your ATS before enabling sync. Mismatched or missing emails are the most common cause of duplicate records.
+</Callout>
+
+## Supported platforms
+
+<CardGrid cols={2}>
+  <Card icon="leaf" title="Greenhouse" description="Connect via OAuth and authorize AceInt as a Harvest API partner. Supports stage-based triggers and structured feedback forms." href="/integrations/ats-greenhouse" />
+  <Card icon="layers" title="Lever" description="Connect with a Lever API key. Map pipeline stages and return results as Lever feedback forms." href="/integrations/ats-lever" />
+  <Card icon="building" title="Workday" description="Connect using your Workday tenant ID and credentials. Requires involvement from your Workday administrator." href="/integrations/ats-workday" />
+  <Card icon="wrench" title="Custom ATS" description="Use the AceInt REST API to build a custom integration with any ATS that exposes an API." href="/integrations/ats-custom" />
+</CardGrid>
+
+## Before you connect
+
+- Confirm your AceInt plan includes ATS integration access.
+- Identify the pipeline stages at which you want AceInt to be triggered.
+- Ensure candidate records in your ATS include valid email addresses.
+- Have your ATS admin credentials or API keys ready, depending on the platform.
+
+<Callout title="Tip">
+Start with a single job role or pipeline stage in a test environment before rolling out the integration to your full candidate pipeline.
+</Callout>

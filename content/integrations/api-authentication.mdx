@@ -1,0 +1,66 @@
+---
+title: "AceInt API Authentication: Keys, Scopes, and Bearer Tokens"
+description: "Generate an AceInt API key, understand permission scopes, and authenticate every request with a Bearer token in the Authorization header."
+---
+
+AceInt uses API keys to authenticate requests to the REST API. Every request must include a valid API key in the `Authorization` header. Keys are tied to your AceInt workspace and carry specific permission scopes that control what the key can do.
+
+## Getting your API key
+
+1. **Open API Keys settings** — in your AceInt dashboard, navigate to **Settings → API Keys**.
+2. **Generate a new key** — click **Generate New Key**. Give the key a descriptive name — for example, the name of the application or integration that will use it.
+3. **Choose a scope** — select the permission scope appropriate for your use case. See the scopes table below.
+4. **Copy and store the key securely** — your key is shown only once. Copy it immediately and store it in a secrets manager, environment variable, or other secure credential store. If you lose the key, you must rotate it.
+
+<Callout title="Warning">
+Never commit API keys to source control or include them in client-side code. Treat your API key like a password.
+</Callout>
+
+## Scopes
+
+Each API key carries one of three permission scopes. Grant only the scope your integration actually needs.
+
+| Scope | What it allows |
+| --- | --- |
+| `read` | Read candidates, interviews, assessments, and results. Cannot create or modify any resource. |
+| `write` | All `read` permissions plus the ability to create and update candidates, interviews, and assessments. Cannot manage workspace settings or users. |
+| `admin` | Full access including workspace settings, user management, integration configuration, and API key management. Use with caution. |
+
+<Callout title="Note">
+A key with `write` scope cannot generate new API keys or modify billing settings. Use `admin` scope only for trusted internal tooling.
+</Callout>
+
+## Passing your key
+
+Include your API key as a Bearer token in the `Authorization` header of every request:
+
+```http
+Authorization: Bearer YOUR_API_KEY
+```
+
+### cURL example
+
+```bash
+curl --request GET \
+  --url https://api.aceint.ai/v1/candidates \
+  --header "Authorization: Bearer YOUR_API_KEY" \
+  --header "Content-Type: application/json"
+```
+
+Replace `YOUR_API_KEY` with the key you generated. The `Content-Type: application/json` header is required for all requests that include a request body.
+
+## Rotating a key
+
+Rotate a key when you suspect it has been compromised, when an employee who had access to it leaves, or as part of a regular credential rotation policy.
+
+1. **Generate a replacement key** — in **Settings → API Keys**, generate a new key with the same scope as the key you are replacing.
+2. **Update all consumers** — replace the old key with the new key in every application, environment variable, and secrets store that uses it.
+3. **Revoke the old key** — once all consumers are updated, return to **Settings → API Keys** and click **Revoke** next to the old key. Revocation is immediate and permanent.
+
+## Security best practices
+
+- **Use environment variables.** Store your API key in an environment variable such as `ACEINT_API_KEY` and reference it at runtime. Never hard-code it in source files.
+- **Apply the principle of least privilege.** Use a `read` scope key for integrations that only need to fetch data. Reserve `admin` keys for internal tools that genuinely need full access.
+- **Rotate keys regularly.** Establish a rotation cadence — quarterly is a reasonable baseline for most teams.
+- **Audit key usage.** Review the API activity log in **Settings → API Keys → Activity** to detect unexpected usage patterns.
+- **Use separate keys per integration.** Assign one key per application or service so you can revoke a single key without disrupting other integrations.

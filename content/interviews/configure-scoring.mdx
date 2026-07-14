@@ -1,0 +1,68 @@
+---
+title: "Configure Scoring Rubrics for AI Interviews | AceInt"
+description: "Configure evaluation dimensions, weights, and passing thresholds to get consistent, structured candidate scores from every AI interview."
+---
+
+A scoring rubric defines how the AI evaluates candidate responses. Each rubric contains one or more evaluation dimensions, a weight for each dimension, and an optional passing threshold. AceInt applies the rubric automatically during post-session processing, producing both per-question scores and an overall composite score.
+
+Setting up a rubric that reflects your actual hiring bar is the key step between running interviews and getting hiring-ready signal from the results.
+
+## Default dimensions
+
+Every new rubric starts with four default dimensions. You can adjust weights, rename dimensions, or remove any of them.
+
+| Dimension | What It Measures | Default Weight |
+| --- | --- | --- |
+| Technical Accuracy | Correctness and depth of technical knowledge | 30% |
+| Communication Clarity | How clearly and concisely the candidate communicates | 25% |
+| Problem-Solving | Structured approach to analysis and reasoning | 25% |
+| Relevance | How directly the answer addresses the question asked | 20% |
+
+<Callout title="Note">
+Weights must sum to 100%. AceInt normalizes weights automatically if you add or remove dimensions, but review the final distribution before saving.
+</Callout>
+
+## Adding custom dimensions
+
+Add dimensions that reflect competencies specific to your role or team values.
+
+1. **Open Rubrics** — navigate to **Interviews → Configure → Scoring Rubrics** and open an existing rubric or click **New Rubric**.
+2. **Add a Dimension** — click **Add Dimension**, enter a name (for example, _Customer Empathy_ or _Data Literacy_), and write a short description. The description is used by the AI to calibrate scoring for that dimension.
+3. **Set the Weight** — enter a percentage weight. Adjust the weights of existing dimensions to maintain a 100% total.
+4. **Save the Rubric** — click **Save**. The rubric is now available to attach to any interview configuration.
+
+## Configuring dimension weights
+
+Weights control how much each dimension contributes to the overall score. Increase the weight of dimensions that matter most for your role.
+
+For example, a customer-facing sales role might weight Communication Clarity at 40% and Technical Accuracy at 10%, while a senior engineering role might reverse those proportions.
+
+<Callout title="Tip">
+Start with the default weights for your first few interviews. Once you have results, compare dimension scores against your hiring outcomes to calibrate which dimensions are most predictive — then adjust weights accordingly.
+</Callout>
+
+## Setting a passing threshold
+
+A passing threshold marks candidates as **Pass** or **Review** in the results dashboard. Set the threshold as a percentage of the total possible score.
+
+To set a threshold:
+
+1. Open the rubric editor.
+2. Scroll to **Passing Threshold** and enter a value (for example, `70`).
+3. Save the rubric.
+
+Candidates who score at or above the threshold are marked **Pass**. Candidates below the threshold are marked **Review**, indicating they need human evaluation before a decision is made.
+
+<Callout title="Warning">
+Leaving the threshold blank disables Pass/Fail labeling — all candidates show a raw score only. Set a threshold before using AI interviews as a filtering gate in your pipeline.
+</Callout>
+
+## Per-question vs. overall scoring
+
+AceInt scores at two levels simultaneously:
+
+**Per-question scores** — Each question receives a score on every applicable dimension. These appear in the score report alongside the AI's written reasoning for that score. Use per-question scores to pinpoint specific knowledge gaps or strengths.
+
+**Overall score** — The weighted average of all per-question dimension scores, expressed as a percentage. This is the primary signal displayed on the candidate list view and used for Pass/Fail labeling.
+
+You can review both levels in the [score report](/interviews/results-scores).

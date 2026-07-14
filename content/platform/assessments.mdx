@@ -1,0 +1,121 @@
+---
+title: "View and Manage Coding and MCQ Assessments"
+description: "Browse assessment submissions, review AI grades and test results, inspect anti-cheat flags, bulk export results, and retry or delete assessments."
+---
+
+The Assessments page gives you a consolidated view of every coding challenge and multiple-choice questionnaire that has been assigned to candidates across your job roles. You can inspect individual submissions in detail, review AI-generated grades alongside automated test case results, act on anti-cheat flags, and export data for offline analysis.
+
+## Assessments list
+
+The assessments list displays all assessments in reverse-chronological order by submission time. Each row shows:
+
+- **Candidate name** and linked **Job Role**
+- **Assessment type** — Coding or MCQ
+- **Status** — Pending, In Progress, Submitted, or Graded
+- **Overall AI Score** — shown once grading is complete
+- **Anti-Cheat Flags** — a warning icon appears if any violations were detected
+
+Use the search box to find assessments by candidate name or role. Apply filters to narrow by type, status, date range, or score range.
+
+## Assessment statuses
+
+| Status | Description |
+| --- | --- |
+| **Pending** | The assessment has been assigned but the candidate has not yet started it |
+| **In Progress** | The candidate is actively working on the assessment right now |
+| **Submitted** | The candidate submitted their work; AI grading is in progress |
+| **Graded** | AI grading is complete and scores are available for review |
+
+## Assessment detail
+
+Click any assessment row to open the detail page. The detail page is organized by assessment type.
+
+<CodeTabs>
+  <CodeTab label="Coding Assessment">
+
+The coding assessment detail page shows everything submitted by the candidate and the results of automated and AI evaluation.
+
+**Submission panel**
+
+- The candidate's full code submission displayed with syntax highlighting
+- Language used (e.g., Python, JavaScript, Go)
+- Time spent on the challenge
+- Submission timestamp
+
+**Test Case Results**
+
+Each test case is listed with its input, expected output, actual output, and a pass/fail badge. The summary line shows how many test cases passed out of the total.
+
+**AI Score**
+
+The AI score panel shows:
+
+- **Overall Score** (0–100)
+- **Per-criterion scores** — e.g., Correctness, Code Quality, Efficiency, Edge Case Handling
+- **AI Feedback** — a natural-language explanation of the score, referencing specific lines or patterns in the candidate's code
+
+**Anti-Cheat Flags**
+
+If anti-cheat monitoring is enabled for the role, this panel lists any detected violations:
+
+- Tab switch events (time, duration)
+- Copy-paste events (character count, timestamp)
+- Window blur events
+
+<Callout title="Warning">
+Anti-cheat flags are signals, not conclusions. Review the flag details alongside the candidate's submission before making a decision.
+</Callout>
+
+  </CodeTab>
+  <CodeTab label="MCQ Assessment">
+
+The MCQ assessment detail page shows each question, the candidate's selected answer, the correct answer, and whether the response was marked correct.
+
+**Summary panel**
+
+- Total questions answered
+- Score (correct answers / total questions, expressed as a percentage)
+- Time taken
+
+**Question-by-question breakdown**
+
+Each row shows the question text, the available options, the candidate's selection highlighted, the correct answer highlighted, and a correct/incorrect badge. Unanswered questions are marked separately.
+
+**AI Score**
+
+In addition to the raw percentage score, the AI provides an overall proficiency assessment and identifies knowledge areas where the candidate performed strongly or struggled.
+
+  </CodeTab>
+</CodeTabs>
+
+## Bulk export
+
+Export assessment data across multiple candidates for offline review or integration with your own reporting tools.
+
+1. **Select assessments** — use the checkboxes on the left side of the assessments list to select the records you want to export. Click the header checkbox to select all assessments matching your current filters.
+2. **Open Bulk Actions** — click **Bulk Actions** above the list and select **Export**.
+3. **Choose export format** — select **CSV** for structured data (candidate name, role, score, test case results, flag count) or **PDF** for a formatted report suitable for sharing with hiring stakeholders.
+4. **Download** — click **Download**. AceInt prepares the export and either downloads it immediately or sends a download link to your email if the dataset is large.
+
+## Delete an assessment
+
+You can delete an assessment record if it was created in error or if the candidate was disqualified before completing it.
+
+1. **Open the assessment** — click the assessment row to open its detail page.
+2. **Click the overflow menu** — click the **⋯** menu in the top-right corner of the detail page and select **Delete Assessment**.
+3. **Confirm deletion** — type the candidate's name in the confirmation dialog and click **Delete**. The record is permanently removed.
+
+<Callout title="Warning">
+Deleting an assessment permanently removes the submission, test case results, AI scores, and anti-cheat flags. This action cannot be undone.
+</Callout>
+
+## Retry a failed assessment
+
+If a candidate's assessment failed to grade due to a system error, a **Retry Grading** button appears on the detail page. Click it to resubmit the assessment for AI evaluation. The candidate's submission is not affected.
+
+<CardGrid cols={2}>
+  <Card icon="users" title="Candidates" description="View candidate profiles and pipeline statuses" href="/platform/candidates" />
+  <Card icon="microphone" title="Interviews" description="Review AI voice interview sessions and score reports" href="/platform/interviews" />
+  <Card icon="briefcase" title="Job Roles" description="Configure assessment types and scoring rubrics per role" href="/platform/job-roles" />
+  <Card icon="chart-bar" title="Reports" description="Analyze assessment scores across all candidates" href="/platform/reports" />
+</CardGrid>
