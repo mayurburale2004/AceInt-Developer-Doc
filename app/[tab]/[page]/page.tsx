@@ -95,4 +95,5 @@ export default async function DocsPage({
       {next && <UpNext title={next.title} href={next.href} />}
     </DocsShell>
   );
+  
 }
