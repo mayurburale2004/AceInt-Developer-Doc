@@ -59,13 +59,19 @@ export default async function DocsPage({
     source: raw,
     options: {
       parseFrontmatter: true,
-      mdxOptions: {
-        remarkPlugins: [remarkGfm],
-        rehypePlugins: [
-          rehypeSlug,
-          [rehypePrettyCode, { theme: "github-light", keepBackground: false }],
-        ],
+    mdxOptions: {
+  remarkPlugins: [remarkGfm],
+  rehypePlugins: [
+    rehypeSlug,
+    [
+      rehypePrettyCode,
+      {
+        theme: "github-light",
+        keepBackground: false,
       },
+    ],
+  ] as any,
+},
     },
     components: { Card, CardGrid, CodeTabs, CodeTab, Callout, Accordion, AccordionGroup },
   });
