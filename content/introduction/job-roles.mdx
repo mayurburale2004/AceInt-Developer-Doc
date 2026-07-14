@@ -1,0 +1,82 @@
+---
+title: "Create and Manage Job Roles in AceInt"
+description: "Learn how to create, configure, edit, and archive job roles in AceInt, including interview type, question bank, and scoring rubric setup."
+---
+
+A job role in AceInt is the organizing container for everything related to hiring for a specific position. It holds the interview configuration, question bank, scoring rubric, and the full list of candidates being evaluated for that role. Every interview session and assessment in AceInt belongs to exactly one job role.
+
+## What a job role contains
+
+Before you create a role, it helps to understand what you will be configuring. A job role is made up of four parts:
+
+- **Role definition** — the title, department, and a short description of the position
+- **Interview type** — whether candidates complete a voice interview, a coding assessment, a behavioral screen, or a combination
+- **Question bank** — the pool of questions the AI interviewer draws from (voice and behavioral) or the challenge set (coding)
+- **Scoring rubric** — the evaluation dimensions and their relative weights, used by the AI to produce per-criterion scores
+
+## Create a job role
+
+1. **Open the Job Roles page** — click **Job Roles** in the left sidebar, then click **New Job Role** in the top-right corner of the page.
+2. **Fill in role details** — complete the following fields in the role definition form:
+
+   | Field | Description |
+   | --- | --- |
+   | **Role Title** | The name of the position you are hiring for (e.g., "Staff Product Designer") |
+   | **Department** | The business unit responsible for this role (e.g., "Product", "Engineering") |
+   | **Description** | A brief summary of the role shown to candidates at the start of their session |
+   | **Interview Type** | Voice Interview, Coding Assessment, Behavioral Screen, or a combination |
+
+3. **Choose or create a question bank** — select a question bank from the pre-built library, or click **Create Custom Bank** to build your own. Custom banks let you add, reorder, and weight individual questions.
+
+   <Callout title="Tip">
+   Use a pre-built bank to launch quickly. You can swap the bank out later without affecting candidates who have already completed their sessions.
+   </Callout>
+
+4. **Configure the scoring rubric** — choose the evaluation dimensions that matter for this role. Common dimensions include:
+
+   - **Technical Accuracy** — correctness and depth of technical answers
+   - **Communication Clarity** — how clearly the candidate articulates their thinking
+   - **Problem-Solving** — structured approach to novel challenges
+   - **Culture Fit** — alignment with stated values (behavioral screen only)
+
+   Assign a weight to each dimension. Weights must add up to 100. The AI uses these weights to calculate the candidate's overall score.
+
+5. **Save the role** — click **Save Role**. The role is created in **Active** status and appears immediately in the Job Roles list. You can now generate invite links and add candidates.
+
+## Edit a job role
+
+Open the role from the Job Roles list and click **Edit** in the top-right corner of the role detail page. You can update the role title, department, description, question bank, and scoring rubric at any time.
+
+<Callout title="Warning">
+Changing the question bank or scoring rubric on an active role does not affect sessions that have already been completed or are currently live. New changes apply only to sessions that start after you save.
+</Callout>
+
+## Archive a job role
+
+When hiring for a role is complete, archive it to remove it from the active pipeline view while preserving all historical data. Open the role, click the **⋯** overflow menu, and select **Archive Role**.
+
+Archived roles are hidden from the default Job Roles list. Toggle the **Show Archived** filter to view them. You can reactivate an archived role at any time by opening it and clicking **Reactivate**.
+
+<Callout title="Note">
+Archiving a role does not delete any candidates, sessions, scores, or assessments linked to that role. All data remains accessible.
+</Callout>
+
+## Associate a question bank and scoring rubric
+
+You can update the question bank and rubric independently of the main role form. From the role detail page:
+
+- Click the **Question Bank** tab to swap to a different pre-built bank, edit a custom bank, or create a new one.
+- Click the **Scoring Rubric** tab to adjust dimension weights, add new dimensions, or remove ones that are not relevant to the role.
+
+Changes take effect for new sessions only.
+
+## View linked candidates
+
+The **Candidates** tab on any job role page lists every candidate associated with that role, along with their current pipeline status and overall score (if a session is complete). Use the search and filter controls to find specific candidates, or click **Export** to download the list as a CSV.
+
+<CardGrid cols={2}>
+  <Card icon="user-plus" title="Invite Candidates" description="Add candidates manually or via invite link" href="/platform/candidates" />
+  <Card icon="microphone" title="Interview Sessions" description="Monitor and review AI interview sessions for this role" href="/platform/interviews" />
+  <Card icon="laptop-code" title="Assessments" description="View coding and MCQ assessment submissions" href="/platform/assessments" />
+  <Card icon="chart-bar" title="Reports" description="Analyze role performance and score distributions" href="/platform/reports" />
+</CardGrid>

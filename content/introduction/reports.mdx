@@ -1,0 +1,106 @@
+---
+title: "Hiring Reports and Analytics in AceInt"
+description: "Explore AceInt's hiring analytics — pipeline overview, role performance, score distribution, and time-to-hire reports. Filter, export, and share results."
+---
+
+The Reports page gives you aggregate visibility into your hiring pipeline beyond the individual candidate or session level. Use it to understand how a role is performing, how scores are distributed across applicants, and how efficiently your team is moving candidates through the funnel. All reports can be filtered, exported, and shared with stakeholders outside AceInt.
+
+## Report types
+
+AceInt generates four standard report types. Select the report you want from the **Report Type** dropdown at the top of the Reports page.
+
+<AccordionGroup>
+  <Accordion title="Pipeline Overview">
+    The Pipeline Overview report shows a summary of every candidate in your pipeline, broken down by status. Use it to understand the overall health of your hiring funnel at a glance.
+
+    **What it shows:**
+
+    - Candidate counts in each status lane (Invited, In Progress, Completed, Reviewed, Hired, Rejected)
+    - Conversion rates between consecutive stages (e.g., Completed → Reviewed, Reviewed → Hired)
+    - A trend line showing total candidates added over the selected date range
+
+    **Best for:** Weekly pipeline reviews, identifying bottlenecks (e.g., many candidates stuck in Completed without being reviewed).
+  </Accordion>
+  <Accordion title="Role Performance">
+    The Role Performance report focuses on a single job role and shows how candidates for that role are performing in interviews and assessments.
+
+    **What it shows:**
+
+    - Average overall score across all completed sessions for the role
+    - Average score per rubric dimension
+    - Pass rate — percentage of candidates who met or exceeded the configured passing threshold
+    - Score trend over time (line chart by week or month)
+
+    **Best for:** Evaluating whether your question bank and rubric are producing meaningful signal, or identifying if a role's bar is set too high or too low.
+  </Accordion>
+  <Accordion title="Score Distribution">
+    The Score Distribution report shows a histogram of overall scores and, optionally, per-dimension scores across all selected candidates and roles.
+
+    **What it shows:**
+
+    - Frequency distribution of overall scores in configurable bucket sizes (e.g., 0–10, 10–20, … 90–100)
+    - Per-dimension distribution panels (one panel per rubric dimension)
+    - Median, mean, and standard deviation annotations on each histogram
+
+    **Best for:** Spotting whether your candidate pool is clustering around a narrow score range, which may indicate overly easy or overly difficult question banks.
+  </Accordion>
+  <Accordion title="Time-to-Hire">
+    The Time-to-Hire report measures elapsed time across pipeline stages for candidates who have reached **Hired** or **Rejected** status.
+
+    **What it shows:**
+
+    - Median and average time (in days) from **Invited** to **Completed**
+    - Median and average time from **Completed** to a final status (**Hired** or **Rejected**)
+    - Total end-to-end median time from first invite to final decision
+    - Breakdown by job role and department
+
+    **Best for:** Identifying where candidates spend the most time waiting, and tracking improvements to review turnaround over time.
+  </Accordion>
+</AccordionGroup>
+
+## Filter reports
+
+Every report supports the same set of filters. Apply any combination to narrow the data shown.
+
+| Filter | Options |
+| --- | --- |
+| **Date Range** | Custom date picker, or presets: Last 7 days, Last 30 days, Last 90 days, This quarter, All time |
+| **Job Role** | One or more roles from a searchable multi-select dropdown |
+| **Department** | One or more departments |
+| **Interview Type** | Voice Interview, Coding Assessment, Behavioral Screen |
+| **Candidate Status** | One or more pipeline statuses |
+
+Click **Apply Filters** to refresh the report with your selection. Click **Reset** to clear all active filters.
+
+<Callout title="Tip">
+Save a filtered report configuration by clicking **Save View** and giving it a name. Saved views appear in the sidebar under **Reports → Saved Views** for quick access.
+</Callout>
+
+## Export a report
+
+You can export any report to CSV or PDF for offline analysis or stakeholder presentations.
+
+1. **Open a report** — select the report type and apply your desired filters.
+2. **Click Export** — click the **Export** button in the top-right corner of the report page.
+3. **Choose format** — select **CSV** for raw data suitable for spreadsheets and BI tools, or **PDF** for a formatted visual report suitable for stakeholder sharing.
+4. **Download or email** — click **Download Now** to save the file immediately, or click **Send to Email** to have AceInt send the file to your registered email address. Large exports (over 5,000 rows) are always delivered by email.
+
+## Share a report
+
+Send a live, view-only version of any report to stakeholders who do not have AceInt accounts.
+
+1. **Open a report** — select the report type and apply filters as needed.
+2. **Click Share** — click **Share** in the top-right corner of the report page.
+3. **Configure the share link** — set an optional **expiry date** for the link. If you leave this blank, the link remains active until you revoke it manually.
+4. **Copy and distribute the link** — click **Copy Link** and share it via email or your team's collaboration tool. Recipients see the report with your current filters applied and can interact with the visualizations, but cannot change the underlying data or access any other part of AceInt.
+
+<Callout title="Note">
+Share links reflect live data — the report updates as new sessions complete and new candidates are added. If you want to share a static snapshot, export the report as a PDF first.
+</Callout>
+
+<CardGrid cols={2}>
+  <Card icon="display" title="Dashboard" description="See real-time metrics and pipeline activity" href="/platform/dashboard" />
+  <Card icon="users" title="Candidates" description="Manage individual candidate records and statuses" href="/platform/candidates" />
+  <Card icon="microphone" title="Interviews" description="Access session-level transcripts and scores" href="/platform/interviews" />
+  <Card icon="laptop-code" title="Assessments" description="Review coding and MCQ submissions and grades" href="/platform/assessments" />
+</CardGrid>

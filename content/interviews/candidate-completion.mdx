@@ -1,0 +1,66 @@
+---
+title: "Interview Completion: What Happens When the Session Ends"
+description: "Learn how the AI closes the interview, what candidates see on the completion screen, how long processing takes, and if candidates receive their scores."
+---
+
+When the AI interviewer has asked all questions in the question bank (or the session time limit is reached), it closes the session with a brief, consistent closing flow. After that, the candidate sees a completion screen and the recording and transcript are processed automatically.
+
+## AI closing flow
+
+The AI does not end abruptly. When the final question and any follow-ups are complete, it delivers a structured closing:
+
+1. **Signals completion** — _"That's the last question. Thank you for taking the time to interview today."_
+2. **Sets expectations** — _"The hiring team will review your responses and be in touch with next steps."_
+3. **Invites final remarks (optional)** — If configured, the AI asks _"Is there anything you'd like to add before we wrap up?"_ giving the candidate a chance to provide closing context.
+4. **Ends the session** — _"Take care, and good luck with your application."_
+
+The closing script can be lightly customized (for example, referencing your company name) in **Invite Settings → Closing Message**.
+
+## Candidate completion screen
+
+After the session ends, the candidate sees a completion screen in their browser. The screen displays:
+
+- A confirmation that the interview is complete.
+- Your company logo (if configured).
+- The welcome/thank-you message from your **Invite Settings**.
+- Next-steps text (configurable) — for example, _"Our team reviews all interviews within 3 business days."_
+
+If you have configured a **post-session redirect URL**, the candidate is automatically redirected to that page after a short delay instead of seeing the default AceInt completion screen. See [Invite Flow](/interviews/configure-invite-flow) for configuration details.
+
+## Results processing time
+
+After the session ends, AceInt processes the audio recording, generates the full transcript, and runs scoring against the rubric. Processing time depends on session length:
+
+| Session Length | Typical Processing Time |
+| --- | --- |
+| Under 20 min | 2 – 5 minutes |
+| 20 – 40 min | 5 – 10 minutes |
+| Over 40 min | 10 – 20 minutes |
+
+<Callout title="Note">
+Processing runs automatically — you do not need to trigger it manually. During high-traffic periods, processing may take slightly longer. The session status in your dashboard shows **Processing** until the results are ready.
+</Callout>
+
+## Team notification
+
+Once processing is complete, AceInt sends an email notification to the interview owner (the team member who created the interview) and any additional reviewers added in **Invite Settings → Notifications**. The notification includes:
+
+- Candidate name (if collected in the pre-interview form).
+- Overall score and Pass/Fail label.
+- A direct link to the full score report.
+
+## Whether candidates receive their scores
+
+By default, candidates do **not** receive their scores. The score report is visible only to authenticated team members in the AceInt dashboard.
+
+You can change this behavior per interview in **Invite Settings → Candidate Score Visibility**:
+
+| Setting | What the Candidate Sees |
+| --- | --- |
+| Hidden (default) | Completion screen only — no score information. |
+| Overall Score Only | Their overall percentage score is displayed on the completion screen. |
+| Full Report | The full score report, including dimension breakdown and AI reasoning, is shared with the candidate via a link on the completion screen. |
+
+<Callout title="Warning">
+Enabling **Full Report** visibility means candidates can see the AI's reasoning notes for each answer. Review the rubric dimensions and their descriptions carefully before enabling this setting to ensure the language is appropriate for candidate-facing use.
+</Callout>

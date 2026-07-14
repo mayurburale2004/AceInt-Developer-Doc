@@ -1,0 +1,166 @@
+---
+title: "Verify AceInt Webhooks with HMAC-SHA256 Signatures"
+description: "Verify AceInt webhook signatures using HMAC-SHA256 to confirm every request is genuine — with code examples in Node.js and Python."
+---
+
+Any server on the internet can send a POST request to your webhook endpoint. Without signature verification, your handler has no way to confirm that an incoming request actually came from AceInt. AceInt signs every webhook delivery so you can verify its authenticity before processing the payload.
+
+## How signing works
+
+When AceInt sends a webhook, it computes an **HMAC-SHA256** signature of the raw request body using the signing secret associated with your endpoint. The signature is included in the `X-AceInt-Signature` HTTP header with the format:
+
+```http
+X-AceInt-Signature: sha256=<hex-encoded-signature>
+```
+
+To verify the request, you compute the same HMAC-SHA256 signature on your side using the raw request body and your endpoint's signing secret, then compare the result to the value in the header. If the two values match, the request is authentic.
+
+<Callout title="Warning">
+Always use the **raw request body** — the exact bytes received — when computing the signature. Parsing the body as JSON and re-serializing it before hashing will produce a different signature and cause verification to fail, even for legitimate requests.
+</Callout>
+
+## Verification examples
+
+<CodeTabs>
+  <CodeTab label="Node.js">
+
+```javascript
+const crypto = require("crypto");
+
+const ACEINT_WEBHOOK_SECRET = process.env.ACEINT_WEBHOOK_SECRET;
+
+function verifyWebhookSignature(rawBody, signatureHeader) {
+  if (!signatureHeader || !signatureHeader.startsWith("sha256=")) {
+    return false;
+  }
+
+  const receivedSignature = signatureHeader.slice("sha256=".length);
+
+  const expectedSignature = crypto
+    .createHmac("sha256", ACEINT_WEBHOOK_SECRET)
+    .update(rawBody)
+    .digest("hex");
+
+  const receivedBuffer = Buffer.from(receivedSignature, "hex");
+  const expectedBuffer = Buffer.from(expectedSignature, "hex");
+
+  if (receivedBuffer.length !== expectedBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(receivedBuffer, expectedBuffer);
+}
+
+const express = require("express");
+const app = express();
+
+app.post(
+  "/webhooks/aceint",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const signature = req.headers["x-aceint-signature"];
+
+    if (!verifyWebhookSignature(req.body, signature)) {
+      console.error("Invalid webhook signature — request rejected.");
+      return res.status(401).send("Unauthorized");
+    }
+
+    const event = JSON.parse(req.body.toString());
+    console.log("Received event:", event.event, event.id);
+
+    res.status(200).send("OK");
+
+    handleEvent(event); // your business logic here
+  }
+);
+```
+
+Use `express.raw()` rather than `express.json()` for your webhook route so that Express does not parse the body before you can hash it. Parsing JSON first discards the original byte sequence.
+
+  </CodeTab>
+  <CodeTab label="Python">
+
+```python
+import hashlib
+import hmac
+import os
+from flask import Flask, request, abort
+
+ACEINT_WEBHOOK_SECRET = os.environ["ACEINT_WEBHOOK_SECRET"].encode("utf-8")
+
+app = Flask(__name__)
+
+
+def verify_webhook_signature(raw_body: bytes, signature_header: str) -> bool:
+    if not signature_header or not signature_header.startswith("sha256="):
+        return False
+
+    received_signature = signature_header[len("sha256="):]
+
+    expected_signature = hmac.new(
+        ACEINT_WEBHOOK_SECRET,
+        msg=raw_body,
+        digestmod=hashlib.sha256,
+    ).hexdigest()
+
+    return hmac.compare_digest(expected_signature, received_signature)
+
+
+@app.route("/webhooks/aceint", methods=["POST"])
+def aceint_webhook():
+    raw_body = request.get_data()
+    signature_header = request.headers.get("X-AceInt-Signature", "")
+
+    if not verify_webhook_signature(raw_body, signature_header):
+        print("Invalid webhook signature — request rejected.")
+        abort(401)
+
+    event = request.get_json()
+    print(f"Received event: {event['event']} {event['id']}")
+
+    process_event_async(event)
+
+    return "OK", 200
+
+
+def process_event_async(event: dict) -> None:
+    pass
+```
+
+Call `request.get_data()` before `request.get_json()` in Flask. `get_data()` returns the raw bytes needed for hashing. After you have verified the signature, parse the body with `request.get_json()` for processing.
+
+  </CodeTab>
+</CodeTabs>
+
+## Finding your webhook secret
+
+Each endpoint you register in AceInt has its own unique signing secret. To find it:
+
+1. Go to **Settings → Webhooks** in your AceInt dashboard.
+2. Click the endpoint whose secret you need.
+3. Under **Signing Secret**, click **Reveal** to display the value.
+
+Copy the secret and store it as an environment variable in your application. Never hard-code it in source files or commit it to a repository.
+
+<Callout title="Tip">
+The signing secret is shown in full only immediately after you create the endpoint. If you did not copy it at creation time, you can rotate it to generate a new one.
+</Callout>
+
+## Rotating your webhook secret
+
+Rotate the signing secret if you suspect it has been compromised, if a team member with access to it leaves, or as part of a regular credential rotation process.
+
+1. **Generate a new secret** — in **Settings → Webhooks**, click your endpoint and then click **Rotate Secret**. AceInt generates a new secret but keeps delivering events with the **old** secret until you confirm the rotation.
+2. **Update your application** — replace the old secret with the new one in your application's environment variables or secrets manager. Deploy the change.
+3. **Confirm the rotation** — return to **Settings → Webhooks** and click **Confirm Rotation**. From this point, AceInt signs all new deliveries with the new secret. The old secret is invalidated immediately.
+
+<Callout title="Warning">
+Confirming the rotation before updating your application will cause all incoming webhook verifications to fail until you deploy the new secret. Complete Step 2 before Step 3.
+</Callout>
+
+## Additional security recommendations
+
+- **Always verify signatures.** Never skip verification in production, even during debugging. Use a separate test endpoint for development.
+- **Reject non-HTTPS traffic.** Your webhook endpoint should be reachable only over HTTPS to prevent man-in-the-middle interception of payloads in transit.
+- **Check the timestamp.** Consider rejecting events where `timestamp` is more than five minutes in the past to mitigate replay attacks.
+- **Respond before processing.** Return `200 OK` immediately after verification, then handle the event asynchronously. Slow handlers that time out will trigger AceInt's retry logic and may result in duplicate deliveries.

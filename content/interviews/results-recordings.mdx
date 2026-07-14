@@ -1,0 +1,95 @@
+---
+title: "Access and Manage AI Interview Recordings | AceInt"
+description: "Play back interview recordings with transcript sync, download as MP3 or WAV, share time-limited links, and manage your recording retention settings."
+---
+
+AceInt records the audio of every AI interview session by default. Recordings let you hear exactly how a candidate sounded — their confidence, pacing, and nuance — beyond what a transcript alone conveys. Every recording is synchronized to the transcript so you can click any line of text and jump directly to that moment in the audio.
+
+## Where to find recordings
+
+Access recordings from the session detail view:
+
+1. Navigate to **Interviews** in the left navigation.
+2. Click the completed session you want to review.
+3. Select the **Recording** tab in the session detail panel.
+
+The recording is available as soon as processing completes (typically within 5 to 10 minutes of session end). If the recording is still processing, the tab shows a **Processing** status with an estimated completion time.
+
+## In-browser playback with transcript sync
+
+The built-in audio player loads the recording directly in your browser — no download required. The player includes:
+
+- **Play / Pause / Seek** controls.
+- **Playback speed** — 0.75×, 1×, 1.25×, 1.5×, 2×.
+- **Volume control**.
+- **Transcript sync panel** — displayed alongside the player. As the audio plays, the current turn in the transcript is highlighted. Click any turn in the transcript panel to jump the audio to that point.
+
+Use transcript sync when reviewing a specific question's answer — click the question turn in the transcript to jump directly to that moment rather than scrubbing through the full recording.
+
+<Callout title="Tip">
+Use 1.25× or 1.5× playback speed for routine review. Switch to 1× when assessing communication clarity, confidence, or tone — nuances in delivery are easier to hear at normal speed.
+</Callout>
+
+## Downloading recordings
+
+Download the recording in two audio formats:
+
+<CodeTabs>
+  <CodeTab label="MP3">
+
+A compressed audio file suitable for sharing, archiving, or attaching to a candidate record in your ATS. Smaller file size.
+
+Click **Download → MP3** in the recording player header.
+
+  </CodeTab>
+  <CodeTab label="WAV">
+
+An uncompressed audio file with higher fidelity. Use WAV if you need to run additional audio analysis or maintain an archival-quality record.
+
+Click **Download → WAV** in the recording player header.
+
+  </CodeTab>
+</CodeTabs>
+
+<Callout title="Note">
+Downloaded files are named automatically using the format `[role]-[session-id]-[date].mp3` (or `.wav`). Rename the file before attaching it to a candidate record to keep your ATS organized.
+</Callout>
+
+## Sharing a recording link
+
+Share a time-limited link to the in-browser recording player with a colleague or hiring manager:
+
+1. Open the **Recording** tab.
+2. Click **Share Recording**.
+3. Copy the generated link or enter an email address to send it directly from AceInt.
+4. Set an expiry for the link — options are 7 days, 30 days, or custom.
+
+Recipients access the recording in a read-only player view. They can play, pause, and use transcript sync, but cannot download the file or access any other part of your AceInt account.
+
+## Retention window
+
+AceInt retains recordings for **90 days** from the session date by default. After 90 days, the recording is permanently deleted. The transcript is retained separately for 365 days.
+
+<Callout title="Warning">
+Download recordings before the 90-day window closes if you need them for longer-term candidate records, compliance documentation, or audit purposes. AceInt cannot recover deleted recordings.
+</Callout>
+
+To extend the default retention window, navigate to **Account Settings → Data & Privacy → Recording Retention** and set a custom retention period (up to 365 days).
+
+## Disabling recording for privacy-sensitive roles
+
+For roles where recording candidates is legally restricted or where your organization's privacy policy prohibits it, you can disable recording on a per-interview basis:
+
+1. Open the interview setup wizard or the settings of an existing interview.
+2. Navigate to **Interview Settings → Recording**.
+3. Toggle **Record Session** to **Off**.
+
+When recording is disabled:
+
+- No audio file is stored at any point during or after the session.
+- Scoring is based on the transcript alone (transcription still occurs in real time during the session).
+- The **Recording** tab is hidden in the session detail view.
+
+<Callout title="Note">
+Disabling recording does not affect transcription or scoring. Scores may have slightly lower confidence indicators for sessions without a recording, since the audio verification step in post-processing is skipped.
+</Callout>

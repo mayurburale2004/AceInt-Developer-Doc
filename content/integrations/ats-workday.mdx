@@ -1,0 +1,62 @@
+---
+title: "Connect Workday to AceInt via Tenant Credentials Setup"
+description: "Integrate AceInt with Workday using tenant credentials to sync candidates and return results — requires coordination with your Workday administrator."
+---
+
+The Workday integration connects AceInt to your Workday tenant using your organization's tenant ID and a dedicated integration account. Once connected, AceInt imports candidates from Workday at configured recruitment stages and pushes interview and assessment results back as structured data in your Workday environment.
+
+## What you need before you start
+
+- Your **Workday Tenant ID** (for example, `acme_preview1`)
+- A **dedicated Workday integration system user (ISU)** account with the appropriate security group permissions — your Workday administrator must create this
+- An AceInt account with ATS integration access enabled
+
+<Callout title="Note">
+The Workday integration requires active involvement from your Workday administrator. Workday's security model means that certain configuration steps — such as creating an integration system user and assigning security groups — must be performed by someone with Workday tenant admin access.
+</Callout>
+
+## Connect Workday to AceInt
+
+1. **Work with your Workday administrator** — ask them to:
+   - Create a dedicated **Integration System User (ISU)** for AceInt in Workday (**System → Security → Integration System Users**).
+   - Assign the ISU to a security group that has at minimum: `Recruiting` (view and modify), `Worker Data: Workers` (view), `Staffing` (view).
+   - Generate an **API client** credential for the ISU and share the client ID, client secret, and your Workday tenant URL with you securely.
+
+2. **Open Integrations settings in AceInt** — go to **Settings → Integrations → Workday**.
+3. **Enter your Workday credentials** — fill in:
+
+   - **Tenant ID:** your Workday tenant identifier (for example, `acme_preview1`)
+   - **Tenant URL:** your Workday base URL (for example, `https://wd2.myworkday.com/acme`)
+   - **Client ID:** the OAuth client ID from the ISU API client credential
+   - **Client Secret:** the corresponding client secret
+
+   Click **Save Credentials**.
+
+4. **Configure field mappings** — map Workday data fields to AceInt candidate fields. At minimum, map candidate first name, last name, and email address; job requisition ID (for role mapping); and recruiting stage name (used as the sync trigger). Click **Save Mappings**.
+5. **Configure sync triggers** — select the Workday recruiting stage or stages at which AceInt should import a candidate. For example, if you trigger AceInt at the _Pre-Screen_ stage, any candidate who moves into that stage is automatically pulled into AceInt.
+6. **Test the sync** — click **Test Connection**. AceInt authenticates with your Workday tenant and performs a read check to confirm that the ISU credentials are valid and that the required data fields are accessible. Review the test results and resolve any permission errors flagged before proceeding.
+7. **Enable the integration** — toggle the integration to **Active**. Candidates moving through configured Workday recruiting stages are now synced to AceInt automatically.
+
+## How results are returned
+
+After a candidate completes an interview or assessment in AceInt, the results are written back to the corresponding Workday candidate application. Your Workday administrator can configure a custom report or EIB (Enterprise Interface Builder) integration to surface AceInt results within Workday recruiting dashboards.
+
+<Callout title="Tip">
+Work with your Workday administrator to create a custom **Calculated Field** in Workday that displays the AceInt overall score alongside standard recruiting metrics.
+</Callout>
+
+## Candidate matching
+
+AceInt matches Workday candidates to existing AceInt records using **email address**. Confirm that every candidate record in Workday includes a valid email address in the primary contact field before enabling the sync.
+
+## Credential rotation
+
+When the Workday ISU API client credential expires or is rotated:
+
+1. Your Workday administrator regenerates the client secret in Workday.
+2. Update the client secret in **Settings → Integrations → Workday → Edit Credentials**.
+3. Click **Test Connection** to confirm the new credentials work before saving.
+
+<Callout title="Warning">
+Entering incorrect credentials will immediately suspend the sync. No candidates will be imported or have results returned until valid credentials are saved and verified.
+</Callout>

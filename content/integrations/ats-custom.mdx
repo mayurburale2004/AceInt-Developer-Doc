@@ -1,0 +1,165 @@
+---
+title: "Build a Custom ATS Integration Using the AceInt REST API"
+description: "Build a custom ATS integration with any platform using the AceInt REST API — import candidates, trigger interviews, and retrieve results programmatically."
+---
+
+If your applicant tracking system is not one of the natively supported connectors, you can build a fully custom integration using the AceInt REST API. The integration pattern is straightforward: push candidates from your ATS to AceInt, trigger an interview or assessment, and retrieve results either via webhook or by polling the API. From there, you push those results back into your ATS.
+
+This page walks through the four-step integration pattern with example code you can adapt for your environment.
+
+## Prerequisites
+
+- An AceInt API key with `write` scope — see [API Authentication](/integrations/api-authentication)
+- An ATS that exposes an API or webhook capability for reading candidate data and writing results
+- A publicly accessible HTTPS endpoint on your server if you plan to receive results via webhook (recommended)
+
+## Integration pattern
+
+The custom integration follows four steps.
+
+### 1. Push the candidate to AceInt
+
+When a candidate reaches the relevant stage in your ATS, send a `POST` request to `/candidates` to create a candidate record in AceInt.
+
+```http
+POST https://api.aceint.ai/v1/candidates
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "email": "candidate@example.com",
+  "first_name": "Taylor",
+  "last_name": "Rivera",
+  "external_id": "ats-candidate-98765",
+  "source": "my-ats"
+}
+```
+
+AceInt returns a `candidate_id` in the response. Store this ID — you need it in the next step. If a candidate with the same email already exists, AceInt returns the existing record rather than creating a duplicate.
+
+### 2. Create an interview or assessment
+
+Use the `candidate_id` from Step 1 to create an interview linked to the appropriate AceInt template.
+
+```http
+POST https://api.aceint.ai/v1/interviews
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "candidate_id": "cand_abc123",
+  "template_id": "tmpl_backend_eng_v2",
+  "notify_candidate": true
+}
+```
+
+Setting `notify_candidate` to `true` causes AceInt to send the candidate an email with their interview link. The response includes an `interview_id` you can use to track the session.
+
+### 3. Receive results
+
+You have two options for receiving results once the candidate completes the interview:
+
+**Option A — Webhook (recommended):** Register an endpoint in **Settings → Webhooks** and subscribe to the `interview.completed` and `assessment.scored` events. AceInt sends the results to your endpoint in real time. See [Webhook Events](/integrations/webhooks-events) and [Webhook Payload](/integrations/webhooks-payload) for the exact payload structure.
+
+**Option B — Polling:** If webhooks are not an option, poll the results endpoint at an appropriate interval:
+
+```http
+GET https://api.aceint.ai/v1/interviews/{interview_id}/results
+Authorization: Bearer YOUR_API_KEY
+```
+
+The response includes `status`, `overall_score`, and a `sections` array with per-question detail. Poll until `status` is `completed`.
+
+<Callout title="Tip">
+Use webhooks instead of polling whenever possible. Polling introduces latency, consumes API quota, and adds complexity to your error-handling logic.
+</Callout>
+
+### 4. Push results to your ATS
+
+Once you have the results from Step 3, format them according to your ATS's API and write them back to the candidate record. Most ATS platforms accept feedback via a structured POST to a candidate or application endpoint.
+
+Below is a Python pseudocode example of the full flow end to end.
+
+```python
+import hmac
+import hashlib
+import requests
+
+ACEINT_API_KEY = "YOUR_API_KEY"
+ATS_API_KEY = "YOUR_ATS_API_KEY"
+BASE_URL = "https://api.aceint.ai/v1"
+
+headers = {
+    "Authorization": f"Bearer {ACEINT_API_KEY}",
+    "Content-Type": "application/json",
+}
+
+# Step 1: Push candidate from ATS to AceInt
+def push_candidate(ats_candidate: dict) -> str:
+    payload = {
+        "email": ats_candidate["email"],
+        "first_name": ats_candidate["first_name"],
+        "last_name": ats_candidate["last_name"],
+        "external_id": ats_candidate["id"],
+        "source": "my-ats",
+    }
+    response = requests.post(f"{BASE_URL}/candidates", json=payload, headers=headers)
+    response.raise_for_status()
+    return response.json()["candidate_id"]
+
+
+# Step 2: Create an interview
+def create_interview(candidate_id: str, template_id: str) -> str:
+    payload = {
+        "candidate_id": candidate_id,
+        "template_id": template_id,
+        "notify_candidate": True,
+    }
+    response = requests.post(f"{BASE_URL}/interviews", json=payload, headers=headers)
+    response.raise_for_status()
+    return response.json()["interview_id"]
+
+
+# Step 3: Poll for results (use webhooks in production instead)
+def poll_results(interview_id: str) -> dict:
+    url = f"{BASE_URL}/interviews/{interview_id}/results"
+    while True:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        if data["status"] == "completed":
+            return data
+        import time
+        time.sleep(30)
+
+
+# Step 4: Write results back to your ATS
+def push_results_to_ats(ats_candidate_id: str, results: dict) -> None:
+    ats_payload = {
+        "candidate_id": ats_candidate_id,
+        "score": results["overall_score"],
+        "summary": results.get("summary", ""),
+        "sections": results["sections"],
+    }
+    ats_response = requests.post(
+        f"https://api.your-ats.com/v1/candidates/{ats_candidate_id}/feedback",
+        json=ats_payload,
+        headers={"Authorization": f"Bearer {ATS_API_KEY}"},
+    )
+    ats_response.raise_for_status()
+
+
+# Full flow
+def run_integration(ats_candidate: dict, template_id: str) -> None:
+    candidate_id = push_candidate(ats_candidate)
+    interview_id = create_interview(candidate_id, template_id)
+    results = poll_results(interview_id)
+    push_results_to_ats(ats_candidate["id"], results)
+```
+
+## Error handling recommendations
+
+- **Handle `409 Conflict` on candidate creation.** AceInt returns `409` when a candidate with the same email already exists. Treat this as a success and use the returned `candidate_id` to proceed.
+- **Retry on `5xx` responses.** Use exponential backoff with a maximum of three retries for transient server errors.
+- **Store `interview_id` and `candidate_id` in your ATS.** Persist these identifiers on the candidate record in your ATS so you can correlate incoming webhook events or polling results with the correct ATS application.
+- **Validate webhook signatures.** If you use webhooks, always verify the `X-AceInt-Signature` header before processing the payload. See [Webhook Security](/integrations/webhooks-security).

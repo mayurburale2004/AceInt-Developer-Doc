@@ -1,7 +1,8 @@
 import { Tab } from "@/lib/nav";
 import { Sidebar } from "./Sidebar";
 import { TOC, Heading } from "./TOC";
-
+import { CodeBlockEnhancer } from "./CodeBlockEnhancer";
+import { StatusCodeEnhancer } from "./StatusCodeEnhancer";
 export function DocsShell({
   tab,
   headings,
@@ -12,11 +13,18 @@ export function DocsShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] items-start px-4 sm:px-6">
+    <div className="mx-auto flex w-full max-w-[1440px] px-2">
       <Sidebar tab={tab} />
-      <main className="min-w-0 flex-1 py-8 lg:px-8">
-        <div className="mx-auto max-w-content">{children}</div>
+
+      <main className="min-w-0 flex-1 py-6 px-4">
+        <div className="mx-auto max-w-content">
+          {children}
+        </div>
+        <CodeBlockEnhancer />
+     
+        <StatusCodeEnhancer />
       </main>
+
       <TOC headings={headings} />
     </div>
   );

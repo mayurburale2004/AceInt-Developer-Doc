@@ -1,0 +1,227 @@
+# Build Coding Challenges
+
+A well-designed coding challenge gives candidates enough information to solve the problem while providing the AI grading engine with sufficient test coverage to evaluate submissions accurately.
+
+To create a coding challenge:
+
+**Assessment (Draft) → Add Question → Coding Challenge**
+
+---
+
+## Problem Statement
+
+The problem statement is the first thing candidates read.
+
+A good problem statement should clearly explain:
+
+- What the program or function should do
+- Input format
+- Output format
+- Constraints
+- Examples
+
+### Example
+
+> **Two Sum**
+>
+> Given an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to `target`.
+>
+> You may assume that each input has exactly one solution, and you may not use the same element twice.
+>
+> Return the answer in any order.
+>
+> **Constraints**
+>
+> - `2 ≤ nums.length ≤ 10⁴`
+> - `-10⁹ ≤ nums[i] ≤ 10⁹`
+> - `-10⁹ ≤ target ≤ 10⁹`
+>
+> **Example**
+>
+> ```text
+> Input: nums = [2, 7, 11, 15], target = 9
+> Output: [0, 1]
+> ```
+
+Keep the problem statement concise.
+
+Avoid revealing the optimal algorithm. Let the AI grading engine evaluate algorithmic efficiency instead.
+
+---
+
+## Constraints
+
+Use the **Constraints** field to define the expected input limits.
+
+These constraints help the AI grading engine generate appropriate test cases for evaluating Algorithmic Efficiency.
+
+If left empty, AceInt automatically applies reasonable defaults based on the selected difficulty.
+
+---
+
+## Input and Output Format
+
+Clearly define:
+
+- Function signature
+- Input parameters
+- Expected return value
+- Console input/output format (if applicable)
+
+AceInt validates that:
+
+- Starter code
+- Test cases
+- Function signature
+
+are all consistent.
+
+If you modify the function signature after saving the question, regenerate the affected test cases.
+
+---
+
+## Test Cases
+
+Test cases determine the **Correctness** score.
+
+Include enough test cases to cover:
+
+- Normal scenarios
+- Edge cases
+- Large inputs
+- Invalid inputs (if applicable)
+
+---
+
+### Visible Test Cases
+
+Visible test cases appear inside the candidate's editor.
+
+Candidates can run their code against them before submission.
+
+Recommended visible tests:
+
+- One example from the problem statement
+- One edge case
+- One slightly larger input
+
+Usually **2–4 visible test cases** are sufficient.
+
+---
+
+### Hidden Test Cases
+
+Hidden test cases execute only after the candidate submits.
+
+Candidates can see only whether they passed or failed—not the actual input or expected output.
+
+Hidden tests should include:
+
+- Edge cases
+- Maximum constraints
+- Performance tests
+- Adversarial inputs
+
+For Medium or Hard problems, include **6–8 hidden test cases** or more.
+
+> **Note**
+>
+> If Unique Test Case Variants are enabled, AceInt automatically creates candidate-specific hidden test cases using your original test cases as templates.
+
+---
+
+## Starter Code Template
+
+Starter code provides the structure candidates begin with.
+
+A good template should:
+
+- Include the correct function signature
+- Include required imports
+- Include any required class definition
+- Leave only the implementation unfinished
+
+You may provide different templates for different programming languages.
+
+Candidates automatically receive the template matching their selected language.
+
+---
+
+## Difficulty Level
+
+Choose one of:
+
+- Easy
+- Medium
+- Hard
+
+Difficulty affects:
+
+1. AI expectations for algorithmic efficiency.
+2. The difficulty badge displayed to candidates.
+
+For example:
+
+- An **O(n²)** solution may receive acceptable efficiency on an Easy problem.
+- The same solution may receive a much lower efficiency score on a Hard problem.
+
+---
+
+## Time Limit
+
+Optionally configure a **per-question time limit**.
+
+If the timer expires:
+
+- The latest saved code is submitted automatically.
+
+If no per-question limit is configured, the assessment-level timer is used instead.
+
+> **Warning**
+>
+> Avoid setting overly aggressive time limits.
+>
+> The goal is to evaluate problem-solving ability—not typing speed.
+
+---
+
+## AI Grading Criteria
+
+Each submission is evaluated across four dimensions.
+
+| Dimension | Default Weight | Description |
+|-----------|---------------:|-------------|
+| Correctness | 40% | Percentage of passed test cases |
+| Code Quality | 20% | Readability, naming, structure, and best practices |
+| Algorithmic Efficiency | 25% | Time and space complexity |
+| Completeness | 15% | Edge cases, requirements, and error handling |
+
+The total of all weights must equal **100%**.
+
+---
+
+## Recommended Weighting
+
+### Junior Roles
+
+| Dimension | Weight |
+|-----------|--------|
+| Correctness | 50% |
+| Code Quality | 20% |
+| Algorithmic Efficiency | 15% |
+| Completeness | 15% |
+
+### Senior Roles
+
+| Dimension | Weight |
+|-----------|--------|
+| Correctness | 30% |
+| Code Quality | 20% |
+| Algorithmic Efficiency | 35% |
+| Completeness | 15% |
+
+> **Tip**
+>
+> Increase **Correctness** and **Completeness** for junior hiring.
+>
+> Increase **Algorithmic Efficiency** for senior and staff engineering roles where optimal solutions matter more.

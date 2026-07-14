@@ -1,0 +1,99 @@
+---
+title: "Monitor and Manage AI Interview Sessions"
+description: "View all AI interview sessions, track session statuses, access transcripts and recordings, re-run failed sessions, and share results with your team."
+---
+
+The Interviews page lists every AI voice interview session across all your job roles. From here you can monitor active sessions in real time, open completed sessions to review transcripts and scores, handle failed sessions, and share results with hiring managers who do not have AceInt accounts.
+
+## Sessions list
+
+The sessions list displays all interview sessions in reverse-chronological order by start time. Each row shows:
+
+- **Candidate name** and linked **Job Role**
+- **Session status** (Scheduled, Live, Completed, or Failed)
+- **Start time** and **duration**
+- **Overall score** (shown once the session is graded)
+
+Use the search box to find sessions by candidate name. Apply filters to narrow by status, job role, date range, or score range.
+
+## Session statuses
+
+| Status | Description |
+| --- | --- |
+| **Scheduled** | The invite link has been generated but the candidate has not yet joined |
+| **Live** | The candidate is actively in the session right now |
+| **Completed** | The session finished and AI scoring is complete |
+| **Failed** | The session ended prematurely due to a technical error |
+
+<Callout title="Note">
+Sessions move from Scheduled to Live automatically when the candidate opens their invite link. No action is required from your team.
+</Callout>
+
+## Access a session's transcript, score, and recording
+
+Click any **Completed** session row to open the session detail page. The detail page is organized into three tabs.
+
+<CodeTabs>
+  <CodeTab label="Transcript">
+
+The Transcript tab shows a full, timestamped log of the interview conversation. Each line is attributed to either the AI interviewer or the candidate. Specific passages that informed a dimension score are highlighted in the relevant color for that scoring dimension.
+
+Use the search bar within the transcript to jump to keywords or timestamps. Click any highlighted passage to see which dimension it contributed to and what score was assigned.
+
+  </CodeTab>
+  <CodeTab label="Score Report">
+
+The Score Report tab shows the AI-generated evaluation broken down by dimension.
+
+- **Overall Score** — a normalized 0–100 value calculated from all dimension scores and their weights
+- **Dimension Scores** — individual scores for each rubric dimension, each supported by transcript evidence
+- **AI Summary** — a short natural-language paragraph summarizing the candidate's performance
+- **Strengths and Development Areas** — bullet-point highlights extracted by the AI from the session
+
+Scores are read-only. Add your own review notes on the candidate's profile if you want to annotate the AI's findings.
+
+  </CodeTab>
+  <CodeTab label="Recording">
+
+The Recording tab provides a full audio playback of the session. Use the playback controls to play, pause, and seek. The audio is synchronized with the transcript — clicking a line in the transcript jumps the playback position to that timestamp.
+
+Click **Download** to save the recording as an MP3 file.
+
+<Callout title="Note">
+Audio recordings are retained for 90 days by default. Your organization admin can adjust the retention period in **Settings → Data Retention**.
+</Callout>
+
+  </CodeTab>
+</CodeTabs>
+
+## Re-run a failed session
+
+If a session reaches **Failed** status due to a technical interruption, you can re-run it without asking the candidate to use a new invite link.
+
+1. **Open the failed session** — click the session row in the Sessions list to open the session detail page.
+2. **Review the failure reason** — the detail page displays the reason AceInt flagged the session as failed (e.g., "Connection lost", "Microphone unavailable"). Share this information with the candidate if they need to troubleshoot on their end.
+3. **Click Re-run Session** — click **Re-run Session** in the top-right corner of the detail page. AceInt sends the candidate a new session link to the same email address on file. Their invite link remains valid.
+
+<Callout title="Warning">
+Re-running a session creates a new session record. The failed session record is retained for audit purposes but does not contribute to the candidate's score.
+</Callout>
+
+## Share results with your team
+
+You can share a session's score report and transcript with anyone — including hiring managers who do not have an AceInt account — by generating a view-only share link.
+
+1. **Open the completed session** — navigate to the session detail page for any completed session.
+2. **Click Share** — click **Share** in the top-right corner of the page.
+3. **Configure access** — choose whether the share link includes the **Score Report only**, the **Transcript**, or the **Recording**. Set an optional expiry date for the link.
+4. **Copy and send the link** — click **Copy Link** and share it via email or your team's communication channel. Recipients can view the report in their browser without logging in to AceInt.
+
+<Callout title="Tip">
+Use share links during hiring committee reviews so all stakeholders can see the candidate's performance data even if they don't use AceInt day-to-day.
+</Callout>
+
+<CardGrid cols={2}>
+  <Card icon="users" title="Candidates" description="Manage pipeline statuses and candidate profiles" href="/platform/candidates" />
+  <Card icon="laptop-code" title="Assessments" description="Review coding and MCQ assessment results" href="/platform/assessments" />
+  <Card icon="briefcase" title="Job Roles" description="Configure rubrics and question banks for each role" href="/platform/job-roles" />
+  <Card icon="chart-bar" title="Reports" description="Analyze scores and hiring trends across all roles" href="/platform/reports" />
+</CardGrid>

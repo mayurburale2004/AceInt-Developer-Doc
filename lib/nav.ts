@@ -15,6 +15,7 @@ export type Tab = {
 };
 
 export const tabs: Tab[] = [
+
   {
     title: "Introduction",
     slug: "introduction",
@@ -22,134 +23,144 @@ export const tabs: Tab[] = [
       {
         title: "Get started",
         items: [
-          { title: "Overview", slug: "overview" },
-          { title: "About Ribbon", slug: "about" },
+          { title: "Home", slug: "index" },
+          { title: "Introduction", slug: "introduction" },
           { title: "Quickstart", slug: "quickstart" },
-          { title: "Community resources", slug: "community" },
+          { title: "Concepts", slug: "concepts" },
         ],
       },
       {
-        title: "Understanding Ribbon",
+        title: "introduction",
         items: [
-          { title: "Core concepts", slug: "core-concepts" },
-          { title: "Ribbon CLI", slug: "cli" },
-          { title: "Ribbon Cloud", slug: "cloud" },
-          { title: "Connecting to Ribbon", slug: "connecting" },
+          { title: "Dashboard", slug: "dashboard" },
+          { title: "Job Roles", slug: "job-roles" },
+          { title: "Candidates", slug: "candidates" },
+          { title: "Interviews", slug: "interviews" },
+          { title: "Assessments", slug: "assessments" },
+          { title: "Reports", slug: "reports" },
         ],
       },
     ],
   },
   {
-    title: "Build Agents",
-    slug: "build-agents",
+    title: "Interviews",
+    slug: "interviews",
     groups: [
       {
         title: "Get started",
         items: [
-          { title: "Introduction", slug: "introduction" },
-          { title: "Voice AI quickstart", slug: "quickstart" },
-          { title: "Agent builder", slug: "agent-builder" },
-          { title: "Prompting guide", slug: "prompting-guide" },
+          { title: "Overview", slug: "overview" },
+          { title: "Quickstart", slug: "quickstart" },
+          { title: "Types", slug: "types" },
         ],
       },
       {
-        title: "Logic & structure",
+        title: "Configure",
+        items: [
+          { title: "Question Bank", slug: "configure-question-bank" },
+          { title: "Scoring", slug: "configure-scoring" },
+          { title: "Voice Settings", slug: "configure-voice-settings" },
+          { title: "Invite Flow", slug: "configure-invite-flow" },
+        ],
+      },
+      {
+        title: "Candidate Experience",
+        items: [
+          { title: "Joining", slug: "candidate-joining" },
+          { title: "Technical Screen", slug: "candidate-technical-screen" },
+          { title: "Behavioral", slug: "candidate-behavioral" },
+          { title: "Completion", slug: "candidate-completion" },
+        ],
+      },
+      {
+        title: "Results",
+        items: [
+          { title: "Transcripts", slug: "results-transcripts" },
+          { title: "Scores", slug: "results-scores" },
+          { title: "Recordings", slug: "results-recordings" },
+        ],
+      },
+    ],
+  },
+ 
+   {
+    title: "Assessments",
+    slug: "assessments",
+    groups: [
+      {
+        title: "Get Started",
         items: [
           { title: "Overview", slug: "overview" },
-          { title: "Agent sessions", slug: "agent-sessions" },
-          { title: "Chat context", slug: "chat-context" },
-          { title: "Workflows", slug: "workflows" },
+          { title: "Quickstart", slug: "quickstart" },
+          { title: "Assessment Types", slug: "types" },
+        ],
+      },
+      {
+        title: "Build Questions",
+        items: [
+          {
+            title: "Coding Challenges",
+            slug: "build-coding-challenges",
+          },
+          {
+            title: "Multiple Choice (MCQ)",
+            slug: "build-mcq",
+          },
+        ],
+      },
+      {
+        title: "Results",
+        items: [
+          {
+            title: "Scoring",
+            slug: "results-scoring",
+          },
+          {
+            title: "Leaderboard",
+            slug: "results-leaderboard",
+          },
+          {
+            title: "Export Results",
+            slug: "results-export",
+          },
         ],
       },
     ],
   },
   {
-    title: "Frontends",
-    slug: "frontends",
+    title: "Integrations",
+    slug: "integrations",
     groups: [
       {
         title: "Get started",
+        items: [{ title: "Overview", slug: "overview" }],
+      },
+      {
+        title: "ATS Connectors",
         items: [
-          { title: "Introduction", slug: "introduction" },
-          { title: "React quickstart", slug: "react-quickstart" },
-          { title: "Starter apps", slug: "starter-apps" },
+          { title: "Overview", slug: "ats" },
+          { title: "Greenhouse", slug: "ats-greenhouse" },
+          { title: "Lever", slug: "ats-lever" },
+          { title: "Workday", slug: "ats-workday" },
+          { title: "Custom ATS", slug: "ats-custom" },
         ],
       },
       {
-        title: "UI components",
+        title: "Webhooks",
         items: [
-          { title: "Overview", slug: "overview" },
-          { title: "Media controls", slug: "media-controls" },
-          { title: "Chat components", slug: "chat-components" },
+          { title: "Overview", slug: "webhooks" },
+          { title: "Events", slug: "webhooks-events" },
+          { title: "Payload", slug: "webhooks-payload" },
+          { title: "Security", slug: "webhooks-security" },
         ],
+      },
+      {
+        title: "REST API",
+        items: [{ title: "API Authentication", slug: "api-authentication" }],
       },
     ],
   },
-  {
-    title: "Telephony",
-    slug: "telephony",
-    groups: [
-      {
-        title: "Get started",
-        items: [
-          { title: "Introduction", slug: "introduction" },
-          { title: "Phone numbers", slug: "phone-numbers" },
-          { title: "SIP trunk setup", slug: "sip-trunk-setup" },
-        ],
-      },
-      {
-        title: "Features",
-        items: [
-          { title: "Overview", slug: "overview" },
-          { title: "DTMF", slug: "dtmf" },
-          { title: "Transfers", slug: "transfers" },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Transport",
-    slug: "transport",
-    groups: [
-      {
-        title: "Get started",
-        items: [
-          { title: "Introduction", slug: "introduction" },
-          { title: "SDK platform quickstarts", slug: "sdk-quickstarts" },
-        ],
-      },
-      {
-        title: "Media",
-        items: [
-          { title: "Overview", slug: "overview" },
-          { title: "Camera & microphone", slug: "camera-microphone" },
-          { title: "Screen sharing", slug: "screen-sharing" },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Deploy",
-    slug: "deploy",
-    groups: [
-      {
-        title: "Get started",
-        items: [
-          { title: "Introduction", slug: "introduction" },
-          { title: "Deployment management", slug: "deployment-management" },
-          { title: "Secrets management", slug: "secrets-management" },
-        ],
-      },
-      {
-        title: "Observability",
-        items: [
-          { title: "Overview", slug: "overview" },
-          { title: "Logs", slug: "logs" },
-          { title: "Export traces", slug: "export-traces" },
-        ],
-      },
-    ],
-  },
+  
   {
     title: "API Reference",
     slug: "reference",
@@ -158,14 +169,13 @@ export const tabs: Tab[] = [
         title: "Developer tools",
         items: [
           { title: "Overview", slug: "overview" },
-          { title: "CLI reference", slug: "cli-reference" },
-        ],
-      },
-      {
-        title: "SDKs",
-        items: [
-          { title: "JavaScript", slug: "javascript" },
-          { title: "Python", slug: "python" },
+          { title: "Authentication", slug: "authentication" },
+          { title: "Rate limits", slug: "rate-limits" },
+          { title: "Candidates", slug: "candidates" },
+          { title: "Interviews", slug: "interviews" },
+          { title: "Assessments", slug: "assessments" },
+          { title: "Results", slug: "results" },
+          { title: "Webhooks", slug: "webhooks" },
         ],
       },
     ],
@@ -189,3 +199,21 @@ export function findPage(tabSlug: string, pageSlug: string) {
 export function firstPageSlug(tab: Tab) {
   return tab.groups[0]?.items[0]?.slug ?? "overview";
 }
+export function getNextPage(tabSlug: string, pageSlug: string) {
+  const tab = findTab(tabSlug);
+  if (!tab) return undefined;
+  const flat = tab.groups.flatMap((g) => g.items);
+  const idx = flat.findIndex((i) => i.slug === pageSlug);
+  if (idx === -1 || idx === flat.length - 1) return undefined;
+  const next = flat[idx + 1];
+  return { title: next.title, href: `/${tab.slug}/${next.slug}` };
+}
+
+
+
+
+
+
+
+
+

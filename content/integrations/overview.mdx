@@ -1,0 +1,43 @@
+---
+title: "AceInt Integrations: ATS, Webhooks, and REST API Guide"
+description: "Connect AceInt to your hiring stack with ATS connectors, webhooks, and a REST API — all designed to fit into your existing workflows."
+---
+
+AceInt is built to work alongside the tools your team already uses. Whether you need to sync candidates from your applicant tracking system, react to real-time hiring events, or build a fully custom integration, AceInt provides three distinct integration surfaces that can be used independently or together.
+
+Before connecting any integration, make sure you have generated an API key from **Settings → API Keys**. Most integration surfaces authenticate with that key.
+
+## Integration surfaces
+
+<CardGrid cols={3}>
+  <Card icon="plug" title="ATS Connectors" description="Push candidates from Greenhouse, Lever, Workday, or a custom ATS into AceInt and pull structured results back automatically." href="/integrations/ats-overview" />
+  <Card icon="webhook" title="Webhooks" description="Receive real-time HTTP notifications for key hiring events such as interview completion and assessment scoring." href="/integrations/webhooks-overview" />
+  <Card icon="code" title="REST API" description="Authenticate and call AceInt endpoints directly to manage candidates, interviews, and results programmatically." href="/integrations/api-authentication" />
+</CardGrid>
+
+## Choosing the right surface
+
+Use **ATS Connectors** when you want a managed, no-code sync between your ATS and AceInt. Connectors handle candidate creation, stage mapping, and result delivery without writing any code.
+
+Use **Webhooks** when your system needs to react immediately after an event occurs — for example, to trigger a downstream email, update a database record, or post a Slack notification the moment an interview is completed.
+
+Use the **REST API** when you need fine-grained control, want to build a custom integration, or your ATS is not one of the supported connectors.
+
+<Callout title="Tip">
+Many teams combine all three surfaces: an ATS Connector to import candidates, webhooks to trigger real-time workflows, and the REST API to fetch detailed results for custom reporting.
+</Callout>
+
+## All integration pages
+
+<CardGrid cols={2}>
+  <Card icon="briefcase" title="ATS Overview" description="Learn how bidirectional ATS sync works and which platforms are supported." href="/integrations/ats-overview" />
+  <Card icon="leaf" title="Greenhouse" description="Connect AceInt to Greenhouse via OAuth and the Harvest API." href="/integrations/ats-greenhouse" />
+  <Card icon="layers" title="Lever" description="Connect AceInt to Lever using an API key." href="/integrations/ats-lever" />
+  <Card icon="building" title="Workday" description="Connect AceInt to Workday using tenant credentials." href="/integrations/ats-workday" />
+  <Card icon="wrench" title="Custom ATS" description="Build a custom integration with any ATS using the REST API." href="/integrations/ats-custom" />
+  <Card icon="webhook" title="Webhooks Overview" description="Understand retry behavior, event ordering, and how to register endpoints." href="/integrations/webhooks-overview" />
+  <Card icon="list" title="Webhook Events" description="Full reference for all available webhook event types." href="/integrations/webhooks-events" />
+  <Card icon="braces" title="Webhook Payload" description="Payload structure and field-level reference for every event." href="/integrations/webhooks-payload" />
+  <Card icon="shield-check" title="Webhook Security" description="Verify HMAC-SHA256 signatures to authenticate incoming webhook requests." href="/integrations/webhooks-security" />
+  <Card icon="key" title="API Authentication" description="Generate API keys, understand scopes, and authenticate your requests." href="/integrations/api-authentication" />
+</CardGrid>

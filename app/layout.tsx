@@ -3,10 +3,17 @@ import "./globals.css";
 import { UIStateProvider } from "@/components/UIStateProvider";
 import { TopNav } from "@/components/TopNav";
 import { SearchModal } from "@/components/SearchModal";
+import SiteFooter from "@/components/SiteFooter";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "Ribbon Docs",
-  description: "Documentation for the Ribbon platform.",
+  title: "AceInt Docs",
+  description: "Documentation for the AceInt platform.",
+  icons: {
+    icon: "/assets/AceInt.ico",
+    shortcut: "/assets/AceInt.ico",
+    apple: "/assets/AceInt.ico",
+  },
 };
 
 export default function RootLayout({
@@ -15,13 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-white font-sans antialiased">
-        <UIStateProvider>
-          <TopNav />
-          {children}
-          <SearchModal />
-        </UIStateProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen bg-white font-sans antialiased dark:bg-gray-950">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <UIStateProvider>
+            <TopNav />
+            {children}
+            <SiteFooter />
+            <SearchModal />
+          </UIStateProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
